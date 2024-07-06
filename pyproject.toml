@@ -1,0 +1,14 @@
+[project]
+name = "ctr4ever"
+version = '1.0.0'
+description = "The new ctr4ever website"
+dependencies = [
+    "flask",
+    "flask-migrate",
+    "marshmallow",
+    "psycopg2-binary"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
