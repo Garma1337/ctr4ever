@@ -4,11 +4,11 @@ from flask import Request
 
 from ctr4ever.models.gameversion import GameVersion
 from ctr4ever.models.repository.gameversionrepository import GameVersionRepository
-from ctr4ever.rest.endpoint.baseendpoint import BaseEndpoint
+from ctr4ever.rest.endpoint.endpoint import Endpoint
 from ctr4ever.rest.response import Response
 
 
-class GetGameVersion(BaseEndpoint):
+class GetGameVersion(Endpoint):
 
     def handle_request(self, request: Request) -> Response:
         if not 'id' in request.args:

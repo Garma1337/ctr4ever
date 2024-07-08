@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: 41c42e38c1cb
+Revision ID: 551ca74fbc85
 Revises: 
-Create Date: 2024-07-06 12:25:27.295061
+Create Date: 2024-07-06 21:30:52.290811
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '41c42e38c1cb'
+revision = '551ca74fbc85'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,16 +23,16 @@ def upgrade():
     sa.Column('name', sa.String(length=100), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('characters',
-    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('name', sa.String(length=100), nullable=False),
-    sa.Column('icon', sa.String(length=100), nullable=False),
-    sa.PrimaryKeyConstraint('id')
-    )
     op.create_table('countries',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('name', sa.String(length=100), nullable=False),
     sa.Column('flag', sa.String(length=100), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('name')
+    )
+    op.create_table('engine_style',
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('name', sa.String(length=100), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
@@ -51,6 +51,14 @@ def upgrade():
     sa.Column('name', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('characters',
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('engine_style_id', sa.Integer(), nullable=True),
+    sa.Column('name', sa.String(length=100), nullable=False),
+    sa.Column('icon', sa.String(length=100), nullable=False),
+    sa.ForeignKeyConstraint(['engine_style_id'], ['engine_style.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('players',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('country_id', sa.Integer(), nullable=False),
@@ -66,7 +74,7 @@ def upgrade():
     sa.Column('standard_id', sa.Integer(), nullable=False),
     sa.Column('track_id', sa.Integer(), nullable=False),
     sa.Column('category_id', sa.Integer(), nullable=False),
-    sa.Column('time', sa.String(length=20), nullable=False),
+    sa.Column('time', sa.Float(precision=2), nullable=False),
     sa.Column('numeric_value', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=False),
     sa.ForeignKeyConstraint(['category_id'], ['categories.id'], ),
@@ -81,7 +89,7 @@ def upgrade():
     sa.Column('category_id', sa.Integer(), nullable=False),
     sa.Column('character_id', sa.Integer(), nullable=False),
     sa.Column('game_version_id', sa.Integer(), nullable=False),
-    sa.Column('time', sa.String(length=20), nullable=False),
+    sa.Column('time', sa.Float(precision=2), nullable=False),
     sa.Column('date', sa.DateTime(), nullable=False),
     sa.Column('video', sa.String(length=255), nullable=False),
     sa.ForeignKeyConstraint(['category_id'], ['categories.id'], ),
@@ -99,10 +107,11 @@ def downgrade():
     op.drop_table('submissions')
     op.drop_table('standards_times')
     op.drop_table('players')
+    op.drop_table('characters')
     op.drop_table('tracks')
     op.drop_table('standards')
     op.drop_table('game_versions')
+    op.drop_table('engine_style')
     op.drop_table('countries')
-    op.drop_table('characters')
     op.drop_table('categories')
     # ### end Alembic commands ###

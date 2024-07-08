@@ -1,8 +1,5 @@
 # coding=utf-8
 
-import re
-from typing import Optional
-
 
 class Time(object):
 
@@ -31,18 +28,20 @@ class Time(object):
         }
 
 
-class TimeParser(object):
+class TimeFormatter(object):
 
-    def __init__(self):
-        self._regex = r'([0-9]{1})\:([0-5]{1}[0-9]{1})\.([0-9]{2})'
-
-    def parse_time(self, time: str) -> Optional[Time]:
-        if not isinstance(time, str):
+    def parse_time(self, time: float):
+        if not isinstance(time, float):
             return None
 
-        match = re.match(self._regex, time)
+        minutes = int(time / 60)
+        seconds = int(time % 60)
+        milliseconds = int(round((time % 1) * 100))
 
-        if not match:
-            return None
+        return Time(minutes, seconds, milliseconds)
 
-        return Time(int(match.group(1)), int(match.group(2)), int(match.group(3)))
+    def format_time(self, time: Time):
+        if time.get_minutes() <= 0:
+            return f'{time.get_seconds():02}.{time.get_milliseconds():02}'
+
+        return f'{time.get_minutes()}:{time.get_seconds():02}.{time.get_milliseconds():02}'

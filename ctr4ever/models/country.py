@@ -6,7 +6,7 @@ from marshmallow import Schema, fields
 from sqlalchemy import Column, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ctr4ever.models.modelbase import ModelBase
+from ctr4ever.models.model import Model
 
 
 class CountrySchema(Schema):
@@ -17,7 +17,7 @@ class CountrySchema(Schema):
     players = fields.Nested('PlayerSchema', exclude=('country',), many=True)
 
 
-class Country(ModelBase):
+class Country(Model):
 
     __tablename__ = 'countries'
     __dump_schema__ = CountrySchema()

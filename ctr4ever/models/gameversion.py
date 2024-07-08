@@ -6,7 +6,7 @@ from marshmallow import Schema, fields
 from sqlalchemy import Column, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ctr4ever.models.modelbase import ModelBase
+from ctr4ever.models.model import Model
 
 
 class GameVersionSchema(Schema):
@@ -16,7 +16,7 @@ class GameVersionSchema(Schema):
     submissions = fields.Nested('SubmissionSchema', exclude=('game_version',), many=True)
 
 
-class GameVersion(ModelBase):
+class GameVersion(Model):
 
     __tablename__ = 'game_versions'
     __dump_schema__ = GameVersionSchema()

@@ -7,7 +7,7 @@ from marshmallow import Schema
 from ctr4ever import db
 
 
-class ModelBase(db.Model):
+class Model(db.Model):
 
     __abstract__: bool = True
     __dump_schema__: Schema = None

@@ -2,10 +2,10 @@
 
 from marshmallow import Schema, fields
 from marshmallow.fields import Nested
-from sqlalchemy import Column, String, DateTime, ForeignKey
+from sqlalchemy import Column, String, DateTime, ForeignKey, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ctr4ever.models.modelbase import ModelBase
+from ctr4ever.models.model import Model
 
 
 class SubmissionSchema(Schema):
@@ -16,7 +16,7 @@ class SubmissionSchema(Schema):
     category_id = fields.Int()
     character_id = fields.Int()
     game_version_id = fields.Int()
-    time = fields.Str()
+    time = fields.Float()
     date = fields.DateTime()
     video = fields.Str()
     player = Nested('PlayerSchema', exclude=('submissions',))
@@ -26,7 +26,7 @@ class SubmissionSchema(Schema):
     game_version = Nested('GameVersionSchema', exclude=('submissions',))
 
 
-class Submission(ModelBase):
+class Submission(Model):
 
     __tablename__ = 'submissions'
     __dump_schema__ = SubmissionSchema()
@@ -37,7 +37,7 @@ class Submission(ModelBase):
     category_id: Mapped[int] = mapped_column(ForeignKey('categories.id'))
     character_id: Mapped[int] = mapped_column(ForeignKey('characters.id'))
     game_version_id: Mapped[int] = mapped_column(ForeignKey('game_versions.id'))
-    time: Mapped[str] = Column(String(20), nullable=False)
+    time: Mapped[int] = Column(Float(2), nullable=False)
     date: Mapped[str] = Column(DateTime(), nullable=False)
     video: Mapped[str] = Column(String(255), nullable=False)
     player: Mapped['Player'] = relationship('Player', back_populates='submissions')

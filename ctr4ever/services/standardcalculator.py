@@ -4,7 +4,7 @@ from typing import List
 
 from ctr4ever.models.repository.standardtimerepository import StandardTimeRepository
 from ctr4ever.models.standardtime import StandardTime
-from ctr4ever.services.timeparser import TimeParser
+from ctr4ever.services.timeformatter import TimeFormatter
 
 
 class StandardCalculatorError(Exception):
@@ -13,13 +13,13 @@ class StandardCalculatorError(Exception):
 
 class StandardCalculator(object):
 
-    def __init__(self, time_parser: TimeParser, standard_time_repository: StandardTimeRepository):
-        self.time_parser: TimeParser = time_parser
+    def __init__(self, time_formatter: TimeFormatter, standard_time_repository: StandardTimeRepository):
+        self.time_formatter: TimeFormatter = time_formatter
         self.standard_time_repository = standard_time_repository
 
         self.standard_times: List[StandardTime] = self.standard_time_repository.find_by()
 
-    def calculate_standard(self, standard_id: int, track_id: int, category_id: int, player_time: str) -> StandardTime:
+    def calculate_standard(self, standard_id: int, track_id: int, category_id: int, player_time: float) -> StandardTime:
         standard_times = self._find_standard_times(standard_id, track_id, category_id)
 
         if len(standard_times) <= 0:
@@ -28,7 +28,7 @@ class StandardCalculator(object):
         standard_time = None
 
         for time in standard_times:
-            if self._is_faster(player_time, time.time):
+            if player_time < time.time:
                 standard_time = time
                 break
 
@@ -42,9 +42,3 @@ class StandardCalculator(object):
         standard_times = sorted(self.standard_times, key=lambda t: t.numeric_value)
 
         return standard_times
-
-    def _is_faster(self, time1: str, time2: str) -> bool:
-        parsed_time1 = self.time_parser.parse_time(time1)
-        parsed_time2 = self.time_parser.parse_time(time2)
-
-        return parsed_time1.in_seconds() < parsed_time2.in_seconds()

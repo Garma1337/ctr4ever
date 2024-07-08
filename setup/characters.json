@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Crash",
+    "icon": "crash.png",
+    "engine": "Balanced"
+  },
+  {
+    "name": "Coco",
+    "icon": "coco.png",
+    "engine": "Acceleration"
+  },
+  {
+    "name": "Polar",
+    "icon": "polar.png",
+    "engine": "Turning"
+  },
+  {
+    "name": "Pura",
+    "icon": "pura.png",
+    "engine": "Turning"
+  },
+  {
+    "name": "Dingodile",
+    "icon": "dingodile.png",
+    "engine": "Speed"
+  },
+  {
+    "name": "Tiny",
+    "icon": "tiny.png",
+    "engine": "Speed"
+  },
+  {
+    "name": "Cortex",
+    "icon": "cortex.png",
+    "engine": "Balanced"
+  },
+  {
+    "name": "N. Gin",
+    "icon": "ngin.png",
+    "engine": "Acceleration"
+  },
+  {
+    "name": "Ripper Roo",
+    "icon": "ripperroo.png",
+    "engine": "Turning"
+  },
+  {
+    "name": "Papu Papu",
+    "icon": "papu.png",
+    "engine": "Speed"
+  },
+  {
+    "name": "Komodo Joe",
+    "icon": "komodojoe.png",
+    "engine": "Balanced"
+  },
+  {
+    "name": "Pinstripe",
+    "icon": "pinstripe.png",
+    "engine": "Acceleration"
+  },
+  {
+    "name": "N. Tropy",
+    "icon": "ntropy.png",
+    "engine": "Speed"
+  },
+  {
+    "name": "Fake Crash",
+    "icon": "fakecrash.png",
+    "engine": "Balanced"
+  },
+  {
+    "name": "Fast Penta Penguin",
+    "icon": "penta.png",
+    "engine": "Max"
+  },
+  {
+    "name": "Slow Penta Penguin",
+    "icon": "penta.png",
+    "engine": "Turning"
+  }
+]

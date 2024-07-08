@@ -33,6 +33,16 @@ $ docker-compose -f dev.docker-compose.yml up
 This will spawn a docker compose with 2 containers: A PostgreSQL container and an Adminer container.
 From there on you can start development.
 
+### Faker
+
+If you don't have a database dump or you want to do performance testing you might need more data than what we have as actual submitted time.
+For that reason you can use the `Faker` to generate a bunch of fake submissions. This is helpful if you need to test anything
+that requires a large dataset.
+
+```bash
+$ flask --app ctr4ver faker --help
+```
+
 ## Deployment
 
 The project contains a `Dockerfile` and `docker-compose.yml`. Just run the docker compose file and this will spawn
@@ -47,4 +57,16 @@ After the initial deployment you need to apply migrations to get the database sc
 
 ```bash
 $ flask --app ctr4ever db upgrade head
+```
+
+After all migrations have been applied you need to set up the initial master data of the website
+such as categories, tracks, characters and so on.
+
+```bash
+$ flask --app ctr4ever md upsert-categories --file "setup/categories.json"
+$ flask --app ctr4ever md upsert-characters --file "setup/characters.json"
+$ flask --app ctr4ever md upsert-countries --file "setup/countries.json"
+$ flask --app ctr4ever md upsert-game-versions --file "setup/game_versions.json"
+$ flask --app ctr4ever md upsert-standards --file "setup/standards.json"
+$ flask --app ctr4ever md upsert-tracks --file "setup/tracks.json"
 ```

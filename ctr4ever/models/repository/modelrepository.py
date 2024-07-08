@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 
 from flask_sqlalchemy import SQLAlchemy
 
-from ctr4ever.models.modelbase import ModelBase
+from ctr4ever.models.abstractmodel import Model
 
 
 class ModelRepository(ABC):
@@ -26,7 +26,7 @@ class ModelRepository(ABC):
 
         return query.all()
 
-    def create(self, **kwargs) -> ModelBase:
+    def create(self, **kwargs) -> Model:
         self._db.session.begin()
 
         model = self._model_class(**kwargs)

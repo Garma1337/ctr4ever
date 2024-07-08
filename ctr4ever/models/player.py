@@ -6,7 +6,7 @@ from marshmallow import Schema, fields
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ctr4ever.models.modelbase import ModelBase
+from ctr4ever.models.model import Model
 
 
 class PlayerSchema(Schema):
@@ -18,7 +18,7 @@ class PlayerSchema(Schema):
     submissions = fields.Nested('SubmissionSchema', exclude=('player',), many=True)
 
 
-class Player(ModelBase):
+class Player(Model):
 
     __tablename__ = 'players'
     __dump_schema__ = PlayerSchema()

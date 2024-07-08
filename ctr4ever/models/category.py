@@ -6,7 +6,7 @@ from marshmallow import Schema, fields
 from sqlalchemy import Column, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ctr4ever.models.modelbase import ModelBase
+from ctr4ever.models.model import Model
 
 
 class CategorySchema(Schema):
@@ -17,7 +17,7 @@ class CategorySchema(Schema):
     submissions = fields.Nested('SubmissionSchema', exclude=('category',), many=True)
 
 
-class Category(ModelBase):
+class Category(Model):
 
     __tablename__ = 'categories'
     __dump_schema__ = CategorySchema()

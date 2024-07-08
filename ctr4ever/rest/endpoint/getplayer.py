@@ -4,11 +4,11 @@ from flask import Request
 
 from ctr4ever.models.player import Player
 from ctr4ever.models.repository.playerrepository import PlayerRepository
-from ctr4ever.rest.endpoint.baseendpoint import BaseEndpoint
+from ctr4ever.rest.endpoint.endpoint import Endpoint
 from ctr4ever.rest.response import Response
 
 
-class GetPlayer(BaseEndpoint):
+class GetPlayer(Endpoint):
 
     def handle_request(self, request: Request):
         if not 'id' in request.args:

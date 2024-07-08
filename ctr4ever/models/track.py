@@ -1,10 +1,11 @@
 # coding=utf-8
+
 from typing import List
 
 from marshmallow import Schema, fields
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ctr4ever.models.modelbase import ModelBase
+from ctr4ever.models.model import Model
 
 
 class TrackSchema(Schema):
@@ -14,7 +15,7 @@ class TrackSchema(Schema):
     submissions = fields.Nested('SubmissionSchema', exclude=('track',), many=True)
 
 
-class Track(ModelBase):
+class Track(Model):
 
     __tablename__ = 'tracks'
     __dump_schema__ = TrackSchema()

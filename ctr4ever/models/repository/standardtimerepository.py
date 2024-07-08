@@ -15,7 +15,7 @@ class StandardTimeRepository(ModelRepository):
             category_id = category_id
         )
 
-    def create(self, standard_id: int, track_id: int, category_id: int, time: str, numeric_value: int) -> StandardTime:
+    def create(self, standard_id: int, track_id: int, category_id: int, time: float, numeric_value: int) -> StandardTime:
         return super().create(
             standard_id = standard_id,
             track_id = track_id,

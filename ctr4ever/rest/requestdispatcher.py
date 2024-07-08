@@ -2,9 +2,10 @@
 
 from flask import Request, Config
 
-from ctr4ever.rest.endpoint.baseendpoint import BaseEndpoint
+from ctr4ever.rest.endpoint.abstractendpoint import Endpoint
 from ctr4ever.rest.response import Response
 from ctr4ever.services.container import Container
+
 
 class RequestDispatcherErrror(Exception):
     pass
@@ -28,7 +29,7 @@ class RequestDispatcher(object):
             return Response({'error': f'No route {requested_route} exists'}, 404)
 
         try:
-            endpoint: BaseEndpoint = existing_routes[requested_route](self.container, self.app_config)
+            endpoint: Endpoint = existing_routes[requested_route](self.container, self.app_config)
         except Exception as e:
             return Response({'error': f'Error while instantiating endpoint {existing_routes[requested_route].__name__}: {e}'}, 500)
 

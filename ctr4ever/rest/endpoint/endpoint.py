@@ -8,7 +8,7 @@ from ctr4ever.rest.response import Response
 from ctr4ever.services.container import Container
 
 
-class BaseEndpoint(ABC):
+class Endpoint(ABC):
 
     def __init__(self, container: Container, app_config: Config):
         self.container = container

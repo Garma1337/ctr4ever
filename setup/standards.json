@@ -1,0 +1,29 @@
+{
+  "Standards": [
+    {
+      "track": "Crash Cove",
+      "standards": [
+        {
+          "name": "GOD",
+          "time": 79.50
+        },
+        {
+          "name": "Titan A",
+          "time": 79.75
+        },
+        {
+          "name": "Titan B",
+          "time": 80
+        },
+        {
+          "name": "Titan C",
+          "time": 80.25
+        },
+        {
+          "name": "Titan D",
+          "time": 80.50
+        }
+      ]
+    }
+  ]
+}

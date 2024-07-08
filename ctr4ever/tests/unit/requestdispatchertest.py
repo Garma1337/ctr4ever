@@ -5,13 +5,13 @@ from unittest.mock import MagicMock
 
 from flask import Config, Request
 
-from ctr4ever.rest.endpoint.baseendpoint import BaseEndpoint
+from ctr4ever.rest.endpoint.abstractendpoint import Endpoint
 from ctr4ever.rest.requestdispatcher import RequestDispatcher
 from ctr4ever.rest.response import EmptyResponse, Response
 from ctr4ever.services.container import Container
 
 
-class TestEndpoint(BaseEndpoint):
+class TestEndpoint(Endpoint):
 
     def handle_request(self, request: Request) -> Response:
         return EmptyResponse()
