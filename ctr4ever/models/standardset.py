@@ -16,13 +16,14 @@ class StandardSetName(Enum):
 
 
 class StandardSetSchema(Schema):
-
     id = fields.Int()
     name = fields.Str()
     standards = fields.Nested('StandardSchema', exclude=('standard_set',), many=True)
 
 
 class StandardSet(Model):
+    __tablename__ = 'standard_sets'
+    __dump_schema__ = StandardSetSchema()
 
     id: Mapped[int] = mapped_column(primary_key=True, nullable=False, autoincrement=True)
     name: Mapped[str] = Column(String(50))

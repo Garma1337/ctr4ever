@@ -2,7 +2,7 @@
 
 from unittest import TestCase
 
-from ctr4ever.models.abstractmodel import Model
+from ctr4ever.models.model import Model
 
 
 class ModelTest(TestCase):

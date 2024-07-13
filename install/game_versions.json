@@ -1,0 +1,14 @@
+[
+  {
+    "name": "PAL",
+    "icon": "pal.png"
+  },
+  {
+    "name": "NTSC-U",
+    "icon": "ntscu.png"
+  },
+  {
+    "name": "NTSC-J",
+    "icon": "ntscj.png"
+  }
+]

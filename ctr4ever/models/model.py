@@ -8,7 +8,6 @@ from ctr4ever import db
 
 
 class Model(db.Model):
-
     __abstract__: bool = True
     __dump_schema__: Schema = None
 

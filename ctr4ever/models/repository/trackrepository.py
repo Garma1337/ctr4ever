@@ -9,10 +9,13 @@ from ctr4ever.models.track import Track
 class TrackRepository(ModelRepository):
 
     def find_by(self, name: str) -> List[Track]:
-        return super().find_by(name = name)
+        return super().find_by(name=name)
 
     def create(self, name: str) -> Track:
-        return super().create(name = name)
+        return super().create(name=name)
+
+    def update(self, id: int, name: str) -> None:
+        super().update(id=id, name=name)
 
     def _get_model_class(self) -> type:
         return Track

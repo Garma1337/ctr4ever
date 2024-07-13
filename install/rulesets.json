@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Unrestricted",
+    "default": true
+  },
+  {
+    "name": "Classic",
+    "default": false
+  },
+  {
+    "name": "Skipless",
+    "default": false
+  }
+]

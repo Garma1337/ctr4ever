@@ -1,7 +1,6 @@
 # coding=utf-8
 
 from marshmallow import Schema, fields
-from marshmallow.fields import Nested
 from sqlalchemy import Column, ForeignKey, Integer, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -15,13 +14,12 @@ class StandardTimeSchema(Schema):
     category_id = fields.Int()
     time = fields.Float()
     numeric_value = fields.Int()
-    standard = Nested('StandardSchema', exclude=('times',))
-    track = Nested('TrackSchema', exclude=('standard_times',))
-    category = Nested('CategorySchema', exclude=('standard_times',))
+    standard = fields.Nested('StandardSchema', exclude=('times',))
+    track = fields.Nested('TrackSchema', exclude=('standard_times',))
+    category = fields.Nested('CategorySchema', exclude=('standard_times',))
 
 
 class StandardTime(Model):
-
     __tablename__ = 'standards_times'
     __dump_schema__ = StandardTimeSchema()
 

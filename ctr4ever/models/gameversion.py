@@ -10,17 +10,17 @@ from ctr4ever.models.model import Model
 
 
 class GameVersionSchema(Schema):
-
     id = fields.Int()
     name = fields.Str()
+    icon = fields.Str()
     submissions = fields.Nested('SubmissionSchema', exclude=('game_version',), many=True)
 
 
 class GameVersion(Model):
-
     __tablename__ = 'game_versions'
     __dump_schema__ = GameVersionSchema()
 
     id: Mapped[int] = mapped_column(primary_key=True, nullable=False, autoincrement=True)
     name: Mapped[str] = Column(String(100), nullable=False)
+    icon: Mapped[str] = Column(String(20), nullable=False)
     submissions: Mapped[List['Submission']] = relationship('Submission', back_populates='game_version')

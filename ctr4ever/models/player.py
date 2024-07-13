@@ -3,23 +3,22 @@
 from typing import List
 
 from marshmallow import Schema, fields
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, String, ForeignKey, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ctr4ever.models.model import Model
 
 
 class PlayerSchema(Schema):
-
     id = fields.Int()
-    name = fields.Str()
     country_id = fields.Int()
+    name = fields.Str()
+    active = fields.Bool()
     country = fields.Nested('CountrySchema', exclude=('players',))
     submissions = fields.Nested('SubmissionSchema', exclude=('player',), many=True)
 
 
 class Player(Model):
-
     __tablename__ = 'players'
     __dump_schema__ = PlayerSchema()
 
@@ -28,5 +27,7 @@ class Player(Model):
     name: Mapped[str] = Column(String(100), nullable=False)
     email: Mapped[str] = Column(String(255), unique=True, nullable=False)
     password: Mapped[str] = Column(String(255), nullable=False)
+    salt: Mapped[str] = Column(String(50), nullable=False)
+    active: Mapped[bool] = Column(Boolean(), nullable=False, default=False)
     country: Mapped['Country'] = relationship('Country', back_populates='players')
     submissions: Mapped[List['Submission']] = relationship('Submission', back_populates='player')

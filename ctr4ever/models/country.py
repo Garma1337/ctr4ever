@@ -10,7 +10,6 @@ from ctr4ever.models.model import Model
 
 
 class CountrySchema(Schema):
-
     id = fields.Int()
     name = fields.Str()
     flag = fields.Str()
@@ -18,7 +17,6 @@ class CountrySchema(Schema):
 
 
 class Country(Model):
-
     __tablename__ = 'countries'
     __dump_schema__ = CountrySchema()
 

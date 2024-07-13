@@ -17,7 +17,7 @@ class StandardCalculator(object):
         self.time_formatter: TimeFormatter = time_formatter
         self.standard_time_repository = standard_time_repository
 
-        self.standard_times: List[StandardTime] = self.standard_time_repository.find_by()
+        self._standard_times: List[StandardTime] = self.standard_time_repository.find_by()
 
     def calculate_standard(self, standard_id: int, track_id: int, category_id: int, player_time: float) -> StandardTime:
         standard_times = self._find_standard_times(standard_id, track_id, category_id)
@@ -38,7 +38,7 @@ class StandardCalculator(object):
         return standard_time
 
     def _find_standard_times(self, standard_id: int, track_id: int, category_id: int) -> List[StandardTime]:
-        standard_times = list(filter(lambda t: t.standard_id == standard_id and t.track_id == track_id and t.category_id == category_id, self.standard_times))
-        standard_times = sorted(self.standard_times, key=lambda t: t.numeric_value)
+        standard_times = list(filter(lambda t: t.standard_id == standard_id and t.track_id == track_id and t.category_id == category_id, self._standard_times))
+        standard_times = sorted(self._standard_times, key=lambda t: t.numeric_value)
 
         return standard_times

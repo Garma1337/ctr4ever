@@ -10,7 +10,6 @@ from ctr4ever.models.model import Model
 
 
 class CharacterSchema(Schema):
-
     id = fields.Int()
     engine_style_id = fields.Int()
     name = fields.Str()
@@ -20,12 +19,11 @@ class CharacterSchema(Schema):
 
 
 class Character(Model):
-
     __tablename__ = 'characters'
     __dump_schema__ = CharacterSchema()
 
     id: Mapped[int] = mapped_column(primary_key=True, nullable=False, autoincrement=True)
-    engine_style_id: Mapped[int] = Column(ForeignKey('engine_style.id'))
+    engine_style_id: Mapped[int] = Column(ForeignKey('engine_styles.id'))
     name: Mapped[str] = Column(String(100), nullable=False)
     icon: Mapped[str] = Column(String(100), nullable=False)
     engine_style: Mapped['EngineStyle'] = relationship('EngineStyle', back_populates='characters')

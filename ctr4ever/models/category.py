@@ -10,7 +10,6 @@ from ctr4ever.models.model import Model
 
 
 class CategorySchema(Schema):
-
     id = fields.Int()
     name = fields.Str()
     standard_times = fields.Nested('StandardTimeSchema', exclude=('category',), many=True)
@@ -18,7 +17,6 @@ class CategorySchema(Schema):
 
 
 class Category(Model):
-
     __tablename__ = 'categories'
     __dump_schema__ = CategorySchema()
 

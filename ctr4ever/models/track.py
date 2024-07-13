@@ -16,7 +16,6 @@ class TrackSchema(Schema):
 
 
 class Track(Model):
-
     __tablename__ = 'tracks'
     __dump_schema__ = TrackSchema()
 

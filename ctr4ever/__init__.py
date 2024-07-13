@@ -24,12 +24,28 @@ def create_app() -> Flask:
     from . import container
     container.init_app(app)
 
-    from .cli.config import config
+    from .cli.faker import faker
+    from .cli.installer import installer
     from .rest.api import rest_api
 
-    app.register_blueprint(config)
+    app.register_blueprint(faker)
+    app.register_blueprint(installer)
     app.register_blueprint(rest_api)
 
     return app
 
-from ctr4ever.models import gameversion, track, player, country, category, standard, character, submission, standardtime, enginestyle, standardset
+from ctr4ever.models import (
+    gameversion,
+    track,
+    player,
+    country,
+    category,
+    standard,
+    character,
+    submission,
+    standardtime,
+    enginestyle,
+    standardset,
+    ruleset,
+    platform
+)

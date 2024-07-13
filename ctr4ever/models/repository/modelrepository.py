@@ -3,8 +3,9 @@
 from abc import ABC, abstractmethod
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import update
 
-from ctr4ever.models.abstractmodel import Model
+from ctr4ever.models.model import Model
 
 
 class ModelRepository(ABC):
@@ -22,7 +23,7 @@ class ModelRepository(ABC):
 
         for arg in kwargs:
             if kwargs[arg] is not None:
-                query.where(self._model_class.__getattribute__(arg) == kwargs[arg])
+                query.where(getattr(self._model_class, arg) == kwargs[arg])
 
         return query.all()
 
@@ -36,6 +37,28 @@ class ModelRepository(ABC):
         self._db.session.flush()
 
         return model
+
+    def update(self, **kwargs) -> None:
+        if not 'id' in kwargs:
+            raise ValueError('An id is required to update an entity')
+
+        self._db.session.begin()
+
+        values = [kwarg for kwarg in kwargs if kwarg != 'id' and kwargs[kwarg] is not None]
+
+        for attribute in values:
+            if not hasattr(self._model_class, attribute):
+                raise ValueError(f'Entity {self._model_class.__name__} has attribute {attribute}')
+
+        statement = (update(self._model_class)
+                     .where(getattr(self._model_class, 'id').in_([kwargs['id']]))
+                     .values(**values)
+                     )
+
+        self._db.session.execute(statement)
+
+        self._db.session.commit()
+        self._db.session.flush()
 
     @abstractmethod
     def _get_model_class(self) -> type:

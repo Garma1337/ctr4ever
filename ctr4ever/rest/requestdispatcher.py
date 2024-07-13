@@ -2,7 +2,7 @@
 
 from flask import Request, Config
 
-from ctr4ever.rest.endpoint.abstractendpoint import Endpoint
+from ctr4ever.rest.endpoint.endpoint import Endpoint
 from ctr4ever.rest.response import Response
 from ctr4ever.services.container import Container
 

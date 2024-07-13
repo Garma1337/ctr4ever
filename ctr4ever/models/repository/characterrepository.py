@@ -9,13 +9,21 @@ from ctr4ever.models.repository.modelrepository import ModelRepository
 class CharacterRepository(ModelRepository):
 
     def find_by(self, name: str) -> List[Character]:
-        return super().find_by(name = name)
+        return super().find_by(name=name)
 
     def create(self, name: str, engine_style_id: int, icon: str) -> Character:
         return super().create(
-            name = name,
-            engine_style_id = engine_style_id,
-            icon = icon
+            name=name,
+            engine_style_id=engine_style_id,
+            icon=icon
+        )
+
+    def update(self, id: int, name: str, engine_style_id: int, icon: str) -> None:
+        super().update(
+            id=id,
+            name=name,
+            engine_style_id=engine_style_id,
+            icon=icon
         )
 
     def _get_model_class(self) -> type:
