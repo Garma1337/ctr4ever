@@ -63,10 +63,13 @@ After all migrations have been applied you need to set up the initial master dat
 such as categories, tracks, characters and so on.
 
 ```bash
-$ flask --app ctr4ever md upsert-categories --file "setup/categories.json"
-$ flask --app ctr4ever md upsert-characters --file "setup/characters.json"
-$ flask --app ctr4ever md upsert-countries --file "setup/countries.json"
-$ flask --app ctr4ever md upsert-game-versions --file "setup/game_versions.json"
-$ flask --app ctr4ever md upsert-standards --file "setup/standards.json"
-$ flask --app ctr4ever md upsert-tracks --file "setup/tracks.json"
+$ flask --app ctr4ever installer categories
+$ flask --app ctr4ever installer characters
+$ flask --app ctr4ever installer countries
+$ flask --app ctr4ever installer engine_styles
+$ flask --app ctr4ever installer game_versions
+$ flask --app ctr4ever installer platforms
+$ flask --app ctr4ever installer rulesets
+$ flask --app ctr4ever installer standards
+$ flask --app ctr4ever installer tracks
 ```

@@ -8,8 +8,17 @@ from ctr4ever.models.standard import Standard
 
 class StandardRepository(ModelRepository):
 
-    def find_by(self, name: Optional[str] = None, standard_set_id: Optional[int] = None) -> List[Standard]:
-        return super().find_by(name=name, standard_set_id=standard_set_id)
+    def find_by(
+            self,
+            name: Optional[str] = None,
+            standard_set_id: Optional[int] = None,
+            limit: Optional[int] = None,
+            offset: Optional[int] = None
+    ) -> List[Standard]:
+        return super().find_by(name=name, standard_set_id=standard_set_id, limit=limit, offset=offset)
+
+    def count(self, name: Optional[str] = None, standard_set_id: Optional[int] = None) -> int:
+        return super().count(name=name, standard_set_id=standard_set_id)
 
     def create(self, name: str, standard_set_id: int) -> Standard:
         return super().create(name=name, standard_set_id=standard_set_id)

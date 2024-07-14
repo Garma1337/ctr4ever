@@ -6,7 +6,7 @@ from marshmallow import Schema, fields
 from sqlalchemy import Column, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ctr4ever import db
+from ctr4ever.models.model import Model
 
 
 class RulesetSchema(Schema):
@@ -15,7 +15,7 @@ class RulesetSchema(Schema):
     submissions = fields.Nested('SubmissionSchema', exclude=('ruleset',), many=True)
 
 
-class Ruleset(db.Model):
+class Ruleset(Model):
     __tablename__ = 'rulesets'
     __dump_schema__ = RulesetSchema()
 

@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from abc import ABC, abstractmethod
+from typing import Optional
 
 from flask import Request, Config
 
@@ -21,3 +22,11 @@ class Endpoint(ABC):
     @abstractmethod
     def get_accepted_request_method(self) -> str:
         pass
+
+    def _get_boolean_query_parameter(self, request: Request, parameter_name: str) -> Optional[bool]:
+        parameter = request.args.get(parameter_name)
+
+        if parameter is not None:
+            return bool(int(parameter))
+
+        return None

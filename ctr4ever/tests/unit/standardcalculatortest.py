@@ -1,9 +1,7 @@
 # coding=utf-8
 
-from typing import List
 from unittest import TestCase
 
-from ctr4ever.models.standardtime import StandardTime
 from ctr4ever.services.standardcalculator import StandardCalculator, StandardCalculatorError
 from ctr4ever.services.timeformatter import TimeFormatter
 from ctr4ever.tests.mockmodelrepository import MockStandardTimeRepository
@@ -11,7 +9,7 @@ from ctr4ever.tests.mockmodelrepository import MockStandardTimeRepository
 
 class StandardCalculatorTest(TestCase):
 
-    def setUp(self, standard_times: List[StandardTime] = None):
+    def setUp(self):
         self.time_formatter = TimeFormatter()
         self.standard_time_repository = MockStandardTimeRepository()
 

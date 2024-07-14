@@ -54,9 +54,21 @@ class MockModelRepository(ModelRepository):
 
         for arg in kwargs:
             if kwargs[arg] is not None:
-                models = [model for model in self._models if getattr(model, arg) == kwargs[arg]]
+                if arg == 'limit' or arg == 'offset':
+                    continue
+                else:
+                    models = [model for model in models if str(getattr(model, arg)) == str(kwargs[arg])]
+
+        if 'offset' in kwargs:
+            models = models[kwargs['offset']:]
+
+        if 'limit' in kwargs:
+            models = models[:kwargs['limit']]
 
         return models
+
+    def count(self, **kwargs) -> int:
+        return len(self.find_by(**kwargs))
 
     def create(self, **kwargs):
         model = self._model_class(**kwargs)
@@ -86,11 +98,14 @@ class MockModelRepository(ModelRepository):
 
 class MockCategoryRepository(MockModelRepository, CategoryRepository):
 
-    def find_by(self, name: str = None):
-        return super().find_by(name=name)
+    def find_by(self, name: str = None, limit: int = None, offset: int = None):
+        return super().find_by(name=name, limit=limit, offset=offset)
 
     def create(self, name: str):
         return super().create(name=name)
+
+    def count(self, name: str):
+        return super().count(name=name)
 
     def update(self, id: int, name: str = None):
         super().update(id=id, name=name)
@@ -101,8 +116,11 @@ class MockCategoryRepository(MockModelRepository, CategoryRepository):
 
 class MockCharacterRepository(MockModelRepository, CharacterRepository):
 
-    def find_by(self, name: str = None):
-        return super().find_by(name=name)
+    def find_by(self, name: str = None, limit: int = None, offset: int = None):
+        return super().find_by(name=name, limit=limit, offset=offset)
+
+    def count(self, name: str):
+        return super().count(name=name)
 
     def create(self, name: str, engine_style_id: int, icon: str):
         return super().create(
@@ -125,8 +143,11 @@ class MockCharacterRepository(MockModelRepository, CharacterRepository):
 
 class MockCountryRepository(MockModelRepository, CountryRepository):
 
-    def find_by(self, name: str = None):
-        return super().find_by(name=name)
+    def find_by(self, name: str = None, limit: int = None, offset: int = None):
+        return super().find_by(name=name, limit=limit, offset=offset)
+
+    def count(self, name: str):
+        return super().count(name=name)
 
     def create(self, name: str):
         return super().create(name=name)
@@ -140,8 +161,11 @@ class MockCountryRepository(MockModelRepository, CountryRepository):
 
 class MockEngineStyleRepository(MockModelRepository, EngineStyleRepository):
 
-    def find_by(self, name: str = None):
-        return super().find_by(name=name)
+    def find_by(self, name: str = None, limit: int = None, offset: int = None):
+        return super().find_by(name=name, limit=limit, offset=offset)
+
+    def count(self, name: str):
+        return super().count(name=name)
 
     def create(self, name: str):
         return super().create(name=name)
@@ -155,8 +179,11 @@ class MockEngineStyleRepository(MockModelRepository, EngineStyleRepository):
 
 class MockGameVersionRepository(MockModelRepository, GameVersionRepository):
 
-    def find_by(self, name: str = None):
-        return super().find_by(name=name)
+    def find_by(self, name: str = None, limit: int = None, offset: int = None):
+        return super().find_by(name=name, limit=limit, offset=offset)
+
+    def count(self, name: str):
+        return super().count(name=name)
 
     def create(self, name: str, icon: str):
         return super().create(name=name, icon=icon)
@@ -170,8 +197,11 @@ class MockGameVersionRepository(MockModelRepository, GameVersionRepository):
 
 class MockPlatformRepository(MockModelRepository, PlatformRepository):
 
-    def find_by(self, name: str = None):
-        return super().find_by(name=name)
+    def find_by(self, name: str = None, limit: int = None, offset: int = None):
+        return super().find_by(name=name, limit=limit, offset=offset)
+
+    def count(self, name: str):
+        return super().count(name=name)
 
     def create(self, name: str):
         return super().create(name=name)
@@ -190,9 +220,20 @@ class MockPlayerRepository(MockModelRepository, PlayerRepository):
             country_id: int = None,
             name: str = None,
             email: str = None,
+            active: bool = None,
+            limit: int = None,
+            offset: int = None
+    ):
+        return super().find_by(country_id=country_id, name=name, email=email, active=active, limit=limit, offset=offset)
+
+    def count(
+            self,
+            country_id: int = None,
+            name: str = None,
+            email: str = None,
             active: bool = None
     ):
-        return super().find_by(country_id=country_id, name=name, email=email, active=active)
+        return super().count(country_id=country_id, name=name, email=email, active=active)
 
     def create(self, country_id: int, name: str, email: str, password: str, salt: str, active: bool) -> Player:
         return super().create(
@@ -230,8 +271,11 @@ class MockPlayerRepository(MockModelRepository, PlayerRepository):
 
 class MockRulesetRepository(MockModelRepository, RulesetRepository):
 
-    def find_by(self, name: str = None):
-        return super().find_by(name=name)
+    def find_by(self, name: str = None, limit: int = None, offset: int = None):
+        return super().find_by(name=name, limit=limit, offset=offset)
+
+    def count(self, name: str):
+        return super().count(name=name)
 
     def create(self, name: str):
         return super().create(name=name)
@@ -245,8 +289,11 @@ class MockRulesetRepository(MockModelRepository, RulesetRepository):
 
 class MockStandardRepository(MockModelRepository, StandardRepository):
 
-    def find_by(self, name: str = None, standard_set_id: int = None):
-        return super().find_by(name=name, standard_set_id=standard_set_id)
+    def find_by(self, name: str = None, standard_set_id: int = None, limit: int = None, offset: int = None):
+        return super().find_by(name=name, standard_set_id=standard_set_id, limit=limit, offset=offset)
+
+    def count(self, name: str = None, standard_set_id: int = None):
+        return super().count(name=name, standard_set_id=standard_set_id)
 
     def create(self, name: str, standard_set_id: int):
         return super().create(name=name, standard_set_id=standard_set_id)
@@ -260,8 +307,11 @@ class MockStandardRepository(MockModelRepository, StandardRepository):
 
 class MockStandardSetRepository(MockModelRepository, StandardSetRepository):
 
-    def find_by(self, name: str = None):
-        return super().find_by(name=name)
+    def find_by(self, name: str = None, limit: int = None, offset: int = None):
+        return super().find_by(name=name, limit=limit, offset=offset)
+
+    def count(self, name: str):
+        return super().count(name=name)
 
     def create(self, name: str):
         return super().create(name=name)
@@ -279,9 +329,25 @@ class MockStandardTimeRepository(MockModelRepository, StandardTimeRepository):
             self,
             standard_id: int = None,
             track_id: int = None,
-            category_id: int = None
+            category_id: int = None,
+            limit: int = None,
+            offset: int = None
     ):
         return super().find_by(
+            standard_id=standard_id,
+            track_id=track_id,
+            category_id=category_id,
+            limit=limit,
+            offset=offset
+        )
+
+    def count(
+            self,
+            standard_id: int = None,
+            track_id: int = None,
+            category_id: int = None
+    ):
+        return super().count(
             standard_id=standard_id,
             track_id=track_id,
             category_id=category_id
@@ -327,8 +393,11 @@ class MockStandardTimeRepository(MockModelRepository, StandardTimeRepository):
 
 class MockTrackRepository(MockModelRepository, TrackRepository):
 
-    def find_by(self, name: str = None):
-        return super().find_by(name=name)
+    def find_by(self, name: str = None, limit: int = None, offset: int = None):
+        return super().find_by(name=name, limit=limit, offset=offset)
+
+    def count(self, name: str):
+        return super().count(name=name)
 
     def create(self, name: str):
         return super().create(name=name)

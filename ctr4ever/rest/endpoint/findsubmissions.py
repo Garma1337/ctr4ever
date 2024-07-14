@@ -6,7 +6,7 @@ from ctr4ever.rest.endpoint.endpoint import Endpoint
 from ctr4ever.rest.response import Response
 
 
-class FindPlayerSubmissions(Endpoint):
+class FindSubmissions(Endpoint):
 
     def handle_request(self, request: Request) -> Response:
         pass

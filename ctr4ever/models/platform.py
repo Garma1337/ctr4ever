@@ -2,18 +2,20 @@
 
 from typing import List
 
-from marshmallow import Schema
+from marshmallow import Schema, fields
 from sqlalchemy import Column, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ctr4ever import db
+from ctr4ever.models.model import Model
 
 
 class PlatformSchema(Schema):
-    pass
+    id = fields.Int()
+    name = fields.Str()
+    submissions = fields.Nested('SubmissionSchema', exclude=('platform',), many=True)
 
 
-class Platform(db.Model):
+class Platform(Model):
     __tablename__ = 'platforms'
     __dump_schema__ = PlatformSchema()
 

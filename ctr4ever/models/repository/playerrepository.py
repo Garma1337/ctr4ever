@@ -13,9 +13,20 @@ class PlayerRepository(ModelRepository):
             country_id: Optional[int] = None,
             name: Optional[str] = None,
             email: Optional[str] = None,
-            active: Optional[bool] = None
+            active: Optional[bool] = None,
+            limit: Optional[int] = None,
+            offset: Optional[int] = None
     ) -> List[Player]:
-        return super().find_by(country_id=country_id, name=name, email=email, active=active)
+        return super().find_by(country_id=country_id, name=name, email=email, active=active, limit=limit, offset=offset)
+
+    def count(
+            self,
+            country_id: Optional[int] = None,
+            name: Optional[str] = None,
+            email: Optional[str] = None,
+            active: Optional[bool] = None
+    ) -> int:
+        return super().count(country_id=country_id, name=name, email=email, active=active)
 
     def create(self, country_id: int, name: str, email: str, password: str, salt: str, active: bool) -> Player:
         return super().create(

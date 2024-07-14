@@ -15,19 +15,24 @@ from ctr4ever.models.repository.standardrepository import StandardRepository
 from ctr4ever.models.repository.standardsetrepository import StandardSetRepository
 from ctr4ever.models.repository.standardtimerepository import StandardTimeRepository
 from ctr4ever.models.repository.trackrepository import TrackRepository
-from ctr4ever.rest.endpoint.getplayer import GetPlayer
+from ctr4ever.rest.endpoint.findplayers import FindPlayers
 from ctr4ever.rest.requestdispatcher import RequestDispatcher
 from ctr4ever.services.cache.memorycache import MemoryCache
 from ctr4ever.services.container import Container
 from ctr4ever.services.faker import Faker
 from ctr4ever.services.installer.categoryinstaller import CategoryInstaller
 from ctr4ever.services.installer.characterinstaller import CharacterInstaller
+from ctr4ever.services.installer.enginestyleinstaller import EngineStyleInstaller
+from ctr4ever.services.installer.gameversioninstaller import GameVersionInstaller
+from ctr4ever.services.password_encoder_strategy.bcryptpasswordencoderstrategy import BcryptPasswordEncoderStrategy
+from ctr4ever.services.passwordmanager import PasswordManager
 from ctr4ever.services.ranking_generator.afrankinggenerator import AFRankingGenerator
 from ctr4ever.services.ranking_generator.arrrankinggenerator import ARRRankingGenerator
 from ctr4ever.services.ranking_generator.srprrankinggenerator import SRPRRankingGenerator
 from ctr4ever.services.ranking_generator.totaltimerankinggenerator import TotalTimeRankingGenerator
 from ctr4ever.services.ranking_generator.uarrrankinggenerator import UARRRankingGenerator
 from ctr4ever.services.standardcalculator import StandardCalculator
+from ctr4ever.services.submissionmanager import SubmissionManager
 from ctr4ever.services.timeformatter import TimeFormatter
 
 container = Container()
@@ -36,41 +41,53 @@ container = Container()
 def init_app(app: Flask) -> Container:
     # api
     container.register('api.request_dispatcher', lambda: RequestDispatcher(container.get('container'), app.config))
-    container.register('api.get_player_endpoint', lambda: GetPlayer(container.get('container'), app.config))
+    container.register('api.endpoint.find_players', lambda: FindPlayers(container.get('container'), app.config))
 
     # services
-    container.register('services.faker', lambda: Faker(db))
     container.register('services.cache', lambda: MemoryCache())
-    container.register('services.standard_calculator', lambda: StandardCalculator(container.get('time_formatter'), container.get('standard_time_repository')))
+    container.register('services.faker', lambda: Faker(db))
+    container.register('services.password_encoder_strategy', lambda: BcryptPasswordEncoderStrategy())
+    container.register('services.password_manager', lambda: PasswordManager(container.get('services.password_encoder_strategy')))
+    container.register('services.standard_calculator', lambda: StandardCalculator(
+        container.get('services.time_formatter'),
+        container.get('repository.standard_time')
+    ))
+    container.register('services.submission_manager', lambda: SubmissionManager(
+        container.get('repository.category'),
+        container.get('repository.character'),
+        container.get('repository.game_version')
+    ))
     container.register('services.time_formatter', lambda: TimeFormatter())
 
     # installer
-    container.register('services.installer.category', lambda: CategoryInstaller(container.get('repository.category_repository')))
+    container.register('services.installer.category', lambda: CategoryInstaller(container.get('repository.category')))
     container.register('services.installer.character', lambda: CharacterInstaller(
-        container.get('repository.character_repository'),
-        container.get('repository.engine_style_repository')
+        container.get('repository.character'),
+        container.get('repository.engine_style')
     ))
+    container.register('services.installer.engine_style', lambda: EngineStyleInstaller(container.get('repository.engine_style')))
+    container.register('services.installer.game_version', lambda: GameVersionInstaller(container.get('repository.game_version')))
 
     # ranking
-    container.register('service.ranking.af_ranking_generator', lambda: AFRankingGenerator())
-    container.register('service.ranking.arr_ranking_generator', lambda: ARRRankingGenerator())
-    container.register('service.ranking.srpr_ranking_generator', lambda: SRPRRankingGenerator())
-    container.register('service.ranking.total_time_ranking_generator', lambda: TotalTimeRankingGenerator())
-    container.register('service.ranking.uarr_ranking_generator', lambda: UARRRankingGenerator())
+    container.register('services.ranking.af_ranking_generator', lambda: AFRankingGenerator())
+    container.register('services.ranking.arr_ranking_generator', lambda: ARRRankingGenerator())
+    container.register('services.ranking.srpr_ranking_generator', lambda: SRPRRankingGenerator())
+    container.register('services.ranking.total_time_ranking_generator', lambda: TotalTimeRankingGenerator())
+    container.register('services.ranking.uarr_ranking_generator', lambda: UARRRankingGenerator())
 
     # repositories
-    container.register('repository.category_repository', lambda: CategoryRepository(db))
-    container.register('repository.character_repository', lambda: CharacterRepository(db))
-    container.register('repository.country_repository', lambda: CountryRepository(db))
-    container.register('repository.engine_style_repository', lambda: EngineStyleRepository(db))
-    container.register('repository.game_version_repository', lambda: GameVersionRepository(db))
-    container.register('repository.platform_repository', lambda: PlatformRepository(db))
-    container.register('repository.player_repository', lambda: PlayerRepository(db))
-    container.register('repository.ruleset_repository', lambda: RulesetRepository(db))
-    container.register('repository.standard_repository', lambda: StandardRepository(db))
-    container.register('repository.standard_set_repository', lambda: StandardSetRepository(db))
-    container.register('repository.standard_time_repository', lambda: StandardTimeRepository(db))
-    container.register('repository.track_repository', lambda: TrackRepository(db))
+    container.register('repository.category', lambda: CategoryRepository(db))
+    container.register('repository.character', lambda: CharacterRepository(db))
+    container.register('repository.country', lambda: CountryRepository(db))
+    container.register('repository.engine_style', lambda: EngineStyleRepository(db))
+    container.register('repository.game_version', lambda: GameVersionRepository(db))
+    container.register('repository.platform', lambda: PlatformRepository(db))
+    container.register('repository.player', lambda: PlayerRepository(db))
+    container.register('repository.ruleset', lambda: RulesetRepository(db))
+    container.register('repository.standard', lambda: StandardRepository(db))
+    container.register('repository.standard_set', lambda: StandardSetRepository(db))
+    container.register('repository.standard_time', lambda: StandardTimeRepository(db))
+    container.register('repository.track', lambda: TrackRepository(db))
 
     # container itself
     container.register('container', container)

@@ -23,9 +23,23 @@ class ModelRepository(ABC):
 
         for arg in kwargs:
             if kwargs[arg] is not None:
-                query.where(getattr(self._model_class, arg) == kwargs[arg])
+                if arg == 'limit':
+                    query.limit(kwargs[arg])
+                elif arg == 'offset':
+                    query.offset(kwargs[arg])
+                else:
+                    query.where(getattr(self._model_class, arg) == kwargs[arg])
 
         return query.all()
+
+    def count(self, **kwargs) -> int:
+        query = self._db.session.query(self._model_class)
+
+        for arg in kwargs:
+            if kwargs[arg] is not None:
+                query.where(getattr(self._model_class, arg) == kwargs[arg])
+
+        return query.count()
 
     def create(self, **kwargs) -> Model:
         self._db.session.begin()
@@ -50,10 +64,11 @@ class ModelRepository(ABC):
             if not hasattr(self._model_class, attribute):
                 raise ValueError(f'Entity {self._model_class.__name__} has attribute {attribute}')
 
-        statement = (update(self._model_class)
-                     .where(getattr(self._model_class, 'id').in_([kwargs['id']]))
-                     .values(**values)
-                     )
+        statement = (
+            update(self._model_class)
+            .where(getattr(self._model_class, 'id').in_([kwargs['id']]))
+            .values(**values)
+        )
 
         self._db.session.execute(statement)
 

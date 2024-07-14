@@ -12,9 +12,25 @@ class StandardTimeRepository(ModelRepository):
             self,
             standard_id: Optional[int] = None,
             track_id: Optional[int] = None,
-            category_id: Optional[int] = None
+            category_id: Optional[int] = None,
+            limit: Optional[int] = None,
+            offset: Optional[int] = None
     ) -> List[StandardTime]:
         return super().find_by(
+            standard_id=standard_id,
+            track_id=track_id,
+            category_id=category_id,
+            limit=limit,
+            offset=offset
+        )
+
+    def count(
+            self,
+            standard_id: Optional[int] = None,
+            track_id: Optional[int] = None,
+            category_id: Optional[int] = None
+    ) -> int:
+        return super().count(
             standard_id=standard_id,
             track_id=track_id,
             category_id=category_id
