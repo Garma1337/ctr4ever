@@ -2,10 +2,9 @@
 
 from unittest import TestCase
 
-from flask import Config, Request
+from flask import Request
 
 from ctr4ever.rest.endpoint.findgameversions import FindGameVersions
-from ctr4ever.services.container import Container
 from ctr4ever.tests.mockmodelrepository import MockGameVersionRepository
 
 
@@ -17,10 +16,7 @@ class FindGameVersionsTest(TestCase):
         self.game_version_repository.create('NTSC-U', 'ntscu.png')
         self.game_version_repository.create('NTSC-J', 'ntscj.png')
 
-        self.container = Container()
-        self.container.register('repository.game_version', lambda: self.game_version_repository)
-
-        self.find_game_versions_endpoint = FindGameVersions(self.container, Config(''))
+        self.find_game_versions_endpoint = FindGameVersions(self.game_version_repository)
 
     def test_can_find_game_versions(self):
         request = Request.from_values()

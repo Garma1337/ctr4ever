@@ -3,17 +3,12 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from flask import Request, Config
+from flask import Request
 
 from ctr4ever.rest.response import Response
-from ctr4ever.services.container import Container
 
 
 class Endpoint(ABC):
-
-    def __init__(self, container: Container, app_config: Config):
-        self.container = container
-        self.app_config = app_config
 
     @abstractmethod
     def handle_request(self, request: Request) -> Response:

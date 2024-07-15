@@ -2,10 +2,9 @@
 
 from unittest import TestCase
 
-from flask import Config, Request
+from flask import Request
 
 from ctr4ever.rest.endpoint.findcharacters import FindCharacters
-from ctr4ever.services.container import Container
 from ctr4ever.tests.mockmodelrepository import MockCharacterRepository
 
 
@@ -17,10 +16,7 @@ class FindCharactersTest(TestCase):
         self.character_repository.create('Fake Crash', 2, 'fakecrash.png')
         self.character_repository.create('N. Tropy', 3, 'ntropy.png')
 
-        self.container = Container()
-        self.container.register('repository.character', lambda: self.character_repository)
-
-        self.find_characters_endpoint = FindCharacters(self.container, Config(''))
+        self.find_characters_endpoint = FindCharacters(self.character_repository)
 
     def test_can_find_characters(self):
         request = Request.from_values()

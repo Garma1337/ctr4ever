@@ -12,9 +12,11 @@ from ctr4ever.rest.response import Response
 
 class FindEngineStyles(Endpoint):
 
+    def __init__(self, engine_style_repository: EngineStyleRepository):
+        self.engine_style_repository = engine_style_repository
+
     def handle_request(self, request: Request) -> Response:
-        engine_style_repository: EngineStyleRepository = self.container.get('repository.engine_style')
-        engine_styles: List[EngineStyle] = engine_style_repository.find_by(name=request.args.get('name'))
+        engine_styles: List[EngineStyle] = self.engine_style_repository.find_by(name=request.args.get('name'))
 
         return Response({'engine_styles' : [engine_style.to_dictionary() for engine_style in engine_styles]})
 

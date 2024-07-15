@@ -4,10 +4,13 @@ from flask import Request
 
 from ctr4ever.rest.endpoint.endpoint import Endpoint
 from ctr4ever.rest.response import Response
-from ctr4ever.services.authenticator import RegistrationError
+from ctr4ever.services.authenticator import RegistrationError, Authenticator
 
 
 class RegisterPlayer(Endpoint):
+
+    def __init__(self, authenticator: Authenticator):
+        self.authenticator = authenticator
 
     def handle_request(self, request: Request) -> Response:
         country_id = request.json.get('country_id')
@@ -27,10 +30,8 @@ class RegisterPlayer(Endpoint):
         if not email:
             return Response({'error': 'Email is required.'})
 
-        authenticator = self.container.get('services.authenticator')
-
         try:
-            player = authenticator.register_player(
+            player = self.authenticator.register_player(
                 country_id,
                 username,
                 email,

@@ -2,10 +2,9 @@
 
 from unittest import TestCase
 
-from flask import Config, Request
+from flask import Request
 
 from ctr4ever.rest.endpoint.endpoint import Endpoint
-from ctr4ever.services.container import Container
 
 
 class TestEndpoint(Endpoint):
@@ -20,7 +19,7 @@ class TestEndpoint(Endpoint):
 class EndpointTest(TestCase):
 
     def setUp(self):
-        self.endpoint = TestEndpoint(Container(), Config(''))
+        self.endpoint = TestEndpoint()
 
     def test_can_get_boolean_query_parameter(self):
         request = Request.from_values(query_string='active=1')

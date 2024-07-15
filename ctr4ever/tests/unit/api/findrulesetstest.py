@@ -2,10 +2,9 @@
 
 from unittest import TestCase
 
-from flask import Config, Request
+from flask import Request
 
 from ctr4ever.rest.endpoint.findrulesets import FindRulesets
-from ctr4ever.services.container import Container
 from ctr4ever.tests.mockmodelrepository import MockRulesetRepository
 
 
@@ -17,10 +16,7 @@ class FindRulesetsTest(TestCase):
         self.ruleset_repository.create('No TPM')
         self.ruleset_repository.create('Classic')
 
-        self.container = Container()
-        self.container.register('repository.ruleset', lambda: self.ruleset_repository)
-
-        self.find_rulesets_endpoint = FindRulesets(self.container, Config(''))
+        self.find_rulesets_endpoint = FindRulesets(self.ruleset_repository)
 
     def test_can_find_rulesets(self):
         request = Request.from_values()

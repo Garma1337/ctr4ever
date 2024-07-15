@@ -12,9 +12,11 @@ from ctr4ever.rest.response import Response
 
 class FindCategories(Endpoint):
 
+    def __init__(self, category_repository: CategoryRepository):
+        self.category_repository = category_repository
+
     def handle_request(self, request: Request) -> Response:
-        category_repository: CategoryRepository = self.container.get('repository.category')
-        categories: List[Category] = category_repository.find_by(name=request.args.get('name'))
+        categories: List[Category] = self.category_repository.find_by(name=request.args.get('name'))
 
         return Response({'categories' : [category.to_dictionary() for category in categories]})
 

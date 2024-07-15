@@ -2,11 +2,9 @@
 
 from unittest import TestCase
 
-from flask import Config
 from werkzeug import Request
 
 from ctr4ever.rest.endpoint.findplayers import FindPlayers
-from ctr4ever.services.container import Container
 from ctr4ever.tests.mockmodelrepository import MockPlayerRepository
 
 
@@ -20,10 +18,7 @@ class FindPlayersTest(TestCase):
         self.player_repository.create(1, 'Niikasd', 'email3@domain3.com', 'test3', '123456', True)
         self.player_repository.create(2, 'Turismo', 'email4@domain4.com', 'test4', '987654', False)
 
-        self.container = Container()
-        self.container.register('repository.player', lambda: self.player_repository)
-
-        self.find_players_endpoint = FindPlayers(self.container, Config(''))
+        self.find_players_endpoint = FindPlayers(self.player_repository)
 
     def test_can_find_players(self):
         request = Request.from_values()

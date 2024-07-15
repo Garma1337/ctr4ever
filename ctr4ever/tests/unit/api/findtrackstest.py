@@ -2,10 +2,9 @@
 
 from unittest import TestCase
 
-from flask import Config, Request
+from flask import Request
 
 from ctr4ever.rest.endpoint.findtracks import FindTracks
-from ctr4ever.services.container import Container
 from ctr4ever.tests.mockmodelrepository import MockTrackRepository
 
 
@@ -17,10 +16,7 @@ class FindTracksTest(TestCase):
         self.track_repository.create('Sewer Speedway')
         self.track_repository.create('Blizzard Bluff')
 
-        self.container = Container()
-        self.container.register('repository.track', lambda: self.track_repository)
-
-        self.find_tracks_endpoint = FindTracks(self.container, Config(''))
+        self.find_tracks_endpoint = FindTracks(self.track_repository)
 
     def test_can_find_tracks(self):
         request = Request.from_values()

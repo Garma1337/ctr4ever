@@ -13,12 +13,13 @@ from ctr4ever.rest.response import Response
 
 class FindPlayers(Endpoint):
 
-    def handle_request(self, request: Request):
-        player_repository: PlayerRepository = self.container.get('repository.player')
+    def __init__(self, player_repository: PlayerRepository):
+        self.player_repository = player_repository
 
+    def handle_request(self, request: Request):
         active = self._get_boolean_query_parameter(request, 'active')
 
-        player_count = player_repository.count(
+        player_count = self.player_repository.count(
             country_id=request.args.get('country_id'),
             name=request.args.get('name'),
             email=request.args.get('email'),
@@ -27,7 +28,7 @@ class FindPlayers(Endpoint):
 
         pagination = Pagination(request.args.get('page', 1), request.args.get('per_page', 20), player_count)
 
-        players: List[Player] = player_repository.find_by(
+        players: List[Player] = self.player_repository.find_by(
             country_id=request.args.get('country_id'),
             name=request.args.get('name'),
             email=request.args.get('email'),

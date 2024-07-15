@@ -1,7 +1,6 @@
 # coding=utf-8
 
 from unittest import TestCase
-from unittest.mock import MagicMock
 
 from flask import Config, Request
 
@@ -42,20 +41,19 @@ class RequestDispatcherTest(TestCase):
         self.assertIsNotNone(data['error'])
         self.assertEqual(response.get_status_code(), 404)
 
-    def test_cannot_access_route_if_endpoint_instantiation_fails(self):
-        routes = {'test': TestEndpoint}
-        TestEndpoint.__init__ = MagicMock(side_effect=Exception('Failed to instantiate'))
+    def test_cannot_access_route_if_endpoint_not_registered_in_container(self):
+        routes = {'test': 'api.endpoint.test'}
 
         response = self.request_dispatcher.dispatch_request(routes, 'test', Request.from_values())
         data = response.get_data()
-
-        TestEndpoint.__init__ = MagicMock(return_value=None)
 
         self.assertIsNotNone(data['error'])
         self.assertEqual(response.get_status_code(), 500)
 
     def test_cannot_access_route_if_invalid_request_method(self):
-        routes = {'test': TestEndpoint}
+        self.request_dispatcher.container.register('api.endpoint.test', lambda: TestEndpoint())
+
+        routes = {'test': 'api.endpoint.test'}
 
         request = Request.from_values()
         request.method = 'POST'
@@ -67,7 +65,9 @@ class RequestDispatcherTest(TestCase):
         self.assertEqual(response.get_status_code(), 405)
 
     def test_can_dispatch_request(self):
-        routes = {'test': TestEndpoint}
+        self.request_dispatcher.container.register('api.endpoint.test', lambda: TestEndpoint())
+
+        routes = {'test': 'api.endpoint.test'}
         response = self.request_dispatcher.dispatch_request(routes, 'test', Request.from_values())
 
         self.assertEqual(response.get_data(), '')

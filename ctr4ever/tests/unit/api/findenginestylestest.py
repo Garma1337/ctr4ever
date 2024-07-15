@@ -2,10 +2,9 @@
 
 from unittest import TestCase
 
-from flask import Config, Request
+from flask import Request
 
 from ctr4ever.rest.endpoint.findenginestyles import FindEngineStyles
-from ctr4ever.services.container import Container
 from ctr4ever.tests.mockmodelrepository import MockEngineStyleRepository
 
 
@@ -17,10 +16,7 @@ class FindEngineStylesTest(TestCase):
         self.engine_style_repository.create('Acceleration')
         self.engine_style_repository.create('Turning')
 
-        self.container = Container()
-        self.container.register('repository.engine_style', lambda: self.engine_style_repository)
-
-        self.find_engine_styles_endpoint = FindEngineStyles(self.container, Config(''))
+        self.find_engine_styles_endpoint = FindEngineStyles(self.engine_style_repository)
 
     def test_can_find_engine_styles(self):
         request = Request.from_values()

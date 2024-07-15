@@ -12,9 +12,11 @@ from ctr4ever.rest.response import Response
 
 class FindGameVersions(Endpoint):
 
+    def __init__(self, game_version_repository: GameVersionRepository):
+        self.game_version_repository = game_version_repository
+
     def handle_request(self, request: Request) -> Response:
-        game_version_repository: GameVersionRepository = self.container.get('repository.game_version')
-        game_versions: List[GameVersion] = game_version_repository.find_by(name=request.args.get('name'))
+        game_versions: List[GameVersion] = self.game_version_repository.find_by(name=request.args.get('name'))
 
         return Response({'game_versions' : [game_version.to_dictionary() for game_version in game_versions]})
 

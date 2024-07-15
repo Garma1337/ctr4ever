@@ -2,11 +2,10 @@
 
 from unittest import TestCase
 
-from flask import Config, Request
+from flask import Request
 
 from ctr4ever.rest.endpoint.registerplayer import RegisterPlayer
 from ctr4ever.services.authenticator import Authenticator
-from ctr4ever.services.container import Container
 from ctr4ever.services.passwordmanager import PasswordManager
 from ctr4ever.tests.mockmodelrepository import MockPlayerRepository, MockCountryRepository
 from ctr4ever.tests.mockpasswordencoderstrategy import MockPasswordEncoderStrategy
@@ -20,15 +19,11 @@ class RegisterPlayerTest(TestCase):
 
         self.germany = self.country_repository.create('Germany')
 
-        self.container = Container()
-
-        self.container.register('services.authenticator', lambda: Authenticator(
+        self.authenticate_endpoint = RegisterPlayer(Authenticator(
             PasswordManager(MockPasswordEncoderStrategy()),
             self.country_repository,
             self.player_repository
         ))
-
-        self.authenticate_endpoint = RegisterPlayer(self.container, Config(''))
 
     def test_can_register_player(self):
         response = self.authenticate_endpoint.handle_request(Request.from_values(

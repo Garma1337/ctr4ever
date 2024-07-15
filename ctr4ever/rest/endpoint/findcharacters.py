@@ -12,9 +12,11 @@ from ctr4ever.rest.response import Response
 
 class FindCharacters(Endpoint):
 
+    def __init__(self, character_repository: CharacterRepository):
+        self.character_repository = character_repository
+
     def handle_request(self, request: Request) -> Response:
-        character_repository: CharacterRepository = self.container.get('repository.character')
-        characters: List[Character] = character_repository.find_by(name=request.args.get('name'))
+        characters: List[Character] = self.character_repository.find_by(name=request.args.get('name'))
 
         return Response({'characters' : [character.to_dictionary() for character in characters]})
 

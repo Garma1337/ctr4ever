@@ -12,9 +12,11 @@ from ctr4ever.rest.response import Response
 
 class FindTracks(Endpoint):
 
+    def __init__(self, track_repository: TrackRepository):
+        self.track_repository = track_repository
+
     def handle_request(self, request: Request) -> Response:
-        track_repository: TrackRepository = self.container.get('repository.track')
-        tracks: List[Track] = track_repository.find_by(name=request.args.get('name'))
+        tracks: List[Track] = self.track_repository.find_by(name=request.args.get('name'))
 
         return Response({'tracks' : [track.to_dictionary() for track in tracks]})
 

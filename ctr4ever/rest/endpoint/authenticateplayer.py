@@ -9,8 +9,10 @@ from ctr4ever.services.authenticator import Authenticator
 
 class AuthenticatePlayer(Endpoint):
 
+    def __init__(self, authenticator: Authenticator):
+        self.authenticator = authenticator
+
     def handle_request(self, request: Request) -> Response:
-        authenticator: Authenticator = self.container.get('services.authenticator')
         username = request.json.get('username')
         password = request.json.get('password')
 
@@ -20,7 +22,7 @@ class AuthenticatePlayer(Endpoint):
         if not password:
             return Response({'error': 'Password is required'})
 
-        if not authenticator.authenticate_player(username, password):
+        if not self.authenticator.authenticate_player(username, password):
             return Response({'error': 'The credentials you provided are not correct.'})
 
         return Response({'success': True})

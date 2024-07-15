@@ -2,10 +2,9 @@
 
 from unittest import TestCase
 
-from flask import Config, Request
+from flask import Request
 
 from ctr4ever.rest.endpoint.findcategories import FindCategories
-from ctr4ever.services.container import Container
 from ctr4ever.tests.mockmodelrepository import MockCategoryRepository
 
 
@@ -17,10 +16,7 @@ class FindCategoriesTest(TestCase):
         self.category_repository.create('Lap')
         self.category_repository.create('SL')
 
-        self.container = Container()
-        self.container.register('repository.category', lambda: self.category_repository)
-
-        self.find_game_versions_endpoint = FindCategories(self.container, Config(''))
+        self.find_game_versions_endpoint = FindCategories(self.category_repository)
 
     def test_can_find_categories(self):
         request = Request.from_values()
