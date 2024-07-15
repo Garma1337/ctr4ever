@@ -1,25 +1,15 @@
 # coding=utf-8
 
-import hashlib
 from unittest import TestCase
 
-from ctr4ever.services.password_encoder_strategy.passwordencoderstrategy import PasswordEncoderStrategy
 from ctr4ever.services.passwordmanager import PasswordManager
-
-
-class Sha1PasswordEncoderStrategy(PasswordEncoderStrategy):
-
-    def generate_salt(self) -> str:
-        return '123456'
-
-    def encode_password(self, password: str, salt: str) -> str:
-        return hashlib.sha1(f'{password}{salt}'.encode()).hexdigest()
+from ctr4ever.tests.mockpasswordencoderstrategy import MockPasswordEncoderStrategy
 
 
 class PasswordManagerTest(TestCase):
 
     def setUp(self):
-        self.password_encoder_strategy = Sha1PasswordEncoderStrategy()
+        self.password_encoder_strategy = MockPasswordEncoderStrategy()
         self.password_manager = PasswordManager(self.password_encoder_strategy)
 
     def test_can_generate_salt(self):

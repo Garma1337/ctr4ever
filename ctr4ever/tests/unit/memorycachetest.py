@@ -6,7 +6,7 @@ from ctr4ever.services.cache.cache import CacheError
 from ctr4ever.services.cache.memorycache import MemoryCache
 
 
-class CacheTest(TestCase):
+class MemoryCacheTest(TestCase):
 
     def setUp(self):
         self.memory_cache = MemoryCache()

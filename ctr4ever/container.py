@@ -15,8 +15,20 @@ from ctr4ever.models.repository.standardrepository import StandardRepository
 from ctr4ever.models.repository.standardsetrepository import StandardSetRepository
 from ctr4ever.models.repository.standardtimerepository import StandardTimeRepository
 from ctr4ever.models.repository.trackrepository import TrackRepository
+from ctr4ever.rest.endpoint.authenticateplayer import AuthenticatePlayer
+from ctr4ever.rest.endpoint.createsubmission import CreateSubmission
+from ctr4ever.rest.endpoint.findcategories import FindCategories
+from ctr4ever.rest.endpoint.findcharacters import FindCharacters
+from ctr4ever.rest.endpoint.findenginestyles import FindEngineStyles
+from ctr4ever.rest.endpoint.findgameversions import FindGameVersions
 from ctr4ever.rest.endpoint.findplayers import FindPlayers
+from ctr4ever.rest.endpoint.findrulesets import FindRulesets
+from ctr4ever.rest.endpoint.findsubmissions import FindSubmissions
+from ctr4ever.rest.endpoint.findtracks import FindTracks
+from ctr4ever.rest.endpoint.loginplayer import LoginPlayer
+from ctr4ever.rest.endpoint.registerplayer import RegisterPlayer
 from ctr4ever.rest.requestdispatcher import RequestDispatcher
+from ctr4ever.services.authenticator import Authenticator
 from ctr4ever.services.cache.memorycache import MemoryCache
 from ctr4ever.services.container import Container
 from ctr4ever.services.faker import Faker
@@ -41,9 +53,25 @@ container = Container()
 def init_app(app: Flask) -> Container:
     # api
     container.register('api.request_dispatcher', lambda: RequestDispatcher(container.get('container'), app.config))
+    container.register('api.endpoint.authenticate_player', lambda: AuthenticatePlayer(container.get('container'), app.config))
+    container.register('api.endpoint.login_player', lambda: LoginPlayer(container.get('container'), app.config))
+    container.register('api.endpoint.register_player', lambda: RegisterPlayer(container.get('container'), app.config))
+    container.register('api.endpoint.find_categories', lambda: FindCategories(container.get('container'), app.config))
+    container.register('api.endpoint.find_characters', lambda: FindCharacters(container.get('container'), app.config))
+    container.register('api.endpoint.find_engine_styles', lambda: FindEngineStyles(container.get('container'), app.config))
+    container.register('api.endpoint.find_game_versions', lambda: FindGameVersions(container.get('container'), app.config))
     container.register('api.endpoint.find_players', lambda: FindPlayers(container.get('container'), app.config))
+    container.register('api.endpoint.find_rulesets', lambda: FindRulesets(container.get('container'), app.config))
+    container.register('api.endpoint.find_submissions', lambda: FindSubmissions(container.get('container'), app.config))
+    container.register('api.endpoint.find_tracks', lambda: FindTracks(container.get('container'), app.config))
+    container.register('api.endpoint.create_submission', lambda: CreateSubmission(container.get('container'), app.config))
 
     # services
+    container.register('service.authenticator', lambda: Authenticator(
+        container.get('services.password_manager'),
+        container.get('repository.country'),
+        container.get('repository.player')
+    ))
     container.register('services.cache', lambda: MemoryCache())
     container.register('services.faker', lambda: Faker(db))
     container.register('services.password_encoder_strategy', lambda: BcryptPasswordEncoderStrategy())

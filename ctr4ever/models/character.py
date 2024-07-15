@@ -14,7 +14,7 @@ class CharacterSchema(Schema):
     engine_style_id = fields.Int()
     name = fields.Str()
     icon = fields.Str()
-    engine_style = fields.Nested('EngineStyleSchema', exclude=('characters',), many=True)
+    engine_style = fields.Nested('EngineStyleSchema', exclude=('characters',))
     submissions = fields.Nested('SubmissionSchema', exclude=('character',), many=True)
 
 

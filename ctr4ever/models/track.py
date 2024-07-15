@@ -11,7 +11,7 @@ from ctr4ever.models.model import Model
 class TrackSchema(Schema):
     id = fields.Int()
     name = fields.Str()
-    standard_time = fields.Nested('StandardTimeSchema', exclude=('track',), many=True)
+    standard_times = fields.Nested('StandardTimeSchema', exclude=('track',), many=True)
     submissions = fields.Nested('SubmissionSchema', exclude=('track',), many=True)
 
 

@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: f5364d423994
+Revision ID: 95d1d69cadfa
 Revises: 
-Create Date: 2024-07-08 22:07:15.942788
+Create Date: 2024-07-14 23:33:21.518143
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'f5364d423994'
+revision = '95d1d69cadfa'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -30,7 +30,7 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
-    op.create_table('engine_style',
+    op.create_table('engine_styles',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('name', sa.String(length=100), nullable=False),
     sa.PrimaryKeyConstraint('id'),
@@ -52,7 +52,7 @@ def upgrade():
     sa.Column('name', sa.String(length=50), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('standard_set',
+    op.create_table('standard_sets',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('name', sa.String(length=50), nullable=True),
     sa.PrimaryKeyConstraint('id')
@@ -67,7 +67,7 @@ def upgrade():
     sa.Column('engine_style_id', sa.Integer(), nullable=True),
     sa.Column('name', sa.String(length=100), nullable=False),
     sa.Column('icon', sa.String(length=100), nullable=False),
-    sa.ForeignKeyConstraint(['engine_style_id'], ['engine_style.id'], ),
+    sa.ForeignKeyConstraint(['engine_style_id'], ['engine_styles.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('players',
@@ -76,6 +76,8 @@ def upgrade():
     sa.Column('name', sa.String(length=100), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('password', sa.String(length=255), nullable=False),
+    sa.Column('salt', sa.String(length=50), nullable=False),
+    sa.Column('active', sa.Boolean(), nullable=False),
     sa.ForeignKeyConstraint(['country_id'], ['countries.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
@@ -84,7 +86,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('standard_set_id', sa.Integer(), nullable=True),
     sa.Column('name', sa.String(length=100), nullable=False),
-    sa.ForeignKeyConstraint(['standard_set_id'], ['standard_set.id'], ),
+    sa.ForeignKeyConstraint(['standard_set_id'], ['standard_sets.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('standards_times',
@@ -131,11 +133,11 @@ def downgrade():
     op.drop_table('players')
     op.drop_table('characters')
     op.drop_table('tracks')
-    op.drop_table('standard_set')
+    op.drop_table('standard_sets')
     op.drop_table('rulesets')
     op.drop_table('platforms')
     op.drop_table('game_versions')
-    op.drop_table('engine_style')
+    op.drop_table('engine_styles')
     op.drop_table('countries')
     op.drop_table('categories')
     # ### end Alembic commands ###

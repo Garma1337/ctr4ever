@@ -28,6 +28,9 @@ class RequestDispatcher(object):
         if requested_route not in existing_routes:
             return Response({'error': f'No route {requested_route} exists'}, 404)
 
+        # we should maybe just grab the instance from the container instead of instantiating it manually
+        # this would also allow us to keep the dependencies of each endpoint well-defined instead of just
+        # making every endpoint dependent on the container ...
         try:
             endpoint: Endpoint = existing_routes[requested_route](self.container, self.app_config)
         except Exception as e:
