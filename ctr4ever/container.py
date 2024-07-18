@@ -19,6 +19,7 @@ from ctr4ever.rest.endpoint.authenticateplayer import AuthenticatePlayer
 from ctr4ever.rest.endpoint.createsubmission import CreateSubmission
 from ctr4ever.rest.endpoint.findcategories import FindCategories
 from ctr4ever.rest.endpoint.findcharacters import FindCharacters
+from ctr4ever.rest.endpoint.findcountries import FindCountries
 from ctr4ever.rest.endpoint.findenginestyles import FindEngineStyles
 from ctr4ever.rest.endpoint.findgameversions import FindGameVersions
 from ctr4ever.rest.endpoint.findplayers import FindPlayers
@@ -28,6 +29,7 @@ from ctr4ever.rest.endpoint.findtracks import FindTracks
 from ctr4ever.rest.endpoint.loginplayer import LoginPlayer
 from ctr4ever.rest.endpoint.registerplayer import RegisterPlayer
 from ctr4ever.rest.requestdispatcher import RequestDispatcher
+from ctr4ever.rest.routeresolver import RouteResolverFactory
 from ctr4ever.services.authenticator import Authenticator
 from ctr4ever.services.cache.memorycache import MemoryCache
 from ctr4ever.services.container import Container
@@ -52,12 +54,14 @@ container = Container()
 
 def init_app(app: Flask) -> Container:
     # api
-    container.register('api.request_dispatcher', lambda: RequestDispatcher(container.get('container'), app.config))
+    container.register('api.route_resolver', lambda: RouteResolverFactory.create(container.get('container')))
+    container.register('api.request_dispatcher', lambda: RequestDispatcher(container.get('api.route_resolver')))
     container.register('api.endpoint.authenticate_player', lambda: AuthenticatePlayer(container.get('services.authenticator')))
     container.register('api.endpoint.login_player', lambda: LoginPlayer())
     container.register('api.endpoint.register_player', lambda: RegisterPlayer(container.get('services.authenticator')))
     container.register('api.endpoint.find_categories', lambda: FindCategories(container.get('repository.category')))
     container.register('api.endpoint.find_characters', lambda: FindCharacters(container.get('repository.character')))
+    container.register('api.endpoint.find_countries', lambda: FindCountries(container.get('repository.country')))
     container.register('api.endpoint.find_engine_styles', lambda: FindEngineStyles(container.get('repository.engine_style')))
     container.register('api.endpoint.find_game_versions', lambda: FindGameVersions(container.get('repository.game_version')))
     container.register('api.endpoint.find_players', lambda: FindPlayers(container.get('repository.player')))
@@ -67,7 +71,7 @@ def init_app(app: Flask) -> Container:
     container.register('api.endpoint.create_submission', lambda: CreateSubmission())
 
     # services
-    container.register('service.authenticator', lambda: Authenticator(
+    container.register('services.authenticator', lambda: Authenticator(
         container.get('services.password_manager'),
         container.get('repository.country'),
         container.get('repository.player')
@@ -118,6 +122,6 @@ def init_app(app: Flask) -> Container:
     container.register('repository.track', lambda: TrackRepository(db))
 
     # container itself
-    container.register('container', container)
+    container.register('container', lambda: container)
 
     return container

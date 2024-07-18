@@ -4,22 +4,13 @@ from unittest import TestCase
 
 from flask import Request
 
-from ctr4ever.rest.endpoint.endpoint import Endpoint
-
-
-class TestEndpoint(Endpoint):
-
-    def handle_request(self, request: Request):
-        pass
-
-    def get_accepted_request_method(self) -> str:
-        pass
+from ctr4ever.tests.mockendpoint import MockEndpoint
 
 
 class EndpointTest(TestCase):
 
     def setUp(self):
-        self.endpoint = TestEndpoint()
+        self.endpoint = MockEndpoint()
 
     def test_can_get_boolean_query_parameter(self):
         request = Request.from_values(query_string='active=1')

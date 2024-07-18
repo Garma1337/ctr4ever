@@ -5,9 +5,8 @@ This is the new website of ctr4ever. It was due an overhaul, wasn't it?
 ## Libraries
 
 The new website uses a Python backend built on [Flask](https://flask.palletsprojects.com/en/3.0.x/) (with a few extensions)
-and uses a React (TypeScript) frontend based on [Vite](https://vitejs.dev/). [PostgreSQL](https://www.postgresql.org/) 
-is used as a database management system. It is recommended to run the application through 
-[Docker](https://www.docker.com/) - at least for a production environment.
+and uses a React (TypeScript) frontend based on [Vite](https://vitejs.dev/) and [Material UI](https://mui.com/). [PostgreSQL](https://www.postgresql.org/) 
+is used as a database management system. It is recommended to run the application through [Docker](https://www.docker.com/) - at least for a production environment.
 
 ## Development
 

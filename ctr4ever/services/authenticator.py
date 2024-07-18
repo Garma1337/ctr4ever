@@ -62,6 +62,8 @@ class Authenticator(object):
             raise RegistrationError('The provided password is not secure enough.')
 
         salt = self.password_manager.generate_salt()
-        player = self.player_repository.create(country_id, username, email, password, salt, True)
+        encoded_password = self.password_manager.encode_password(password, salt)
+
+        player = self.player_repository.create(country_id, username, email, encoded_password, salt, True)
 
         return player

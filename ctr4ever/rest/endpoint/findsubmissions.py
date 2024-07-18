@@ -9,7 +9,7 @@ from ctr4ever.rest.response import Response
 class FindSubmissions(Endpoint):
 
     def handle_request(self, request: Request) -> Response:
-        pass
+        return Response({'submissions': []})
 
     def get_accepted_request_method(self) -> str:
-        pass
+        return 'GET'

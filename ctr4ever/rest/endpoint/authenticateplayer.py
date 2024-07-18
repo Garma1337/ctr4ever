@@ -3,7 +3,7 @@
 from flask import Request
 
 from ctr4ever.rest.endpoint.endpoint import Endpoint
-from ctr4ever.rest.response import Response
+from ctr4ever.rest.response import Response, ErrorResponse, SuccessResponse
 from ctr4ever.services.authenticator import Authenticator
 
 
@@ -17,15 +17,15 @@ class AuthenticatePlayer(Endpoint):
         password = request.json.get('password')
 
         if not username:
-            return Response({'error': 'Username is required'})
+            return ErrorResponse('Username is required')
 
         if not password:
-            return Response({'error': 'Password is required'})
+            return ErrorResponse('Password is required')
 
         if not self.authenticator.authenticate_player(username, password):
-            return Response({'error': 'The credentials you provided are not correct.'})
+            return ErrorResponse('The credentials you provided are not correct.')
 
-        return Response({'success': True})
+        return SuccessResponse({})
 
     def get_accepted_request_method(self) -> str:
         return 'POST'

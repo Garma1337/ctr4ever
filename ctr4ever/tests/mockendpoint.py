@@ -1,13 +1,13 @@
 # coding=utf-8
 
 from ctr4ever.rest.endpoint.endpoint import Endpoint
-from ctr4ever.rest.response import Response
+from ctr4ever.rest.response import EmptyResponse
 
 
-class CreateSubmission(Endpoint):
+class MockEndpoint(Endpoint):
 
     def handle_request(self, request):
-        return Response({'submissions': []})
+        return EmptyResponse()
 
     def get_accepted_request_method(self):
-        return 'POST'
+        return 'GET'

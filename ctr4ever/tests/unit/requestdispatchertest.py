@@ -2,73 +2,62 @@
 
 from unittest import TestCase
 
-from flask import Config, Request
+from flask import Request
 
-from ctr4ever.rest.endpoint.endpoint import Endpoint
 from ctr4ever.rest.requestdispatcher import RequestDispatcher
-from ctr4ever.rest.response import EmptyResponse, Response
+from ctr4ever.rest.routeresolver import RouteResolver
 from ctr4ever.services.container import Container
-
-
-class TestEndpoint(Endpoint):
-
-    def handle_request(self, request: Request) -> Response:
-        return EmptyResponse()
-
-    def get_accepted_request_method(self) -> str:
-        return 'GET'
+from ctr4ever.tests.mockendpoint import MockEndpoint
 
 
 class RequestDispatcherTest(TestCase):
 
     def setUp(self):
-        self.request_dispatcher = RequestDispatcher(
-            Container(),
-            Config('')
-        )
+        self.container = Container()
+        self.route_resolver = RouteResolver(self.container)
+        self.request_dispatcher = RequestDispatcher(self.route_resolver)
 
     def test_cannot_access_route_if_route_unspecified(self):
-        response = self.request_dispatcher.dispatch_request({}, '', Request.from_values())
+        response = self.request_dispatcher.dispatch_request('', Request.from_values())
         data = response.get_data()
 
         self.assertIsNotNone(data['error'])
         self.assertEqual(response.get_status_code(), 400)
 
     def test_cannot_access_route_if_route_does_not_exist(self):
-        response = self.request_dispatcher.dispatch_request({}, 'test', Request.from_values())
+        response = self.request_dispatcher.dispatch_request('test', Request.from_values())
         data = response.get_data()
 
         self.assertIsNotNone(data['error'])
         self.assertEqual(response.get_status_code(), 404)
 
     def test_cannot_access_route_if_endpoint_not_registered_in_container(self):
-        routes = {'test': 'api.endpoint.test'}
+        self.route_resolver.add_route('test', 'api.endpoint.test')
 
-        response = self.request_dispatcher.dispatch_request(routes, 'test', Request.from_values())
+        response = self.request_dispatcher.dispatch_request('test', Request.from_values())
         data = response.get_data()
 
         self.assertIsNotNone(data['error'])
         self.assertEqual(response.get_status_code(), 500)
 
     def test_cannot_access_route_if_invalid_request_method(self):
-        self.request_dispatcher.container.register('api.endpoint.test', lambda: TestEndpoint())
-
-        routes = {'test': 'api.endpoint.test'}
+        self.route_resolver.container.register('api.endpoint.test', lambda: MockEndpoint())
+        self.route_resolver.add_route('test', 'api.endpoint.test')
 
         request = Request.from_values()
         request.method = 'POST'
 
-        response = self.request_dispatcher.dispatch_request(routes, 'test', request)
+        response = self.request_dispatcher.dispatch_request('test', request)
         data = response.get_data()
 
         self.assertIsNotNone(data['error'])
         self.assertEqual(response.get_status_code(), 405)
 
     def test_can_dispatch_request(self):
-        self.request_dispatcher.container.register('api.endpoint.test', lambda: TestEndpoint())
+        self.route_resolver.container.register('api.endpoint.test', lambda: MockEndpoint())
+        self.route_resolver.add_route('test', 'api.endpoint.test')
 
-        routes = {'test': 'api.endpoint.test'}
-        response = self.request_dispatcher.dispatch_request(routes, 'test', Request.from_values())
+        response = self.request_dispatcher.dispatch_request('test', Request.from_values())
 
         self.assertEqual(response.get_data(), '')
         self.assertEqual(response.get_status_code(), 204)

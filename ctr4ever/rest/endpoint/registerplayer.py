@@ -3,7 +3,7 @@
 from flask import Request
 
 from ctr4ever.rest.endpoint.endpoint import Endpoint
-from ctr4ever.rest.response import Response
+from ctr4ever.rest.response import Response, ErrorResponse, SuccessResponse
 from ctr4ever.services.authenticator import RegistrationError, Authenticator
 
 
@@ -19,16 +19,16 @@ class RegisterPlayer(Endpoint):
         email = request.json.get('email')
 
         if not country_id:
-            return Response({'error': 'A country is required.'})
+            return ErrorResponse('A country is required.')
 
         if not username:
-            return Response({'error': 'A username is required.'})
+            return ErrorResponse('A username is required.')
 
         if not password:
-            return Response({'error': 'Password is required.'})
+            return ErrorResponse('A password is required.')
 
         if not email:
-            return Response({'error': 'Email is required.'})
+            return ErrorResponse('An email is required.')
 
         try:
             player = self.authenticator.register_player(
@@ -38,9 +38,9 @@ class RegisterPlayer(Endpoint):
                 password
             )
         except RegistrationError as e:
-            return Response({'error': f'Failed to register: {str(e)}'})
+            return ErrorResponse(str(e))
 
-        return Response({'success': True, 'player': player.to_dictionary()})
+        return SuccessResponse({'player': player.to_dictionary()})
 
     def get_accepted_request_method(self) -> str:
         return 'POST'

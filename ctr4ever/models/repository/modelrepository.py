@@ -15,7 +15,7 @@ class ModelRepository(ABC):
         self._model_class = self._get_model_class()
 
     def find_one(self, id: int):
-        query = self._db.session.query(self._model_class).where(self._model_class.__getattribute__('id') == id)
+        query = self._db.session.query(self._model_class).where(getattr(self._model_class, 'id') == id)
         return query.first()
 
     def find_by(self, **kwargs):
@@ -24,11 +24,11 @@ class ModelRepository(ABC):
         for arg in kwargs:
             if kwargs[arg] is not None:
                 if arg == 'limit':
-                    query.limit(kwargs[arg])
+                    query = query.limit(kwargs[arg])
                 elif arg == 'offset':
-                    query.offset(kwargs[arg])
+                    query = query.offset(kwargs[arg])
                 else:
-                    query.where(getattr(self._model_class, arg) == kwargs[arg])
+                    query = query.where(getattr(self._model_class, arg) == kwargs[arg])
 
         return query.all()
 
@@ -37,26 +37,20 @@ class ModelRepository(ABC):
 
         for arg in kwargs:
             if kwargs[arg] is not None:
-                query.where(getattr(self._model_class, arg) == kwargs[arg])
+                query = query.where(getattr(self._model_class, arg) == kwargs[arg])
 
         return query.count()
 
     def create(self, **kwargs) -> Model:
-        self._db.session.begin()
-
         model = self._model_class(**kwargs)
         self._db.session.add(model)
-
         self._db.session.commit()
-        self._db.session.flush()
 
         return model
 
     def update(self, **kwargs) -> None:
         if not 'id' in kwargs:
             raise ValueError('An id is required to update an entity')
-
-        self._db.session.begin()
 
         values = [kwarg for kwarg in kwargs if kwarg != 'id' and kwargs[kwarg] is not None]
 
@@ -71,9 +65,7 @@ class ModelRepository(ABC):
         )
 
         self._db.session.execute(statement)
-
         self._db.session.commit()
-        self._db.session.flush()
 
     @abstractmethod
     def _get_model_class(self) -> type:
