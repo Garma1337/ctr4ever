@@ -40,7 +40,7 @@ class CategoryInstallerTest(TestCase):
             self.category_installer.install('categories.json')
 
     def test_can_create_categories(self):
-        self.category_installer._upsert_categories([
+        self.category_installer._create_entries([
             Category(name='category1'),
             Category(name='category2')
         ])
@@ -54,7 +54,7 @@ class CategoryInstallerTest(TestCase):
         self.category_repository.create('category1')
         self.category_repository.create('category2')
 
-        self.category_installer._upsert_categories([
+        self.category_installer._create_entries([
             Category(name='category1'),
             Category(name='category2')
         ])
@@ -65,7 +65,7 @@ class CategoryInstallerTest(TestCase):
         self.assertEqual('category2', categories[1].name)
 
     def test_can_parse_categories(self):
-        categories = self.category_installer._parse_categories([
+        categories = self.category_installer._parse_json([
             {'name': 'category1'},
             {'name': 'category2'}
         ])

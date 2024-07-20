@@ -149,8 +149,8 @@ class MockCountryRepository(MockModelRepository, CountryRepository):
     def count(self, name: str):
         return super().count(name=name)
 
-    def create(self, name: str):
-        return super().create(name=name)
+    def create(self, name: str, flag: str):
+        return super().create(name=name, flag=flag)
 
     def update(self, id: int, name: str = None):
         super().update(id=id, name=name)

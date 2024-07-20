@@ -3,6 +3,7 @@
 from flask import Flask
 
 from ctr4ever import db
+from ctr4ever.models.platform import Platform
 from ctr4ever.models.repository.categoryrepository import CategoryRepository
 from ctr4ever.models.repository.characterrepository import CharacterRepository
 from ctr4ever.models.repository.countryrepository import CountryRepository
@@ -27,6 +28,7 @@ from ctr4ever.rest.endpoint.findrulesets import FindRulesets
 from ctr4ever.rest.endpoint.findsubmissions import FindSubmissions
 from ctr4ever.rest.endpoint.findtracks import FindTracks
 from ctr4ever.rest.endpoint.loginplayer import LoginPlayer
+from ctr4ever.rest.endpoint.logoutplayer import LogoutPlayer
 from ctr4ever.rest.endpoint.registerplayer import RegisterPlayer
 from ctr4ever.rest.requestdispatcher import RequestDispatcher
 from ctr4ever.rest.routeresolver import RouteResolverFactory
@@ -36,8 +38,11 @@ from ctr4ever.services.container import Container
 from ctr4ever.services.faker import Faker
 from ctr4ever.services.installer.categoryinstaller import CategoryInstaller
 from ctr4ever.services.installer.characterinstaller import CharacterInstaller
+from ctr4ever.services.installer.countryinstaller import CountryInstaller
 from ctr4ever.services.installer.enginestyleinstaller import EngineStyleInstaller
 from ctr4ever.services.installer.gameversioninstaller import GameVersionInstaller
+from ctr4ever.services.installer.rulesetinstaller import RulesetInstaller
+from ctr4ever.services.installer.trackinstaller import TrackInstaller
 from ctr4ever.services.password_encoder_strategy.bcryptpasswordencoderstrategy import BcryptPasswordEncoderStrategy
 from ctr4ever.services.passwordmanager import PasswordManager
 from ctr4ever.services.ranking_generator.afrankinggenerator import AFRankingGenerator
@@ -51,14 +56,12 @@ from ctr4ever.services.timeformatter import TimeFormatter
 
 container = Container()
 
-
 def init_app(app: Flask) -> Container:
     # api
     container.register('api.route_resolver', lambda: RouteResolverFactory.create(container.get('container')))
     container.register('api.request_dispatcher', lambda: RequestDispatcher(container.get('api.route_resolver')))
     container.register('api.endpoint.authenticate_player', lambda: AuthenticatePlayer(container.get('services.authenticator')))
-    container.register('api.endpoint.login_player', lambda: LoginPlayer())
-    container.register('api.endpoint.register_player', lambda: RegisterPlayer(container.get('services.authenticator')))
+    container.register('api.endpoint.create_submission', lambda: CreateSubmission())
     container.register('api.endpoint.find_categories', lambda: FindCategories(container.get('repository.category')))
     container.register('api.endpoint.find_characters', lambda: FindCharacters(container.get('repository.character')))
     container.register('api.endpoint.find_countries', lambda: FindCountries(container.get('repository.country')))
@@ -68,7 +71,9 @@ def init_app(app: Flask) -> Container:
     container.register('api.endpoint.find_rulesets', lambda: FindRulesets(container.get('repository.ruleset')))
     container.register('api.endpoint.find_submissions', lambda: FindSubmissions())
     container.register('api.endpoint.find_tracks', lambda: FindTracks(container.get('repository.track')))
-    container.register('api.endpoint.create_submission', lambda: CreateSubmission())
+    container.register('api.endpoint.login_player', lambda: LoginPlayer(container.get('repository.player'), container.get('services.authenticator')))
+    container.register('api.endpoint.logout_player', lambda: LogoutPlayer())
+    container.register('api.endpoint.register_player', lambda: RegisterPlayer(container.get('services.authenticator')))
 
     # services
     container.register('services.authenticator', lambda: Authenticator(
@@ -97,8 +102,12 @@ def init_app(app: Flask) -> Container:
         container.get('repository.character'),
         container.get('repository.engine_style')
     ))
+    container.register('services.installer.country', lambda: CountryInstaller(container.get('repository.country')))
     container.register('services.installer.engine_style', lambda: EngineStyleInstaller(container.get('repository.engine_style')))
     container.register('services.installer.game_version', lambda: GameVersionInstaller(container.get('repository.game_version')))
+    container.register('services.installer.platform', lambda: Platform(container.get('repository.platform')))
+    container.register('services.installer.ruleset', lambda: RulesetInstaller(container.get('repository.ruleset')))
+    container.register('services.installer.track', lambda: TrackInstaller(container.get('repository.track')))
 
     # ranking
     container.register('services.ranking.af_ranking_generator', lambda: AFRankingGenerator())

@@ -42,7 +42,7 @@ class GameVersionInstallerTest(TestCase):
             self.game_version_installer.install('game_versions.json')
 
     def test_can_create_game_versions(self):
-        self.game_version_installer._upsert_game_versions([
+        self.game_version_installer._create_entries([
             GameVersion(name='PAL', icon='pal.png'),
             GameVersion(name='NTSC-J', icon='ntscj.png')
         ])
@@ -59,7 +59,7 @@ class GameVersionInstallerTest(TestCase):
         self.game_version_repository.create('PAL', 'pal.png')
         self.game_version_repository.create('NTSC-J', 'ntscj.png')
 
-        self.game_version_installer._upsert_game_versions([
+        self.game_version_installer._create_entries([
             GameVersion(name='PAL', icon='pal2.png'),
             GameVersion(name='NTSC-J', icon='ntscj2.png')
         ])
@@ -73,7 +73,7 @@ class GameVersionInstallerTest(TestCase):
         self.assertEqual('ntscj2.png', game_versions[1].icon)
 
     def test_can_parse_game_versions(self):
-        game_versions = self.game_version_installer._parse_game_versions([
+        game_versions = self.game_version_installer._parse_json([
             {'name': 'PAL', 'icon': 'pal.png'},
             {'name': 'NTSC-J', 'icon': 'ntscj.png'}
         ])

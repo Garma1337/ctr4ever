@@ -28,6 +28,9 @@ class ModelRepository(ABC):
                 elif arg == 'offset':
                     query = query.offset(kwargs[arg])
                 else:
+                    if not hasattr(self._model_class, arg):
+                        raise ValueError(f'Entity {self._model_class.__name__} has attribute {arg}')
+
                     query = query.where(getattr(self._model_class, arg) == kwargs[arg])
 
         return query.all()
@@ -37,6 +40,9 @@ class ModelRepository(ABC):
 
         for arg in kwargs:
             if kwargs[arg] is not None:
+                if not hasattr(self._model_class, arg):
+                    raise ValueError(f'Entity {self._model_class.__name__} has attribute {arg}')
+
                 query = query.where(getattr(self._model_class, arg) == kwargs[arg])
 
         return query.count()
@@ -52,19 +58,21 @@ class ModelRepository(ABC):
         if not 'id' in kwargs:
             raise ValueError('An id is required to update an entity')
 
-        values = [kwarg for kwarg in kwargs if kwarg != 'id' and kwargs[kwarg] is not None]
-
-        for attribute in values:
+        for attribute in kwargs:
             if not hasattr(self._model_class, attribute):
                 raise ValueError(f'Entity {self._model_class.__name__} has attribute {attribute}')
 
         statement = (
             update(self._model_class)
             .where(getattr(self._model_class, 'id').in_([kwargs['id']]))
-            .values(**values)
+            .values(**kwargs)
         )
 
         self._db.session.execute(statement)
+        self._db.session.commit()
+
+    def delete_all(self) -> None:
+        self._db.session.query(self._model_class).delete()
         self._db.session.commit()
 
     @abstractmethod

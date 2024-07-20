@@ -43,7 +43,7 @@ class EngineStyleInstallerTest(TestCase):
             self.engine_style_installer.install('engine_styles.json')
 
     def test_can_create_engine_styles(self):
-        self.engine_style_installer._upsert_engine_styles([
+        self.engine_style_installer._create_entries([
             EngineStyle(name='Max'),
             EngineStyle(name='Speed'),
             EngineStyle(name='Acceleration'),
@@ -67,7 +67,7 @@ class EngineStyleInstallerTest(TestCase):
         self.engine_style_repository.create('Balanced')
         self.engine_style_repository.create('Turning')
 
-        self.engine_style_installer._upsert_engine_styles([
+        self.engine_style_installer._create_entries([
             EngineStyle(name='Max'),
             EngineStyle(name='Speed'),
             EngineStyle(name='Acceleration'),
@@ -85,7 +85,7 @@ class EngineStyleInstallerTest(TestCase):
         self.assertEqual('Turning', engine_styles[4].name)
 
     def test_can_parse_engine_styles(self):
-        engine_styles = self.engine_style_installer._parse_engine_styles([
+        engine_styles = self.engine_style_installer._parse_json([
             {'name': 'Max'},
             {'name': 'Speed'},
             {'name': 'Acceleration'},

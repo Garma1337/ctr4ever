@@ -12,7 +12,7 @@ class FindCountriesTest(TestCase):
 
     def setUp(self):
         self.country_repository = MockCountryRepository()
-        self.country_repository.create('Germany')
+        self.country_repository.create('Germany', 'de.png')
 
         self.find_countries_endpoint = FindCountries(self.country_repository)
 

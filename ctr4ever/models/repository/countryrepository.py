@@ -14,8 +14,8 @@ class CountryRepository(ModelRepository):
     def count(self, name: Optional[str] = None) -> int:
         return super().count(name=name)
 
-    def create(self, name: str) -> Country:
-        return super().create(name=name)
+    def create(self, name: str, flag: str) -> Country:
+        return super().create(name=name, flag=flag)
 
     def update(self, id: int, name: Optional[str] = None) -> None:
         super().update(id=id, name=name)

@@ -15,8 +15,8 @@ class AuthenticatorTest(TestCase):
         self.country_repository = MockCountryRepository()
         self.player_repository = MockPlayerRepository()
 
-        self.germany = self.country_repository.create('Germany')
-        self.netherlands = self.country_repository.create('Netherlands')
+        self.germany = self.country_repository.create('Germany', 'de.png')
+        self.netherlands = self.country_repository.create('Netherlands', 'nl.png')
 
         self.garma = self.player_repository.create(
             self.germany.id,

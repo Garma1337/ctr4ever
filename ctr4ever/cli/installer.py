@@ -6,8 +6,11 @@ from flask import Blueprint
 from ctr4ever.container import container
 from ctr4ever.services.installer.categoryinstaller import CategoryInstaller
 from ctr4ever.services.installer.characterinstaller import CharacterInstaller
+from ctr4ever.services.installer.countryinstaller import CountryInstaller
 from ctr4ever.services.installer.enginestyleinstaller import EngineStyleInstaller
 from ctr4ever.services.installer.gameversioninstaller import GameVersionInstaller
+from ctr4ever.services.installer.platforminstaller import PlatformInstaller
+from ctr4ever.services.installer.rulesetinstaller import RulesetInstaller
 
 installer: Blueprint = Blueprint('installer', __name__)
 
@@ -41,6 +44,21 @@ def characters(filename: str):
     except Exception as e:
         click.echo(f'Failed to set up characters: {e}')
 
+@installer.cli.command('countries')
+@click.option('--filename', default=None, help='File to read countries from.')
+def countries(filename: str):
+    if not filename:
+        click.echo('You need to specify a file name.')
+        return
+
+    country_installer: CountryInstaller = container.get('services.installer.country')
+
+    try:
+        country_installer.install(filename)
+        click.echo('Successfully created countries.')
+    except Exception as e:
+        click.echo(f'Failed to set up countries: {e}')
+
 @installer.cli.command('engine_styles')
 @click.option('--filename', default=None, help='File to read engine styles from.')
 def engine_styles(filename: str):
@@ -70,3 +88,33 @@ def game_versions(filename: str):
         click.echo('Successfully created game versions.')
     except Exception as e:
         click.echo(f'Failed to set up game versions: {e}')
+
+@installer.cli.command('platforms')
+@click.option('--filename', default=None, help='File to read platforms from.')
+def platforms(filename: str):
+    if not filename:
+        click.echo('You need to specify a file name.')
+        return
+
+    platform_installer: PlatformInstaller = container.get('services.installer.platform')
+
+    try:
+        platform_installer.install(filename)
+        click.echo('Successfully created platforms.')
+    except Exception as e:
+        click.echo(f'Failed to set up platforms: {e}')
+
+@installer.cli.command('rulesets')
+@click.option('--filename', default=None, help='File to read rulesets from.')
+def rulesets(filename: str):
+    if not filename:
+        click.echo('You need to specify a file name.')
+        return
+
+    ruleset_installer: RulesetInstaller = container.get('services.installer.ruleset')
+
+    try:
+        ruleset_installer.install(filename)
+        click.echo('Successfully created rulesets.')
+    except Exception as e:
+        click.echo(f'Failed to set up rulesets: {e}')

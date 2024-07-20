@@ -55,7 +55,7 @@ class CharacterInstallerTest(TestCase):
             self.character_installer.install('characters.json')
 
     def test_can_parse_characters(self):
-        characters = self.character_installer._parse_characters([
+        characters = self.character_installer._parse_json([
             {'name': 'Penta Penguin', 'icon': 'penta.png', 'engine': 'Max'},
             {'name': 'Dingodile', 'icon': 'dingo.png', 'engine': 'Speed'}
         ])
@@ -69,7 +69,7 @@ class CharacterInstallerTest(TestCase):
         self.assertEqual(self.speed_engine.id, characters[1].engine_style_id)
 
     def test_can_create_characters(self):
-        self.character_installer._upsert_characters([
+        self.character_installer._create_entries([
             Character(name='Penta Penguin', icon='penta.png', engine_style_id=self.max_engine.id),
             Character(name='Dingodile', icon='dingo.png', engine_style_id=self.speed_engine.id)
         ])
@@ -88,7 +88,7 @@ class CharacterInstallerTest(TestCase):
         self.character_repository.create('Penta Penguin', self.max_engine.id, 'penta.png')
         self.character_repository.create('Dingodile', self.speed_engine.id, 'dingo.png')
 
-        self.character_installer._upsert_characters([
+        self.character_installer._create_entries([
             Character(name='Penta Penguin', icon='penta2.png', engine_style_id=self.speed_engine.id),
             Character(name='Dingodile', icon='dingo2.png', engine_style_id=self.accel_engine.id)
         ])
