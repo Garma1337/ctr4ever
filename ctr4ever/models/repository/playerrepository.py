@@ -1,5 +1,6 @@
 # coding=utf-8
 
+from datetime import datetime
 from typing import Optional, List
 
 from ctr4ever.models.player import Player
@@ -28,14 +29,15 @@ class PlayerRepository(ModelRepository):
     ) -> int:
         return super().count(country_id=country_id, name=name, email=email, active=active)
 
-    def create(self, country_id: int, name: str, email: str, password: str, salt: str, active: bool) -> Player:
+    def create(self, country_id: int, name: str, email: str, password: str, salt: str, active: bool, created: datetime) -> Player:
         return super().create(
             country_id=country_id,
             name=name,
             email=email,
             password=password,
             salt=salt,
-            active=active
+            active=active,
+            created=created
         )
 
     def update(

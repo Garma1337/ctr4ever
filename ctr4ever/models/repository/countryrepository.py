@@ -17,8 +17,8 @@ class CountryRepository(ModelRepository):
     def create(self, name: str, flag: str) -> Country:
         return super().create(name=name, flag=flag)
 
-    def update(self, id: int, name: Optional[str] = None) -> None:
-        super().update(id=id, name=name)
+    def update(self, id: int, name: Optional[str] = None, flag: Optional[str] = None) -> None:
+        super().update(id=id, name=name, flag=flag)
 
     def _get_model_class(self) -> type:
         return Country

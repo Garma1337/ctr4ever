@@ -1,5 +1,5 @@
 # coding=utf-8
-
+from datetime import datetime
 from unittest import TestCase
 
 from ctr4ever.services.authenticator import Authenticator, RegistrationError
@@ -24,7 +24,8 @@ class AuthenticatorTest(TestCase):
             'email@domain.com',
             '98a16c09b0759e63ef7df53592724e8eeddb953a',
             '123456',
-            True
+            True,
+            datetime.now()
         )
 
         self.authenticator = Authenticator(self.password_manager, self.country_repository, self.player_repository)

@@ -1,786 +1,786 @@
 [
   {
     "name": "Afghanistan",
-    "icon": "af.png"
+    "flag": "af.png"
   },
   {
     "name": "Albania",
-    "icon": "al.png"
+    "flag": "al.png"
   },
   {
     "name": "Algeria",
-    "icon": "dz.png"
+    "flag": "dz.png"
   },
   {
     "name": "Andorra",
-    "icon": "ad.png"
+    "flag": "ad.png"
   },
   {
     "name": "Angola",
-    "icon": "ao.png"
+    "flag": "ao.png"
   },
   {
     "name": "Antigua and Barbuda",
-    "icon": "ag.png"
+    "flag": "ag.png"
   },
   {
     "name": "Argentina",
-    "icon": "ar.png"
+    "flag": "ar.png"
   },
   {
     "name": "Armenia",
-    "icon": "am.png"
+    "flag": "am.png"
   },
   {
     "name": "Australia",
-    "icon": "au.png"
+    "flag": "au.png"
   },
   {
     "name": "Austria",
-    "icon": "at.png"
+    "flag": "at.png"
   },
   {
     "name": "Azerbaijan",
-    "icon": "az.png"
+    "flag": "az.png"
   },
   {
     "name": "Bahamas",
-    "icon": "bs.png"
+    "flag": "bs.png"
   },
   {
     "name": "Bahrain",
-    "icon": "bh.png"
+    "flag": "bh.png"
   },
   {
     "name": "Bangladesh",
-    "icon": "bd.png"
+    "flag": "bd.png"
   },
   {
     "name": "Barbados",
-    "icon": "bb.png"
+    "flag": "bb.png"
   },
   {
     "name": "Belarus",
-    "icon": "by.png"
+    "flag": "by.png"
   },
   {
     "name": "Belgium",
-    "icon": "be.png"
+    "flag": "be.png"
   },
   {
     "name": "Belize",
-    "icon": "bz.png"
+    "flag": "bz.png"
   },
   {
     "name": "Benin",
-    "icon": "bj.png"
+    "flag": "bj.png"
   },
   {
     "name": "Bhutan",
-    "icon": "bt.png"
+    "flag": "bt.png"
   },
   {
     "name": "Bolivia",
-    "icon": "bo.png"
+    "flag": "bo.png"
   },
   {
     "name": "Bosnia and Herzegovina",
-    "icon": "ba.png"
+    "flag": "ba.png"
   },
   {
     "name": "Botswana",
-    "icon": "bw.png"
+    "flag": "bw.png"
   },
   {
     "name": "Brazil",
-    "icon": "br.png"
+    "flag": "br.png"
   },
   {
     "name": "Brunei",
-    "icon": "bn.png"
+    "flag": "bn.png"
   },
   {
     "name": "Bulgaria",
-    "icon": "bg.png"
+    "flag": "bg.png"
   },
   {
     "name": "Burkina Faso",
-    "icon": "bf.png"
+    "flag": "bf.png"
   },
   {
     "name": "Burundi",
-    "icon": "bi.png"
+    "flag": "bi.png"
   },
   {
     "name": "Cabo Verde",
-    "icon": "cv.png"
+    "flag": "cv.png"
   },
   {
     "name": "Cambodia",
-    "icon": "kh.png"
+    "flag": "kh.png"
   },
   {
     "name": "Cameroon",
-    "icon": "cm.png"
+    "flag": "cm.png"
   },
   {
     "name": "Canada",
-    "icon": "ca.png"
+    "flag": "ca.png"
   },
   {
     "name": "Central African Republic",
-    "icon": "cf.png"
+    "flag": "cf.png"
   },
   {
     "name": "Chad",
-    "icon": "td.png"
+    "flag": "td.png"
   },
   {
     "name": "Chile",
-    "icon": "cl.png"
+    "flag": "cl.png"
   },
   {
     "name": "China",
-    "icon": "cn.png"
+    "flag": "cn.png"
   },
   {
     "name": "Colombia",
-    "icon": "co.png"
+    "flag": "co.png"
   },
   {
     "name": "Comoros",
-    "icon": "km.png"
+    "flag": "km.png"
   },
   {
     "name": "Congo, Democratic Republic of the",
-    "icon": "cd.png"
+    "flag": "cd.png"
   },
   {
     "name": "Congo, Republic of the",
-    "icon": "cg.png"
+    "flag": "cg.png"
   },
   {
     "name": "Costa Rica",
-    "icon": "cr.png"
+    "flag": "cr.png"
   },
   {
     "name": "Croatia",
-    "icon": "hr.png"
+    "flag": "hr.png"
   },
   {
     "name": "Cuba",
-    "icon": "cu.png"
+    "flag": "cu.png"
   },
   {
     "name": "Cyprus",
-    "icon": "cy.png"
+    "flag": "cy.png"
   },
   {
     "name": "Czech Republic",
-    "icon": "cz.png"
+    "flag": "cz.png"
   },
   {
     "name": "Denmark",
-    "icon": "dk.png"
+    "flag": "dk.png"
   },
   {
     "name": "Djibouti",
-    "icon": "dj.png"
+    "flag": "dj.png"
   },
   {
     "name": "Dominica",
-    "icon": "dm.png"
+    "flag": "dm.png"
   },
   {
     "name": "Dominican Republic",
-    "icon": "do.png"
+    "flag": "do.png"
   },
   {
     "name": "Ecuador",
-    "icon": "ec.png"
+    "flag": "ec.png"
   },
   {
     "name": "Egypt",
-    "icon": "eg.png"
+    "flag": "eg.png"
   },
   {
     "name": "El Salvador",
-    "icon": "sv.png"
+    "flag": "sv.png"
   },
   {
     "name": "Equatorial Guinea",
-    "icon": "gq.png"
+    "flag": "gq.png"
   },
   {
     "name": "Eritrea",
-    "icon": "er.png"
+    "flag": "er.png"
   },
   {
     "name": "Estonia",
-    "icon": "ee.png"
+    "flag": "ee.png"
   },
   {
     "name": "Eswatini",
-    "icon": "sz.png"
+    "flag": "sz.png"
   },
   {
     "name": "Ethiopia",
-    "icon": "et.png"
+    "flag": "et.png"
   },
   {
     "name": "Fiji",
-    "icon": "fj.png"
+    "flag": "fj.png"
   },
   {
     "name": "Finland",
-    "icon": "fi.png"
+    "flag": "fi.png"
   },
   {
     "name": "France",
-    "icon": "fr.png"
+    "flag": "fr.png"
   },
   {
     "name": "Gabon",
-    "icon": "ga.png"
+    "flag": "ga.png"
   },
   {
     "name": "Gambia",
-    "icon": "gm.png"
+    "flag": "gm.png"
   },
   {
     "name": "Georgia",
-    "icon": "ge.png"
+    "flag": "ge.png"
   },
   {
     "name": "Germany",
-    "icon": "de.png"
+    "flag": "de.png"
   },
   {
     "name": "Ghana",
-    "icon": "gh.png"
+    "flag": "gh.png"
   },
   {
     "name": "Greece",
-    "icon": "gr.png"
+    "flag": "gr.png"
   },
   {
     "name": "Grenada",
-    "icon": "gd.png"
+    "flag": "gd.png"
   },
   {
     "name": "Guatemala",
-    "icon": "gt.png"
+    "flag": "gt.png"
   },
   {
     "name": "Guinea",
-    "icon": "gn.png"
+    "flag": "gn.png"
   },
   {
     "name": "Guinea-Bissau",
-    "icon": "gw.png"
+    "flag": "gw.png"
   },
   {
     "name": "Guyana",
-    "icon": "gy.png"
+    "flag": "gy.png"
   },
   {
     "name": "Haiti",
-    "icon": "ht.png"
+    "flag": "ht.png"
   },
   {
     "name": "Honduras",
-    "icon": "hn.png"
+    "flag": "hn.png"
   },
   {
     "name": "Hungary",
-    "icon": "hu.png"
+    "flag": "hu.png"
   },
   {
     "name": "Iceland",
-    "icon": "is.png"
+    "flag": "is.png"
   },
   {
     "name": "India",
-    "icon": "in.png"
+    "flag": "in.png"
   },
   {
     "name": "Indonesia",
-    "icon": "id.png"
+    "flag": "id.png"
   },
   {
     "name": "Iran",
-    "icon": "ir.png"
+    "flag": "ir.png"
   },
   {
     "name": "Iraq",
-    "icon": "iq.png"
+    "flag": "iq.png"
   },
   {
     "name": "Ireland",
-    "icon": "ie.png"
+    "flag": "ie.png"
   },
   {
     "name": "Israel",
-    "icon": "il.png"
+    "flag": "il.png"
   },
   {
     "name": "Italy",
-    "icon": "it.png"
+    "flag": "it.png"
   },
   {
     "name": "Jamaica",
-    "icon": "jm.png"
+    "flag": "jm.png"
   },
   {
     "name": "Japan",
-    "icon": "jp.png"
+    "flag": "jp.png"
   },
   {
     "name": "Jordan",
-    "icon": "jo.png"
+    "flag": "jo.png"
   },
   {
     "name": "Kazakhstan",
-    "icon": "kz.png"
+    "flag": "kz.png"
   },
   {
     "name": "Kenya",
-    "icon": "ke.png"
+    "flag": "ke.png"
   },
   {
     "name": "Kiribati",
-    "icon": "ki.png"
+    "flag": "ki.png"
   },
   {
     "name": "Korea, North",
-    "icon": "kp.png"
+    "flag": "kp.png"
   },
   {
     "name": "Korea, South",
-    "icon": "kr.png"
+    "flag": "kr.png"
   },
   {
     "name": "Kosovo",
-    "icon": "xk.png"
+    "flag": "xk.png"
   },
   {
     "name": "Kuwait",
-    "icon": "kw.png"
+    "flag": "kw.png"
   },
   {
     "name": "Kyrgyzstan",
-    "icon": "kg.png"
+    "flag": "kg.png"
   },
   {
     "name": "Laos",
-    "icon": "la.png"
+    "flag": "la.png"
   },
   {
     "name": "Latvia",
-    "icon": "lv.png"
+    "flag": "lv.png"
   },
   {
     "name": "Lebanon",
-    "icon": "lb.png"
+    "flag": "lb.png"
   },
   {
     "name": "Lesotho",
-    "icon": "ls.png"
+    "flag": "ls.png"
   },
   {
     "name": "Liberia",
-    "icon": "lr.png"
+    "flag": "lr.png"
   },
   {
     "name": "Libya",
-    "icon": "ly.png"
+    "flag": "ly.png"
   },
   {
     "name": "Liechtenstein",
-    "icon": "li.png"
+    "flag": "li.png"
   },
   {
     "name": "Lithuania",
-    "icon": "lt.png"
+    "flag": "lt.png"
   },
   {
     "name": "Luxembourg",
-    "icon": "lu.png"
+    "flag": "lu.png"
   },
   {
     "name": "Madagascar",
-    "icon": "mg.png"
+    "flag": "mg.png"
   },
   {
     "name": "Malawi",
-    "icon": "mw.png"
+    "flag": "mw.png"
   },
   {
     "name": "Malaysia",
-    "icon": "my.png"
+    "flag": "my.png"
   },
   {
     "name": "Maldives",
-    "icon": "mv.png"
+    "flag": "mv.png"
   },
   {
     "name": "Mali",
-    "icon": "ml.png"
+    "flag": "ml.png"
   },
   {
     "name": "Malta",
-    "icon": "mt.png"
+    "flag": "mt.png"
   },
   {
     "name": "Marshall Islands",
-    "icon": "mh.png"
+    "flag": "mh.png"
   },
   {
     "name": "Mauritania",
-    "icon": "mr.png"
+    "flag": "mr.png"
   },
   {
     "name": "Mauritius",
-    "icon": "mu.png"
+    "flag": "mu.png"
   },
   {
     "name": "Mexico",
-    "icon": "mx.png"
+    "flag": "mx.png"
   },
   {
     "name": "Micronesia",
-    "icon": "fm.png"
+    "flag": "fm.png"
   },
   {
     "name": "Moldova",
-    "icon": "md.png"
+    "flag": "md.png"
   },
   {
     "name": "Monaco",
-    "icon": "mc.png"
+    "flag": "mc.png"
   },
   {
     "name": "Mongolia",
-    "icon": "mn.png"
+    "flag": "mn.png"
   },
   {
     "name": "Montenegro",
-    "icon": "me.png"
+    "flag": "me.png"
   },
   {
     "name": "Morocco",
-    "icon": "ma.png"
+    "flag": "ma.png"
   },
   {
     "name": "Mozambique",
-    "icon": "mz.png"
+    "flag": "mz.png"
   },
   {
     "name": "Myanmar",
-    "icon": "mm.png"
+    "flag": "mm.png"
   },
   {
     "name": "Namibia",
-    "icon": "na.png"
+    "flag": "na.png"
   },
   {
     "name": "Nauru",
-    "icon": "nr.png"
+    "flag": "nr.png"
   },
   {
     "name": "Nepal",
-    "icon": "np.png"
+    "flag": "np.png"
   },
   {
     "name": "Netherlands",
-    "icon": "nl.png"
+    "flag": "nl.png"
   },
   {
     "name": "New Zealand",
-    "icon": "nz.png"
+    "flag": "nz.png"
   },
   {
     "name": "Nicaragua",
-    "icon": "ni.png"
+    "flag": "ni.png"
   },
   {
     "name": "Niger",
-    "icon": "ne.png"
+    "flag": "ne.png"
   },
   {
     "name": "Nigeria",
-    "icon": "ng.png"
+    "flag": "ng.png"
   },
   {
     "name": "North Macedonia",
-    "icon": "mk.png"
+    "flag": "mk.png"
   },
   {
     "name": "Norway",
-    "icon": "no.png"
+    "flag": "no.png"
   },
   {
     "name": "Oman",
-    "icon": "om.png"
+    "flag": "om.png"
   },
   {
     "name": "Pakistan",
-    "icon": "pk.png"
+    "flag": "pk.png"
   },
   {
     "name": "Palau",
-    "icon": "pw.png"
+    "flag": "pw.png"
   },
   {
     "name": "Palestine",
-    "icon": "ps.png"
+    "flag": "ps.png"
   },
   {
     "name": "Panama",
-    "icon": "pa.png"
+    "flag": "pa.png"
   },
   {
     "name": "Papua New Guinea",
-    "icon": "pg.png"
+    "flag": "pg.png"
   },
   {
     "name": "Paraguay",
-    "icon": "py.png"
+    "flag": "py.png"
   },
   {
     "name": "Peru",
-    "icon": "pe.png"
+    "flag": "pe.png"
   },
   {
     "name": "Philippines",
-    "icon": "ph.png"
+    "flag": "ph.png"
   },
   {
     "name": "Poland",
-    "icon": "pl.png"
+    "flag": "pl.png"
   },
   {
     "name": "Portugal",
-    "icon": "pt.png"
+    "flag": "pt.png"
   },
   {
     "name": "Qatar",
-    "icon": "qa.png"
+    "flag": "qa.png"
   },
   {
     "name": "Romania",
-    "icon": "ro.png"
+    "flag": "ro.png"
   },
   {
     "name": "Russia",
-    "icon": "ru.png"
+    "flag": "ru.png"
   },
   {
     "name": "Rwanda",
-    "icon": "rw.png"
+    "flag": "rw.png"
   },
   {
     "name": "Saint Kitts and Nevis",
-    "icon": "kn.png"
+    "flag": "kn.png"
   },
   {
     "name": "Saint Lucia",
-    "icon": "lc.png"
+    "flag": "lc.png"
   },
   {
     "name": "Saint Vincent and the Grenadines",
-    "icon": "vc.png"
+    "flag": "vc.png"
   },
   {
     "name": "Samoa",
-    "icon": "ws.png"
+    "flag": "ws.png"
   },
   {
     "name": "San Marino",
-    "icon": "sm.png"
+    "flag": "sm.png"
   },
   {
     "name": "Sao Tome and Principe",
-    "icon": "st.png"
+    "flag": "st.png"
   },
   {
     "name": "Saudi Arabia",
-    "icon": "sa.png"
+    "flag": "sa.png"
   },
   {
     "name": "Senegal",
-    "icon": "sn.png"
+    "flag": "sn.png"
   },
   {
     "name": "Serbia",
-    "icon": "rs.png"
+    "flag": "rs.png"
   },
   {
     "name": "Seychelles",
-    "icon": "sc.png"
+    "flag": "sc.png"
   },
   {
     "name": "Sierra Leone",
-    "icon": "sl.png"
+    "flag": "sl.png"
   },
   {
     "name": "Singapore",
-    "icon": "sg.png"
+    "flag": "sg.png"
   },
   {
     "name": "Slovakia",
-    "icon": "sk.png"
+    "flag": "sk.png"
   },
   {
     "name": "Slovenia",
-    "icon": "si.png"
+    "flag": "si.png"
   },
   {
     "name": "Solomon Islands",
-    "icon": "sb.png"
+    "flag": "sb.png"
   },
   {
     "name": "Somalia",
-    "icon": "so.png"
+    "flag": "so.png"
   },
   {
     "name": "South Africa",
-    "icon": "za.png"
+    "flag": "za.png"
   },
   {
     "name": "South Sudan",
-    "icon": "ss.png"
+    "flag": "ss.png"
   },
   {
     "name": "Spain",
-    "icon": "es.png"
+    "flag": "es.png"
   },
   {
     "name": "Sri Lanka",
-    "icon": "lk.png"
+    "flag": "lk.png"
   },
   {
     "name": "Sudan",
-    "icon": "sd.png"
+    "flag": "sd.png"
   },
   {
     "name": "Suriname",
-    "icon": "sr.png"
+    "flag": "sr.png"
   },
   {
     "name": "Sweden",
-    "icon": "se.png"
+    "flag": "se.png"
   },
   {
     "name": "Switzerland",
-    "icon": "ch.png"
+    "flag": "ch.png"
   },
   {
     "name": "Syria",
-    "icon": "sy.png"
+    "flag": "sy.png"
   },
   {
     "name": "Taiwan",
-    "icon": "tw.png"
+    "flag": "tw.png"
   },
   {
     "name": "Tajikistan",
-    "icon": "tj.png"
+    "flag": "tj.png"
   },
   {
     "name": "Tanzania",
-    "icon": "tz.png"
+    "flag": "tz.png"
   },
   {
     "name": "Thailand",
-    "icon": "th.png"
+    "flag": "th.png"
   },
   {
     "name": "Timor-Leste",
-    "icon": "tl.png"
+    "flag": "tl.png"
   },
   {
     "name": "Togo",
-    "icon": "tg.png"
+    "flag": "tg.png"
   },
   {
     "name": "Tonga",
-    "icon": "to.png"
+    "flag": "to.png"
   },
   {
     "name": "Trinidad and Tobago",
-    "icon": "tt.png"
+    "flag": "tt.png"
   },
   {
     "name": "Tunisia",
-    "icon": "tn.png"
+    "flag": "tn.png"
   },
   {
     "name": "Turkey",
-    "icon": "tr.png"
+    "flag": "tr.png"
   },
   {
     "name": "Turkmenistan",
-    "icon": "tm.png"
+    "flag": "tm.png"
   },
   {
     "name": "Tuvalu",
-    "icon": "tv.png"
+    "flag": "tv.png"
   },
   {
     "name": "Uganda",
-    "icon": "ug.png"
+    "flag": "ug.png"
   },
   {
     "name": "Ukraine",
-    "icon": "ua.png"
+    "flag": "ua.png"
   },
   {
     "name": "United Arab Emirates",
-    "icon": "ae.png"
+    "flag": "ae.png"
   },
   {
     "name": "United Kingdom",
-    "icon": "gb.png"
+    "flag": "gb.png"
   },
   {
     "name": "United States",
-    "icon": "us.png"
+    "flag": "us.png"
   },
   {
     "name": "Uruguay",
-    "icon": "uy.png"
+    "flag": "uy.png"
   },
   {
     "name": "Uzbekistan",
-    "icon": "uz.png"
+    "flag": "uz.png"
   },
   {
     "name": "Vanuatu",
-    "icon": "vu.png"
+    "flag": "vu.png"
   },
   {
     "name": "Vatican City",
-    "icon": "va.png"
+    "flag": "va.png"
   },
   {
     "name": "Venezuela",
-    "icon": "ve.png"
+    "flag": "ve.png"
   },
   {
     "name": "Vietnam",
-    "icon": "vn.png"
+    "flag": "vn.png"
   },
   {
     "name": "Yemen",
-    "icon": "ye.png"
+    "flag": "ye.png"
   },
   {
     "name": "Zambia",
-    "icon": "zm.png"
+    "flag": "zm.png"
   },
   {
     "name": "Zimbabwe",
-    "icon": "zw.png"
+    "flag": "zw.png"
   }
 ]

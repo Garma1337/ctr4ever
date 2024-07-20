@@ -1,4 +1,5 @@
 # coding=utf-8
+from datetime import datetime
 
 from flask import Request, session
 
@@ -29,7 +30,8 @@ class LoginPlayerTest(IntegrationTest):
                 'email@domain.com',
                 '98a16c09b0759e63ef7df53592724e8eeddb953a',
                 '123456',
-                True
+                True,
+                datetime.now()
             )
 
     def setUp(self):

@@ -1,5 +1,7 @@
 # coding=utf-8
 
+from datetime import datetime
+
 from ctr4ever.models.player import Player
 from ctr4ever.models.repository.countryrepository import CountryRepository
 from ctr4ever.models.repository.playerrepository import PlayerRepository
@@ -39,9 +41,6 @@ class Authenticator(object):
 
         return True
 
-    def login_player(self, username: str, password: str):
-        pass
-
     def register_player(self, country_id: int, username: str, email: str, password: str) -> Player:
         country = self.country_repository.find_one(country_id)
 
@@ -64,6 +63,6 @@ class Authenticator(object):
         salt = self.password_manager.generate_salt()
         encoded_password = self.password_manager.encode_password(password, salt)
 
-        player = self.player_repository.create(country_id, username, email, encoded_password, salt, True)
+        player = self.player_repository.create(country_id, username, email, encoded_password, salt, True, datetime.now())
 
         return player

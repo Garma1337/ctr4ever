@@ -21,6 +21,20 @@ export default class Ctr4Ever {
         }
     }
 
+    public async loginPlayer(username: string, password: string): Promise<any> {
+        try {
+            const response = await this.client.post('/loginPlayer', {username, password});
+            return response.data;
+        } catch (e) {
+            console.log(`Failed to login player ${username}: ${e}`);
+
+            return {
+                success: false,
+                error: e
+            };
+        }
+    }
+
     public async registerPlayer(country_id: Number, email: string, password: string, username: string): Promise<any> {
         try {
             const response = await this.client.post('/registerPlayer', {country_id, email, password, username});

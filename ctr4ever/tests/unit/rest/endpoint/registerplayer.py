@@ -17,7 +17,7 @@ class RegisterPlayerTest(TestCase):
         self.country_repository = MockCountryRepository()
         self.player_repository = MockPlayerRepository()
 
-        self.germany = self.country_repository.create('Germany')
+        self.germany = self.country_repository.create('Germany', 'de.png')
 
         self.authenticate_endpoint = RegisterPlayer(Authenticator(
             PasswordManager(MockPasswordEncoderStrategy()),

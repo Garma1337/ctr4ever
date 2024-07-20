@@ -7,14 +7,12 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from flask_talisman import Talisman
 
 sys.dont_write_bytecode = True
 
 db = SQLAlchemy()
 migrate = Migrate()
 session = Session()
-talisman = Talisman()
 
 def create_app() -> Flask:
     app = Flask(__name__)
@@ -24,7 +22,6 @@ def create_app() -> Flask:
     db.init_app(app)
     migrate.init_app(app, db)
     session.init_app(app)
-    talisman.init_app(app)
 
     from . import container
     container.init_app(app)

@@ -1,5 +1,5 @@
 # coding=utf-8
-
+from datetime import datetime
 from unittest import TestCase
 
 from werkzeug import Request
@@ -13,10 +13,10 @@ class FindPlayersTest(TestCase):
     def setUp(self):
         self.player_repository = MockPlayerRepository()
 
-        self.player_repository.create(1, 'Garma', 'email@domain.com', 'test', '123456', True)
-        self.player_repository.create(2, 'Dutchesss', 'email2@domain2.com', 'test2', '987654', False)
-        self.player_repository.create(1, 'Niikasd', 'email3@domain3.com', 'test3', '123456', True)
-        self.player_repository.create(2, 'Turismo', 'email4@domain4.com', 'test4', '987654', False)
+        self.player_repository.create(1, 'Garma', 'email@domain.com', 'test', '123456', True, datetime.now())
+        self.player_repository.create(2, 'Dutchesss', 'email2@domain2.com', 'test2', '987654', False, datetime.now())
+        self.player_repository.create(1, 'Niikasd', 'email3@domain3.com', 'test3', '123456', True, datetime.now())
+        self.player_repository.create(2, 'Turismo', 'email4@domain4.com', 'test4', '987654', False, datetime.now())
 
         self.find_players_endpoint = FindPlayers(self.player_repository)
 

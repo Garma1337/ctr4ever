@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from abc import abstractmethod
+from datetime import datetime
 
 from ctr4ever.models.category import Category
 from ctr4ever.models.character import Character
@@ -152,8 +153,8 @@ class MockCountryRepository(MockModelRepository, CountryRepository):
     def create(self, name: str, flag: str):
         return super().create(name=name, flag=flag)
 
-    def update(self, id: int, name: str = None):
-        super().update(id=id, name=name)
+    def update(self, id: int, name: str = None, flag: str = None):
+        super().update(id=id, name=name, flag=flag)
 
     def _get_model_class(self):
         return Country
@@ -235,14 +236,15 @@ class MockPlayerRepository(MockModelRepository, PlayerRepository):
     ):
         return super().count(country_id=country_id, name=name, email=email, active=active)
 
-    def create(self, country_id: int, name: str, email: str, password: str, salt: str, active: bool) -> Player:
+    def create(self, country_id: int, name: str, email: str, password: str, salt: str, active: bool, created: datetime) -> Player:
         return super().create(
             country_id=country_id,
             name=name,
             email=email,
             password=password,
             salt=salt,
-            active=active
+            active=active,
+            created=created
         )
 
     def update(

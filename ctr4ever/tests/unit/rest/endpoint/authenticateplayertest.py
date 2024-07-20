@@ -1,5 +1,6 @@
 # coding=utf-8
 
+from datetime import datetime
 from unittest import TestCase
 
 from flask import Request
@@ -21,7 +22,8 @@ class AuthenticatePlayerTest(TestCase):
             'email@domain.com',
             '98a16c09b0759e63ef7df53592724e8eeddb953a',
             '123456',
-            True
+            True,
+            datetime.now()
         )
 
         self.authenticate_endpoint = AuthenticatePlayer(Authenticator(
