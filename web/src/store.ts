@@ -6,6 +6,10 @@ export type Store<T extends object> = StateCreator<T, [['zustand/devtools', neve
 export type AppState = {
     apiEndpoint: string;
     setApiEndpoint: (apiEndpoint: string) => void;
+    jwt: string;
+    setJwt: (jwt: string) => void;
+    currentUser: any;
+    setCurrentUser: (currentUser: any) => void;
     countries: any[];
     setCountries: (countries: any[]) => void;
     characters: any[];
@@ -26,6 +30,10 @@ export type AppState = {
 const createStore: Store<AppState> = (set) => ({
     apiEndpoint: 'http://localhost:5000/api',
     setApiEndpoint: (apiEndpoint: string) => set(() => ({ apiEndpoint }), false, 'setApiEndpoint'),
+    jwt: '',
+    setJwt: (jwt: string) => set(() => ({ jwt }), false, 'setJwt'),
+    currentUser: null,
+    setCurrentUser: (currentUser: any) => set(() => ({ currentUser }), false, 'setCurrentUser'),
     countries: [],
     setCountries: (countries: any[]) => set(() => ({ countries }), false, 'setCountries'),
     characters: [],

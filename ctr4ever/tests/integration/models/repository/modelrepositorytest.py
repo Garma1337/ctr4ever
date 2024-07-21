@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from ctr4ever.tests.integration.integrationtestbase import IntegrationTest
+from ctr4ever.tests.integration.integrationtest import IntegrationTest
 from ctr4ever.tests.mockmodel import MockModelRepository, Base
 
 

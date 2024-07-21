@@ -2,3 +2,4 @@
 .venv/
 __pycache__
 ctr4ever/config.dev.py
+ctr4ever/web/resources/*

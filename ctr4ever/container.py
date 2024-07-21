@@ -27,8 +27,8 @@ from ctr4ever.rest.endpoint.findplayers import FindPlayers
 from ctr4ever.rest.endpoint.findrulesets import FindRulesets
 from ctr4ever.rest.endpoint.findsubmissions import FindSubmissions
 from ctr4ever.rest.endpoint.findtracks import FindTracks
+from ctr4ever.rest.endpoint.getsession import GetSession
 from ctr4ever.rest.endpoint.loginplayer import LoginPlayer
-from ctr4ever.rest.endpoint.logoutplayer import LogoutPlayer
 from ctr4ever.rest.endpoint.registerplayer import RegisterPlayer
 from ctr4ever.rest.requestdispatcher import RequestDispatcher
 from ctr4ever.rest.routeresolver import RouteResolverFactory
@@ -71,8 +71,8 @@ def init_app(app: Flask) -> Container:
     container.register('api.endpoint.find_rulesets', lambda: FindRulesets(container.get('repository.ruleset')))
     container.register('api.endpoint.find_submissions', lambda: FindSubmissions())
     container.register('api.endpoint.find_tracks', lambda: FindTracks(container.get('repository.track')))
+    container.register('api.endpoint.get_session', lambda: GetSession())
     container.register('api.endpoint.login_player', lambda: LoginPlayer(container.get('repository.player'), container.get('services.authenticator')))
-    container.register('api.endpoint.logout_player', lambda: LogoutPlayer())
     container.register('api.endpoint.register_player', lambda: RegisterPlayer(container.get('services.authenticator')))
 
     # services

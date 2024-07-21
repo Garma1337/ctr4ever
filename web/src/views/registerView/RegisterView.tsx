@@ -1,12 +1,17 @@
 import {Alert, Box, Button, MenuItem, Stack, TextField, Typography} from "@mui/material";
 import useStore from "../../store.ts";
-import Ctr4Ever from "../../services/ctr4ever.ts";
-import {useState} from "react";
+import Ctr4EverClient from "../../services/ctr4EverClient.ts";
+import {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../routes.tsx";
 
 const RegisterView = () => {
+    const navigate = useNavigate();
     const apiEndpoint = useStore(state => state.apiEndpoint);
+    const jwt = useStore(state => state.jwt);
+    const currentUser = useStore(state => state.currentUser);
     const countries = useStore(state => state.countries);
-    const ctr4ever = new Ctr4Ever(apiEndpoint);
+    const [ctr4ever, setCtr4Ever] = useState<Ctr4EverClient | null>(null);
     const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
     const [registerError, setRegisterError] = useState<string>('');
     const [registeredUsername, setRegisteredUsername] = useState<string>('');
@@ -15,7 +20,21 @@ const RegisterView = () => {
     const [password, setPassword] = useState<string>('');
     const [countryId, setCountryId] = useState<string>('');
 
+    useEffect(() => {
+        setCtr4Ever(new Ctr4EverClient(apiEndpoint, jwt));
+    }, [setCtr4Ever, apiEndpoint, jwt]);
+
+    useEffect(() => {
+        if (currentUser) {
+            navigate(AppRoutes.IndexPage);
+        }
+    }, [navigate, currentUser, AppRoutes]);
+
     async function registerPlayer(username: string, email: string, password: string, country_id: number) {
+        if (!ctr4ever) {
+            return;
+        }
+
         const response = await ctr4ever.registerPlayer(country_id, email, password, username);
 
         if (response.success) {
@@ -31,7 +50,7 @@ const RegisterView = () => {
 
     return (
         <>
-            <Typography variant="h3">Register</Typography>
+            <Typography variant="h4">Register</Typography>
 
             <Box my={2}>
                 {registerSuccess && <Alert severity="success">You successfully registered on ctr4ever. Welcome, {registeredUsername}!</Alert>}

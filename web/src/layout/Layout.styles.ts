@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Box } from "@mui/material";
 
-export const StyledMainContainer = styled(Box)`
+export const MainContainer = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;

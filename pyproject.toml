@@ -5,6 +5,8 @@ description = "The new ctr4ever website"
 dependencies = [
     "flask",
     "flask-migrate",
+    "flask-sqlalchemy",
+    "flask-jwt-extended",
     "marshmallow",
     "psycopg2-binary"
 ]

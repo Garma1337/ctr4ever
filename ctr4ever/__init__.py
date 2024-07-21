@@ -5,14 +5,12 @@ import sys
 from cachelib import NullCache
 from flask import Flask
 from flask_migrate import Migrate
-from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 
 sys.dont_write_bytecode = True
 
 db = SQLAlchemy()
 migrate = Migrate()
-session = Session()
 
 def create_app() -> Flask:
     app = Flask(__name__)
@@ -21,18 +19,22 @@ def create_app() -> Flask:
 
     db.init_app(app)
     migrate.init_app(app, db)
-    session.init_app(app)
 
     from . import container
     container.init_app(app)
 
+    from . import jwt
+    jwt.init_app(app)
+
     from .cli.faker import faker
     from .cli.installer import installer
     from .rest.api import rest_api
+    from .web.web import web
 
     app.register_blueprint(faker)
     app.register_blueprint(installer)
     app.register_blueprint(rest_api)
+    app.register_blueprint(web)
 
     return app
 
@@ -52,7 +54,12 @@ def create_test_app() -> Flask:
 
     db.init_app(app)
     migrate.init_app(app, db)
-    session.init_app(app)
+
+    from . import container
+    container.init_app(app)
+
+    from . import jwt
+    jwt.init_app(app)
 
     return app
 
