@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from unittest import TestCase
+from unittest.mock import Mock
 
 from flask import Request
 
@@ -41,7 +42,7 @@ class RequestDispatcherTest(TestCase):
         self.assertEqual(response.get_status_code(), 500)
 
     def test_cannot_access_route_if_invalid_request_method(self):
-        self.route_resolver.container.register('api.endpoint.test', lambda: MockEndpoint())
+        self.container.register('api.endpoint.test', lambda: MockEndpoint())
         self.route_resolver.add_route('test', 'api.endpoint.test')
 
         request = Request.from_values()
@@ -53,8 +54,42 @@ class RequestDispatcherTest(TestCase):
         self.assertIsNotNone(data['error'])
         self.assertEqual(response.get_status_code(), 405)
 
+    def test_cannot_access_route_if_authentication_required_and_not_logged_in(self):
+        endpoint = MockEndpoint()
+        endpoint.require_authentication = Mock(return_value=True)
+        endpoint._get_current_user = Mock(return_value=None)
+
+        self.container.register('api.endpoint.test', lambda: endpoint)
+        self.route_resolver.add_route('test', 'api.endpoint.test')
+
+        request = Request.from_values()
+        request.method = 'GET'
+
+        response = self.request_dispatcher.dispatch_request('test', request)
+        data = response.get_data()
+
+        self.assertIsNotNone(data['error'])
+        self.assertEqual(response.get_status_code(), 401)
+
+    def test_can_access_route_if_authentication_required_and_logged_in(self):
+        endpoint = MockEndpoint()
+        endpoint.require_authentication = Mock(return_value=True)
+        endpoint._get_current_user = Mock(return_value={'name': 'Garma'})
+
+        self.container.register('api.endpoint.test', lambda: endpoint)
+        self.route_resolver.add_route('test', 'api.endpoint.test')
+
+        request = Request.from_values()
+        request.method = 'GET'
+
+        response = self.request_dispatcher.dispatch_request('test', request)
+        data = response.get_data()
+
+        self.assertEqual(data, '')
+        self.assertEqual(response.get_status_code(), 204)
+
     def test_can_dispatch_request(self):
-        self.route_resolver.container.register('api.endpoint.test', lambda: MockEndpoint())
+        self.container.register('api.endpoint.test', lambda: MockEndpoint())
         self.route_resolver.add_route('test', 'api.endpoint.test')
 
         response = self.request_dispatcher.dispatch_request('test', Request.from_values())

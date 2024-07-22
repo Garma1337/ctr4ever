@@ -22,11 +22,13 @@ from ctr4ever.models.repository.rulesetrepository import RulesetRepository
 from ctr4ever.models.repository.standardrepository import StandardRepository
 from ctr4ever.models.repository.standardsetrepository import StandardSetRepository
 from ctr4ever.models.repository.standardtimerepository import StandardTimeRepository
+from ctr4ever.models.repository.submissionrepository import SubmissionRepository
 from ctr4ever.models.repository.trackrepository import TrackRepository
 from ctr4ever.models.ruleset import Ruleset
 from ctr4ever.models.standard import Standard
 from ctr4ever.models.standardset import StandardSet
 from ctr4ever.models.standardtime import StandardTime
+from ctr4ever.models.submission import Submission
 from ctr4ever.models.track import Track
 
 
@@ -392,6 +394,108 @@ class MockStandardTimeRepository(MockModelRepository, StandardTimeRepository):
     def _get_model_class(self) -> type:
         return StandardTime
 
+class MockSubmissionRepository(MockModelRepository, SubmissionRepository):
+
+    def find_by(
+            self,
+            player_id: int = None,
+            track_id: int = None,
+            category_id: int = None,
+            character_id: int = None,
+            game_version_id: int = None,
+            ruleset_id: int = None,
+            platform_id: int = None,
+            limit: int = None,
+            offset: int = None
+    ):
+        return super().find_by(
+            player_id=player_id,
+            track_id=track_id,
+            category_id=category_id,
+            character_id=character_id,
+            game_version_id=game_version_id,
+            ruleset_id=ruleset_id,
+            platform_id=platform_id,
+            limit=limit,
+            offset=offset
+        )
+
+    def count(
+            self,
+            player_id: int = None,
+            track_id: int = None,
+            category_id: int = None,
+            character_id: int = None,
+            game_version_id: int = None,
+            ruleset_id: int = None,
+            platform_id: int = None
+    ) -> int:
+        return super().count(
+            player_id=player_id,
+            track_id=track_id,
+            category_id=category_id,
+            character_id=character_id,
+            game_version_id=game_version_id,
+            ruleset_id=ruleset_id,
+            platform_id=platform_id
+        )
+
+    def create(
+            self,
+            player_id: int,
+            track_id: int,
+            category_id: int,
+            character_id: int,
+            game_version_id: int,
+            ruleset_id: int,
+            platform_id: int,
+            time: float,
+            date: datetime,
+            video: str
+    ) -> Submission:
+        return super().create(
+            player_id=player_id,
+            track_id=track_id,
+            category_id=category_id,
+            character_id=character_id,
+            game_version_id=game_version_id,
+            ruleset_id=ruleset_id,
+            platform_id=platform_id,
+            time=time,
+            date=date,
+            video=video
+        )
+
+    def update(
+            self,
+            id: int,
+            player_id: int = None,
+            track_id: int = None,
+            category_id: int = None,
+            character_id: int = None,
+            game_version_id: int = None,
+            ruleset_id: int = None,
+            platform_id: int = None,
+            time: float = None,
+            date: datetime = None,
+            video: str = None
+    ) -> None:
+        super().update(
+            id=id,
+            player_id=player_id,
+            track_id=track_id,
+            category_id=category_id,
+            character_id=character_id,
+            game_version_id=game_version_id,
+            ruleset_id=ruleset_id,
+            platform_id=platform_id,
+            time=time,
+            date=date,
+            video=video
+        )
+
+    def _get_model_class(self) -> type:
+        return Submission
 
 class MockTrackRepository(MockModelRepository, TrackRepository):
 

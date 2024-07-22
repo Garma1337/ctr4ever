@@ -4,7 +4,6 @@ from typing import List
 
 from flask import Request
 
-from ctr4ever import db
 from ctr4ever.models.repository.rulesetrepository import RulesetRepository
 from ctr4ever.models.ruleset import Ruleset
 from ctr4ever.rest.endpoint.endpoint import Endpoint
@@ -23,3 +22,6 @@ class FindRulesets(Endpoint):
 
     def get_accepted_request_method(self) -> str:
         return 'GET'
+
+    def require_authentication(self) -> bool:
+        return False

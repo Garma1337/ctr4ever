@@ -11,6 +11,7 @@ from ctr4ever.services.installer.enginestyleinstaller import EngineStyleInstalle
 from ctr4ever.services.installer.gameversioninstaller import GameVersionInstaller
 from ctr4ever.services.installer.platforminstaller import PlatformInstaller
 from ctr4ever.services.installer.rulesetinstaller import RulesetInstaller
+from ctr4ever.services.installer.trackinstaller import TrackInstaller
 
 installer: Blueprint = Blueprint('installer', __name__)
 
@@ -118,3 +119,18 @@ def rulesets(filename: str):
         click.echo('Successfully created rulesets.')
     except Exception as e:
         click.echo(f'Failed to set up rulesets: {e}')
+
+@installer.cli.command('tracks')
+@click.option('--filename', default=None, help='File to read tracks from.')
+def tracks(filename: str):
+    if not filename:
+        click.echo('You need to specify a file name.')
+        return
+
+    track_installer: TrackInstaller = container.get('services.installer.track')
+
+    try:
+        track_installer.install(filename)
+        click.echo('Successfully created tracks.')
+    except Exception as e:
+        click.echo(f'Failed to set up tracks: {e}')

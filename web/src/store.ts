@@ -18,13 +18,14 @@ export type AppState = {
     setTracks: (tracks: any[]) => void;
     categories: any[];
     setCategories: (categories: any[]) => void;
-    engine_styles: any[];
+    engineStyles: any[];
     setEngineStyles: (engine_styles: any[]) => void;
-    game_versions: any[];
+    gameVersions: any[];
     setGameVersions: (game_versions: any[]) => void;
     platforms: any[];
     setPlatforms: (platforms: any[]) => void;
     rulesets: any[];
+    setRulesets: (rulesets: any[]) => void;
 }
 
 const createStore: Store<AppState> = (set) => ({
@@ -42,13 +43,14 @@ const createStore: Store<AppState> = (set) => ({
     setTracks: (tracks: any[]) => set(() => ({ tracks }), false, 'setTracks'),
     categories: [],
     setCategories: (categories: any[]) => set(() => ({ categories }), false, 'setCategories'),
-    engine_styles: [],
-    setEngineStyles: (engine_styles: any[]) => set(() => ({ engine_styles }), false, 'setEngineStyles'),
-    game_versions: [],
-    setGameVersions: (game_versions: any[]) => set(() => ({ game_versions }), false, 'setGameVersions'),
+    engineStyles: [],
+    setEngineStyles: (engineStyles: any[]) => set(() => ({ engineStyles }), false, 'setEngineStyles'),
+    gameVersions: [],
+    setGameVersions: (gameVersions: any[]) => set(() => ({ gameVersions }), false, 'setGameVersions'),
     platforms: [],
     setPlatforms: (platforms: any[]) => set(() => ({ platforms }), false, 'setPlatforms'),
     rulesets: [],
+    setRulesets: (rulesets: any[]) => set(() => ({ rulesets }), false, 'setRulesets'),
 });
 
 const useStore = create<AppState>()(

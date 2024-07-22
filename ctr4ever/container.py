@@ -3,7 +3,6 @@
 from flask import Flask
 
 from ctr4ever import db
-from ctr4ever.models.platform import Platform
 from ctr4ever.models.repository.categoryrepository import CategoryRepository
 from ctr4ever.models.repository.characterrepository import CharacterRepository
 from ctr4ever.models.repository.countryrepository import CountryRepository
@@ -15,6 +14,7 @@ from ctr4ever.models.repository.rulesetrepository import RulesetRepository
 from ctr4ever.models.repository.standardrepository import StandardRepository
 from ctr4ever.models.repository.standardsetrepository import StandardSetRepository
 from ctr4ever.models.repository.standardtimerepository import StandardTimeRepository
+from ctr4ever.models.repository.submissionrepository import SubmissionRepository
 from ctr4ever.models.repository.trackrepository import TrackRepository
 from ctr4ever.rest.endpoint.authenticateplayer import AuthenticatePlayer
 from ctr4ever.rest.endpoint.createsubmission import CreateSubmission
@@ -23,6 +23,7 @@ from ctr4ever.rest.endpoint.findcharacters import FindCharacters
 from ctr4ever.rest.endpoint.findcountries import FindCountries
 from ctr4ever.rest.endpoint.findenginestyles import FindEngineStyles
 from ctr4ever.rest.endpoint.findgameversions import FindGameVersions
+from ctr4ever.rest.endpoint.findplatforms import FindPlatforms
 from ctr4ever.rest.endpoint.findplayers import FindPlayers
 from ctr4ever.rest.endpoint.findrulesets import FindRulesets
 from ctr4ever.rest.endpoint.findsubmissions import FindSubmissions
@@ -41,6 +42,7 @@ from ctr4ever.services.installer.characterinstaller import CharacterInstaller
 from ctr4ever.services.installer.countryinstaller import CountryInstaller
 from ctr4ever.services.installer.enginestyleinstaller import EngineStyleInstaller
 from ctr4ever.services.installer.gameversioninstaller import GameVersionInstaller
+from ctr4ever.services.installer.platforminstaller import PlatformInstaller
 from ctr4ever.services.installer.rulesetinstaller import RulesetInstaller
 from ctr4ever.services.installer.trackinstaller import TrackInstaller
 from ctr4ever.services.password_encoder_strategy.bcryptpasswordencoderstrategy import BcryptPasswordEncoderStrategy
@@ -61,12 +63,16 @@ def init_app(app: Flask) -> Container:
     container.register('api.route_resolver', lambda: RouteResolverFactory.create(container.get('container')))
     container.register('api.request_dispatcher', lambda: RequestDispatcher(container.get('api.route_resolver')))
     container.register('api.endpoint.authenticate_player', lambda: AuthenticatePlayer(container.get('services.authenticator')))
-    container.register('api.endpoint.create_submission', lambda: CreateSubmission())
+    container.register('api.endpoint.create_submission', lambda: CreateSubmission(
+        container.get('services.submission_manager'),
+        container.get('services.time_formatter')
+    ))
     container.register('api.endpoint.find_categories', lambda: FindCategories(container.get('repository.category')))
     container.register('api.endpoint.find_characters', lambda: FindCharacters(container.get('repository.character')))
     container.register('api.endpoint.find_countries', lambda: FindCountries(container.get('repository.country')))
     container.register('api.endpoint.find_engine_styles', lambda: FindEngineStyles(container.get('repository.engine_style')))
     container.register('api.endpoint.find_game_versions', lambda: FindGameVersions(container.get('repository.game_version')))
+    container.register('api.endpoint.find_platforms', lambda: FindPlatforms(container.get('repository.platform')))
     container.register('api.endpoint.find_players', lambda: FindPlayers(container.get('repository.player')))
     container.register('api.endpoint.find_rulesets', lambda: FindRulesets(container.get('repository.ruleset')))
     container.register('api.endpoint.find_submissions', lambda: FindSubmissions())
@@ -92,7 +98,12 @@ def init_app(app: Flask) -> Container:
     container.register('services.submission_manager', lambda: SubmissionManager(
         container.get('repository.category'),
         container.get('repository.character'),
-        container.get('repository.game_version')
+        container.get('repository.game_version'),
+        container.get('repository.platform'),
+        container.get('repository.player'),
+        container.get('repository.ruleset'),
+        container.get('repository.submission'),
+        container.get('repository.track')
     ))
     container.register('services.time_formatter', lambda: TimeFormatter())
 
@@ -105,7 +116,7 @@ def init_app(app: Flask) -> Container:
     container.register('services.installer.country', lambda: CountryInstaller(container.get('repository.country')))
     container.register('services.installer.engine_style', lambda: EngineStyleInstaller(container.get('repository.engine_style')))
     container.register('services.installer.game_version', lambda: GameVersionInstaller(container.get('repository.game_version')))
-    container.register('services.installer.platform', lambda: Platform(container.get('repository.platform')))
+    container.register('services.installer.platform', lambda: PlatformInstaller(container.get('repository.platform')))
     container.register('services.installer.ruleset', lambda: RulesetInstaller(container.get('repository.ruleset')))
     container.register('services.installer.track', lambda: TrackInstaller(container.get('repository.track')))
 
@@ -128,6 +139,7 @@ def init_app(app: Flask) -> Container:
     container.register('repository.standard', lambda: StandardRepository(db))
     container.register('repository.standard_set', lambda: StandardSetRepository(db))
     container.register('repository.standard_time', lambda: StandardTimeRepository(db))
+    container.register('repository.submission', lambda: SubmissionRepository(db))
     container.register('repository.track', lambda: TrackRepository(db))
 
     # container itself

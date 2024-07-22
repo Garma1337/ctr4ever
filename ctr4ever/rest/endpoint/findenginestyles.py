@@ -22,3 +22,6 @@ class FindEngineStyles(Endpoint):
 
     def get_accepted_request_method(self) -> str:
         return 'GET'
+
+    def require_authentication(self) -> bool:
+        return False

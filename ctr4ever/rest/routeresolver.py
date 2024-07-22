@@ -48,19 +48,20 @@ class RouteResolverFactory(object):
 
         routes = {
             'authenticatePlayer': 'api.endpoint.authenticate_player',
-            'characters': 'api.endpoint.find_characters',
             'categories': 'api.endpoint.find_categories',
+            'characters': 'api.endpoint.find_characters',
             'countries': 'api.endpoint.find_countries',
+            'createSubmission': 'api.endpoint.create_submission',
             'engineStyles': 'api.endpoint.find_engine_styles',
             'gameVersions': 'api.endpoint.find_game_versions',
             'loginPlayer': 'api.endpoint.login_player',
+            'platforms': 'api.endpoint.find_platforms',
             'players': 'api.endpoint.find_players',
             'registerPlayer': 'api.endpoint.register_player',
             'rulesets': 'api.endpoint.find_rulesets',
             'session': 'api.endpoint.get_session',
             'submissions': 'api.endpoint.find_submissions',
-            'tracks': 'api.endpoint.find_tracks',
-            'createSubmission': 'api.endpoint.create_submission'
+            'tracks': 'api.endpoint.find_tracks'
         }
 
         for route, endpoint_service_key in routes.items():

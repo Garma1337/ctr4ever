@@ -24,7 +24,7 @@ class SubmissionSchema(Schema):
     category = fields.Nested('CategorySchema', exclude=('submissions',))
     character = fields.Nested('CharacterSchema', exclude=('submissions',))
     game_version = fields.Nested('GameVersionSchema', exclude=('submissions',))
-    ruleset = fields.Nested('SubmissionSchema', exclude=('submissions',))
+    ruleset = fields.Nested('RulesetSchema', exclude=('submissions',))
     platform = fields.Nested('PlatformSchema', exclude=('submissions',))
 
 

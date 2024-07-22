@@ -1,4 +1,6 @@
 # coding=utf-8
+import re
+from typing import Optional
 
 
 class Time(object):
@@ -37,6 +39,27 @@ class TimeFormatter(object):
         minutes = int(time / 60)
         seconds = int(time % 60)
         milliseconds = int(round((time % 1) * 100))
+
+        return Time(minutes, seconds, milliseconds)
+
+    def create_time_from_format(self, time: str) -> Optional[Time]:
+        if not isinstance(time, str):
+            return None
+
+        matches = re.match(r'([0-9]:)?([0-5][0-9])\.([0-9]{2})', time)
+
+        if not matches:
+            return None
+
+        minutes = matches.group(1)
+
+        if minutes:
+            minutes = int(minutes.replace(':', ''))
+        else:
+            minutes = 0
+
+        seconds = int(matches.group(2))
+        milliseconds = int(matches.group(3))
 
         return Time(minutes, seconds, milliseconds)
 

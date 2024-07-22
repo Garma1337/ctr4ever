@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, {AxiosInstance} from "axios";
 
 export default class Ctr4EverClient {
     protected client: AxiosInstance;
@@ -15,6 +15,26 @@ export default class Ctr4EverClient {
         }
     }
 
+    public async findCategories(name: string | null = null): Promise<any> {
+        try {
+            const response = await this.client.get('/categories', {params: {name}});
+            return response.data['categories'];
+        } catch (e) {
+            console.log(`Failed to fetch category list: ${e}`);
+            return [];
+        }
+    }
+
+    public async findCharacters(name: string | null = null): Promise<any> {
+        try {
+            const response = await this.client.get('/characters', {params: {name}});
+            return response.data['characters'];
+        } catch (e) {
+            console.log(`Failed to fetch character list: ${e}`);
+            return [];
+        }
+    }
+
     public async findCountries(countryName: string | null = null): Promise<any> {
         try {
             const response = await this.client.get('/countries', {params: {countryName}});
@@ -25,8 +45,38 @@ export default class Ctr4EverClient {
         }
     }
 
+    public async findEngineStyles(name: string | null = null): Promise<any> {
+        try {
+            const response = await this.client.get('/engineStyles', {params: {name}});
+            return response.data['engine_styles'];
+        } catch (e) {
+            console.log(`Failed to fetch engine style list: ${e}`);
+            return [];
+        }
+    }
+
+    public async findGameVersions(name: string | null = null): Promise<any> {
+        try {
+            const response = await this.client.get('/gameVersions', {params: {name}});
+            return response.data['game_versions'];
+        } catch (e) {
+            console.log(`Failed to fetch game version list: ${e}`);
+            return [];
+        }
+    }
+
+    public async findPlatforms(name: string | null = null): Promise<any> {
+        try {
+            const response = await this.client.get('/platforms', {params: {name}});
+            return response.data['platforms'];
+        } catch (e) {
+            console.log(`Failed to fetch platform list: ${e}`);
+            return [];
+        }
+    }
+
     public async findPlayers(
-        country_id: Number | null = null,
+        country_id: string | null = null,
         name: string | null = null,
         email: string | null = null,
         active: boolean | null = null,
@@ -36,6 +86,26 @@ export default class Ctr4EverClient {
             return response.data['players'];
         } catch (e) {
             console.log(`Failed to fetch player list: ${e}`);
+            return [];
+        }
+    }
+
+    public async findRulesets(name: string | null = null): Promise<any> {
+        try {
+            const response = await this.client.get('/rulesets', {params: {name}});
+            return response.data['rulesets'];
+        } catch (e) {
+            console.log(`Failed to fetch ruleset list: ${e}`);
+            return [];
+        }
+    }
+
+    public async findTracks(name: string | null = null): Promise<any> {
+        try {
+            const response = await this.client.get('/tracks', {params: {name}});
+            return response.data['tracks'];
+        } catch (e) {
+            console.log(`Failed to fetch track list: ${e}`);
             return [];
         }
     }

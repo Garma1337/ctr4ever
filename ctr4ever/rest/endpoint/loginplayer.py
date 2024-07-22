@@ -47,3 +47,6 @@ class LoginPlayer(Endpoint):
 
     def get_accepted_request_method(self) -> str:
         return 'POST'
+
+    def require_authentication(self) -> bool:
+        return False

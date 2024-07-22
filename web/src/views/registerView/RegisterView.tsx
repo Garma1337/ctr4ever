@@ -21,7 +21,9 @@ const RegisterView = () => {
     const [countryId, setCountryId] = useState<string>('');
 
     useEffect(() => {
-        setCtr4Ever(new Ctr4EverClient(apiEndpoint, jwt));
+        if (apiEndpoint) {
+            setCtr4Ever(new Ctr4EverClient(apiEndpoint, jwt));
+        }
     }, [setCtr4Ever, apiEndpoint, jwt]);
 
     useEffect(() => {

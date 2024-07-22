@@ -36,3 +36,21 @@ class TimeFormatterTest(TestCase):
         self.assertEqual(data['minutes'], 2)
         self.assertEqual(data['seconds'], 57)
         self.assertEqual(data['milliseconds'], 48)
+
+    def test_can_create_time_from_format(self):
+        time = self.time_formatter.create_time_from_format('1:18.53')
+
+        self.assertEqual(time._minutes, 1)
+        self.assertEqual(time._seconds, 18)
+        self.assertEqual(time._milliseconds, 53)
+
+    def test_can_create_time_from_format_without_minutes(self):
+        time = self.time_formatter.create_time_from_format('41.41')
+
+        self.assertEqual(time._minutes, 0)
+        self.assertEqual(time._seconds, 41)
+        self.assertEqual(time._milliseconds, 41)
+
+    def test_can_not_create_time_from_format_when_time_is_not_a_string(self):
+        time = self.time_formatter.create_time_from_format(78.53)
+        self.assertIsNone(time)

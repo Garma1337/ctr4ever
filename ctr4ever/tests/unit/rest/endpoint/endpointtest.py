@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from unittest import TestCase
+from unittest.mock import Mock
 
 from flask import Request
 
@@ -35,3 +36,9 @@ class EndpointTest(TestCase):
         parameter = self.endpoint._get_boolean_query_parameter(request, 'active')
 
         self.assertIsNone(parameter)
+
+    def test_raises_error_when_not_logged_in(self):
+        self.endpoint._get_current_user = Mock(return_value=None)
+
+        with self.assertRaises(ValueError):
+            self.endpoint.assert_user_is_authenticated()

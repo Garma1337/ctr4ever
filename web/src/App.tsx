@@ -11,8 +11,9 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Ctr4EverClient from "./services/ctr4EverClient.ts";
 import useStore from "./store.ts";
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import PlayerPageView from "./views/playerPageView/PlayerPageView.tsx";
+import PlayerListView from "./views/playerListView/PlayerListView.tsx";
 
 const App = () => {
     const apiEndpoint = useStore(state => state.apiEndpoint);
@@ -20,7 +21,15 @@ const App = () => {
     const jwt = useStore(state => state.jwt);
     const setJwt = useStore(state => state.setJwt);
     const setCurrentUser = useStore(state => state.setCurrentUser);
+    const setCategories = useStore(state => state.setCategories);
     const setCountries = useStore(state => state.setCountries);
+    const setCharacters = useStore(state => state.setCharacters);
+    const setEngineStyles = useStore(state => state.setEngineStyles);
+    const setGameVersions = useStore(state => state.setGameVersions);
+    const setPlatforms = useStore(state => state.setPlatforms);
+    const setRulesets = useStore(state => state.setRulesets);
+    const setTracks = useStore(state => state.setTracks);
+    const [ctr4EverClient, setCtr4EverClient] = useState<Ctr4EverClient | null>(null);
 
     useEffect(() => {
         setJwt(localStorage.getItem('jwt') || '');
@@ -31,14 +40,64 @@ const App = () => {
     }, [setApiEndpoint]);
 
     useEffect(() => {
-        if (!apiEndpoint) {
-            return;
+        if (apiEndpoint) {
+            setCtr4EverClient(new Ctr4EverClient(apiEndpoint, jwt));
         }
+    }, [apiEndpoint, jwt]);
 
-        const ctr4ever = new Ctr4EverClient(apiEndpoint, jwt)
-        ctr4ever.getSession().then(currentUser => setCurrentUser(currentUser));
-        ctr4ever.findCountries().then(countries => setCountries(countries));
-    }, [jwt, apiEndpoint, setCountries, setCurrentUser]);
+    useEffect(() => {
+        if (ctr4EverClient) {
+            ctr4EverClient.getSession().then(setCurrentUser);
+        }
+    }, [ctr4EverClient, setCurrentUser]);
+
+    useEffect(() => {
+        if (ctr4EverClient) {
+            ctr4EverClient.findCategories().then(setCategories);
+        }
+    }, [ctr4EverClient, setCategories]);
+
+    useEffect(() => {
+        if (ctr4EverClient) {
+            ctr4EverClient.findCharacters().then(setCharacters);
+        }
+    }, [ctr4EverClient, setCharacters]);
+
+    useEffect(() => {
+        if (ctr4EverClient) {
+            ctr4EverClient.findCountries().then(setCountries);
+        }
+    }, [ctr4EverClient, setCountries]);
+
+    useEffect(() => {
+        if (ctr4EverClient) {
+            ctr4EverClient.findEngineStyles().then(setEngineStyles);
+        }
+    }, [ctr4EverClient, setEngineStyles]);
+
+    useEffect(() => {
+        if (ctr4EverClient) {
+            ctr4EverClient.findGameVersions().then(setGameVersions);
+        }
+    }, [ctr4EverClient, setGameVersions]);
+
+    useEffect(() => {
+        if (ctr4EverClient) {
+            ctr4EverClient.findPlatforms().then(setPlatforms);
+        }
+    }, [ctr4EverClient, setPlatforms]);
+
+    useEffect(() => {
+        if (ctr4EverClient) {
+            ctr4EverClient.findRulesets().then(setRulesets);
+        }
+    }, [ctr4EverClient, setRulesets]);
+
+    useEffect(() => {
+        if (ctr4EverClient) {
+            ctr4EverClient.findTracks().then(setTracks);
+        }
+    }, [ctr4EverClient, setTracks]);
 
     return (
         <Routes>
@@ -47,6 +106,7 @@ const App = () => {
                 <Route path={AppRoutes.LoginPage} element={<LoginView/>}/>
                 <Route path={AppRoutes.RegisterPage} element={<RegisterView/>}/>
                 <Route path={AppRoutes.PlayerPage} element={<PlayerPageView/>}/>
+                <Route path={AppRoutes.PlayerListPage} element={<PlayerListView />}/>
             </Route>
         </Routes>
     )

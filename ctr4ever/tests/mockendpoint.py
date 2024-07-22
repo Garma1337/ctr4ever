@@ -11,3 +11,6 @@ class MockEndpoint(Endpoint):
 
     def get_accepted_request_method(self):
         return 'GET'
+
+    def require_authentication(self):
+        return False
