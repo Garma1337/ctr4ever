@@ -29,12 +29,10 @@ def create_app() -> Flask:
     from .cli.faker import faker
     from .cli.installer import installer
     from .rest.api import rest_api
-    from .web.web import web
 
     app.register_blueprint(faker)
     app.register_blueprint(installer)
     app.register_blueprint(rest_api)
-    app.register_blueprint(web)
 
     return app
 
