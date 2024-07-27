@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from marshmallow import Schema, fields
-from sqlalchemy import Column, String, DateTime, ForeignKey, Float
+from sqlalchemy import Column, String, DateTime, ForeignKey, Float, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ctr4ever.models.model import Model
@@ -19,6 +19,7 @@ class SubmissionSchema(Schema):
     time = fields.Float()
     date = fields.DateTime()
     video = fields.Str()
+    comment = fields.Str()
     player = fields.Nested('PlayerSchema', exclude=('submissions',))
     track = fields.Nested('TrackSchema', exclude=('submissions',))
     category = fields.Nested('CategorySchema', exclude=('submissions',))
@@ -43,6 +44,7 @@ class Submission(Model):
     time: Mapped[int] = Column(Float(2), nullable=False)
     date: Mapped[str] = Column(DateTime(), nullable=False)
     video: Mapped[str] = Column(String(255), nullable=False)
+    comment: Mapped[str] = Column(Text(), nullable=True)
     player: Mapped['Player'] = relationship('Player', back_populates='submissions')
     track: Mapped['Track'] = relationship('Track', back_populates='submissions')
     category: Mapped['Category'] = relationship('Category', back_populates='submissions')

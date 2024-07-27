@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from datetime import datetime
+from typing import Optional
 
 from ctr4ever.models.repository.categoryrepository import CategoryRepository
 from ctr4ever.models.repository.characterrepository import CharacterRepository
@@ -99,7 +100,8 @@ class SubmissionManager(object):
             ruleset_id: int,
             platform_id: int,
             time: float,
-            video: str
+            video: str,
+            comment: Optional[str] = None
     ) -> Submission:
         submission_player = self.player_repository.find_one(player_id)
         submission_track = self.track_repository.find_one(track_id)
@@ -143,7 +145,8 @@ class SubmissionManager(object):
             platform_id=platform_id,
             time=time,
             date=datetime.now(),
-            video=video
+            video=video,
+            comment=comment
         )
 
         return submission

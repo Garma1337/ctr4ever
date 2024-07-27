@@ -14,6 +14,7 @@ import useStore from "./store.ts";
 import {useEffect, useState} from 'react';
 import PlayerPageView from "./views/playerPageView/PlayerPageView.tsx";
 import PlayerListView from "./views/playerListView/PlayerListView.tsx";
+import CreateSubmissionView from "./views/createSubmissionView/CreateSubmissionView.tsx";
 
 const App = () => {
     const apiEndpoint = useStore(state => state.apiEndpoint);
@@ -107,6 +108,7 @@ const App = () => {
                 <Route path={AppRoutes.RegisterPage} element={<RegisterView/>}/>
                 <Route path={AppRoutes.PlayerPage} element={<PlayerPageView/>}/>
                 <Route path={AppRoutes.PlayerListPage} element={<PlayerListView />}/>
+                <Route path={AppRoutes.CreateSubmissionPage} element={<CreateSubmissionView />}/>
             </Route>
         </Routes>
     )

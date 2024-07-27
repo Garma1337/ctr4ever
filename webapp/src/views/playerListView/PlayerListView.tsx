@@ -31,7 +31,7 @@ const PlayerListView = () => {
     const [ctr4EverClient, setCtr4EverClient] = useState<Ctr4EverClient | null>(null);
 
     const [players, setPlayers] = useState<any[]>([]);
-    const [countryId, setCountryId] = useState<string | null>(null);
+    const [countryId, setCountryId] = useState<Number | null>(null);
 
     useEffect(() => {
         if (apiEndpoint) {
@@ -57,11 +57,11 @@ const PlayerListView = () => {
                 <FormControl sx={{minWidth: 180, marginRight: 2, marginBottom: 2}}>
                     <TextField
                         select
-                        label="Category"
+                        label="Country"
                         variant="outlined"
-                        name="category_id"
-                        value={countryId}
-                        onChange={(e) => setCountryId(e.target.value)}
+                        name="country_id"
+                        value={countryId || ''}
+                        onChange={(e) => setCountryId(Number(e.target.value))}
                     >
                         {countries.map((option) => (
                             <MenuItem key={option.id} value={option.id}>

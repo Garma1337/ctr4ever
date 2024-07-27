@@ -38,40 +38,40 @@ const PlayerPageView = () => {
     const tracks = useStore(state => state.tracks);
 
     const [searchParams] = useSearchParams();
-    const [ctr4everClient, setCtr4everClient] = useState<Ctr4EverClient | null>(null);
+    const [ctr4EverClient, setCtr4EverClient] = useState<Ctr4EverClient | null>(null);
     const [player, setPlayer] = useState<any>(null);
 
-    const [categoryId, setCategoryId] = useState<string>('');
-    const [platformId, setPlatformId] = useState<string>('');
-    const [gameVersionId, setGameVersionId] = useState<string>('');
-    const [ruleSetId, setRuleSetId] = useState<string>('');
+    const [categoryId, setCategoryId] = useState<string | null>(null);
+    const [platformId, setPlatformId] = useState<string | null>(null);
+    const [gameVersionId, setGameVersionId] = useState<string | null>(null);
+    const [ruleSetId, setRuleSetId] = useState<string | null>(null);
 
     useEffect(() => {
         if (apiEndpoint) {
-            setCtr4everClient(new Ctr4EverClient(apiEndpoint, jwt));
+            setCtr4EverClient(new Ctr4EverClient(apiEndpoint, jwt));
         }
     }, [apiEndpoint, jwt]);
 
     useEffect(() => {
-        if (!ctr4everClient) {
+        if (!ctr4EverClient) {
             return;
         }
 
         const username = searchParams.get('name');
-        ctr4everClient.findPlayers(null, username).then((players) => {
+        ctr4EverClient.findPlayers(null, username).then((players) => {
             if (players.length <= 0) {
                 return;
             }
 
             setPlayer(players[0]);
         });
-    }, [ctr4everClient, searchParams, setPlayer]);
+    }, [ctr4EverClient, searchParams, setPlayer]);
 
     function resetForm() {
-        setCategoryId('');
-        setPlatformId('');
-        setGameVersionId('');
-        setRuleSetId('');
+        setCategoryId(null);
+        setPlatformId(null);
+        setGameVersionId(null);
+        setRuleSetId(null);
     }
 
     return (
@@ -124,7 +124,7 @@ const PlayerPageView = () => {
                                 label="Category"
                                 variant="outlined"
                                 name="category_id"
-                                value={categoryId}
+                                value={categoryId || ''}
                                 onChange={(e) => setCategoryId(e.target.value)}
                             >
                                 {categories.map((option) => (
@@ -141,7 +141,7 @@ const PlayerPageView = () => {
                                 label="Platform"
                                 variant="outlined"
                                 name="platform_id"
-                                value={platformId}
+                                value={platformId || ''}
                                 onChange={(e) => setPlatformId(e.target.value)}
                             >
                                 {platforms.map((option) => (
@@ -158,7 +158,7 @@ const PlayerPageView = () => {
                                 label="Game Version"
                                 variant="outlined"
                                 name="game_version_id"
-                                value={gameVersionId}
+                                value={gameVersionId || ''}
                                 onChange={(e) => setGameVersionId(e.target.value)}
                             >
                                 {gameVersions.map((option) => (
@@ -175,7 +175,7 @@ const PlayerPageView = () => {
                                 label="Ruleset"
                                 variant="outlined"
                                 name="ruleset_id"
-                                value={ruleSetId}
+                                value={ruleSetId || ''}
                                 onChange={(e) => setRuleSetId(e.target.value)}
                             >
                                 {ruleSets.map((option) => (

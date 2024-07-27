@@ -30,8 +30,11 @@ class CreateSubmissionTest(TestCase):
 
         self.germany = self.country_repository.create('Germany', 'de.png')
         self.course = self.category_repository.create('Course')
+        self.relic_race = self.category_repository.create('Relic Race')
+        self.max_engine = self.engine_style_repository.create('Max')
         self.speed_engine = self.engine_style_repository.create('Speed')
         self.pal = self.game_version_repository.create('PAL', 'pal.png')
+        self.penta_penguin = self.character_repository.create('Penta Penguin', self.max_engine.id, 'penta.png')
         self.dingodile = self.character_repository.create('Dingodile', self.speed_engine.id, 'dingo.png')
         self.console = self.platform_repository.create('Console')
         self.classic = self.ruleset_repository.create('Classic')
@@ -59,11 +62,42 @@ class CreateSubmissionTest(TestCase):
         )
 
         self.time_formatter = TimeFormatter()
-        self.create_submission_endpoint = CreateSubmission(self.submission_manager, self.time_formatter)
+        self.create_submission_endpoint = CreateSubmission(self.submission_manager, self.time_formatter, 1000)
 
         self.create_submission_endpoint._get_current_user = Mock(return_value=self.garma.to_dictionary())
 
     def test_can_create_submission(self):
+        request = Request.from_values(json={
+            'track_id': self.crash_cove.id,
+            'category_id': self.course.id,
+            'character_id': self.dingodile.id,
+            'game_version_id': self.pal.id,
+            'ruleset_id': self.classic.id,
+            'platform_id': self.console.id,
+            'time': '1:20.63',
+            'video': 'https://www.youtube.com/watch?v=123456',
+            'comment': 'This is a comment.'
+        })
+
+        response = self.create_submission_endpoint.handle_request(request)
+        data = response.get_data()
+
+        submission = data['submission']
+
+        self.assertEqual(1, submission['id'])
+        self.assertEqual(self.garma.id, submission['player_id'])
+        self.assertEqual(self.crash_cove.id, submission['track_id'])
+        self.assertEqual(self.course.id, submission['category_id'])
+        self.assertEqual(self.dingodile.id, submission['character_id'])
+        self.assertEqual(self.pal.id, submission['game_version_id'])
+        self.assertEqual(self.classic.id, submission['ruleset_id'])
+        self.assertEqual(self.console.id, submission['platform_id'])
+        self.assertEqual(80.63, submission['time'])
+        self.assertEqual('https://www.youtube.com/watch?v=123456', submission['video'])
+        self.assertIsNotNone(submission['date'])
+        self.assertEqual('This is a comment.', submission['comment'])
+
+    def test_can_create_submission_without_comment(self):
         request = Request.from_values(json={
             'track_id': self.crash_cove.id,
             'category_id': self.course.id,
@@ -91,6 +125,7 @@ class CreateSubmissionTest(TestCase):
         self.assertEqual(80.63, submission['time'])
         self.assertEqual('https://www.youtube.com/watch?v=123456', submission['video'])
         self.assertIsNotNone(submission['date'])
+        self.assertIsNone(submission['comment'])
 
     def test_can_not_create_submission_if_no_track(self):
         request = Request.from_values(json={
@@ -100,7 +135,8 @@ class CreateSubmissionTest(TestCase):
             'ruleset_id': self.classic.id,
             'platform_id': self.console.id,
             'time': '1:20.63',
-            'video': 'https://www.youtube.com/watch?v=123456'
+            'video': 'https://www.youtube.com/watch?v=123456',
+            'comment': 'This is a comment.'
         })
 
         response = self.create_submission_endpoint.handle_request(request)
@@ -116,7 +152,8 @@ class CreateSubmissionTest(TestCase):
             'ruleset_id': self.classic.id,
             'platform_id': self.console.id,
             'time': '1:20.63',
-            'video': 'https://www.youtube.com/watch?v=123456'
+            'video': 'https://www.youtube.com/watch?v=123456',
+            'comment': 'This is a comment.'
         })
 
         response = self.create_submission_endpoint.handle_request(request)
@@ -132,7 +169,8 @@ class CreateSubmissionTest(TestCase):
             'ruleset_id': self.classic.id,
             'platform_id': self.console.id,
             'time': '1:20.63',
-            'video': 'https://www.youtube.com/watch?v=123456'
+            'video': 'https://www.youtube.com/watch?v=123456',
+            'comment': 'This is a comment.'
         })
 
         response = self.create_submission_endpoint.handle_request(request)
@@ -148,7 +186,8 @@ class CreateSubmissionTest(TestCase):
             'ruleset_id': self.classic.id,
             'platform_id': self.console.id,
             'time': '1:20.63',
-            'video': 'https://www.youtube.com/watch?v=123456'
+            'video': 'https://www.youtube.com/watch?v=123456',
+            'comment': 'This is a comment.'
         })
 
         response = self.create_submission_endpoint.handle_request(request)
@@ -164,7 +203,8 @@ class CreateSubmissionTest(TestCase):
             'game_version_id': self.pal.id,
             'platform_id': self.console.id,
             'time': '1:20.63',
-            'video': 'https://www.youtube.com/watch?v=123456'
+            'video': 'https://www.youtube.com/watch?v=123456',
+            'comment': 'This is a comment.'
         })
 
         response = self.create_submission_endpoint.handle_request(request)
@@ -180,7 +220,8 @@ class CreateSubmissionTest(TestCase):
             'game_version_id': self.pal.id,
             'ruleset_id': self.classic.id,
             'time': '1:20.63',
-            'video': 'https://www.youtube.com/watch?v=123456'
+            'video': 'https://www.youtube.com/watch?v=123456',
+            'comment': 'This is a comment.'
         })
 
         response = self.create_submission_endpoint.handle_request(request)
@@ -196,7 +237,8 @@ class CreateSubmissionTest(TestCase):
             'game_version_id': self.pal.id,
             'ruleset_id': self.classic.id,
             'platform_id': self.console.id,
-            'video': 'https://www.youtube.com/watch?v=123456'
+            'video': 'https://www.youtube.com/watch?v=123456',
+            'comment': 'This is a comment.'
         })
 
         response = self.create_submission_endpoint.handle_request(request)
@@ -212,8 +254,65 @@ class CreateSubmissionTest(TestCase):
             'game_version_id': self.pal.id,
             'ruleset_id': self.classic.id,
             'platform_id': self.console.id,
-            'time': '1:20.63'
+            'time': '1:20.63',
+            'comment': 'This is a comment.'
         })
+
+        response = self.create_submission_endpoint.handle_request(request)
+        data = response.get_data()
+
+        self.assertIsNotNone(data['error'])
+
+    def test_can_not_create_submission_if_invalid_time_format(self):
+        request = Request.from_values(json={
+            'track_id': self.crash_cove.id,
+            'category_id': self.course.id,
+            'character_id': self.dingodile.id,
+            'game_version_id': self.pal.id,
+            'ruleset_id': self.classic.id,
+            'platform_id': self.console.id,
+            'time': '1:20:63',
+            'video': 'https://www.youtube.com/watch?v=123456',
+            'comment': 'This is a comment.'
+        })
+
+        response = self.create_submission_endpoint.handle_request(request)
+        data = response.get_data()
+
+        self.assertIsNotNone(data['error'])
+
+    def test_can_not_create_submission_if_comment_too_long(self):
+        request = Request.from_values(json={
+            'track_id': self.crash_cove.id,
+            'category_id': self.course.id,
+            'character_id': self.dingodile.id,
+            'game_version_id': self.pal.id,
+            'ruleset_id': self.classic.id,
+            'platform_id': self.console.id,
+            'time': '1:20.63',
+            'video': 'https://www.youtube.com/watch?v=123456',
+            'comment': ''.join(['a' for _ in range(0, 1001)])
+        })
+
+        response = self.create_submission_endpoint.handle_request(request)
+        data = response.get_data()
+
+        self.assertIsNotNone(data['error'])
+
+    def test_can_not_create_submission_if_invalid_submission(self):
+        request = Request.from_values(json={
+            'track_id': self.crash_cove.id,
+            'category_id': self.relic_race.id,
+            'character_id': self.penta_penguin.id,
+            'game_version_id': self.pal.id,
+            'ruleset_id': self.classic.id,
+            'platform_id': self.console.id,
+            'time': '1:20.63',
+            'video': 'https://www.youtube.com/watch?v=123456',
+            'comment': 'This is a comment.'
+        })
+
+        self.submission_manager.is_valid_submission = Mock(return_value=False)
 
         response = self.create_submission_endpoint.handle_request(request)
         data = response.get_data()

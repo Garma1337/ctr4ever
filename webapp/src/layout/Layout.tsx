@@ -85,6 +85,7 @@ const Layout = () => {
                                 </MenuItem>
                             </Menu>
                             <Button color="inherit" onClick={() => navigate(AppRoutes.PlayerListPage)}>Players</Button>
+                            <Button color="inherit" onClick={() => navigate(AppRoutes.CreateSubmissionPage)}>Submit Time</Button>
                         </Box>
                         {!currentUser && (
                             <>

@@ -428,7 +428,7 @@ class MockSubmissionRepository(MockModelRepository, SubmissionRepository):
             character_id: int = None,
             game_version_id: int = None,
             ruleset_id: int = None,
-            platform_id: int = None
+            platform_id: int = None,
     ) -> int:
         return super().count(
             player_id=player_id,
@@ -451,7 +451,8 @@ class MockSubmissionRepository(MockModelRepository, SubmissionRepository):
             platform_id: int,
             time: float,
             date: datetime,
-            video: str
+            video: str,
+            comment: str = None
     ) -> Submission:
         return super().create(
             player_id=player_id,
@@ -463,7 +464,8 @@ class MockSubmissionRepository(MockModelRepository, SubmissionRepository):
             platform_id=platform_id,
             time=time,
             date=date,
-            video=video
+            video=video,
+            comment=comment
         )
 
     def update(
@@ -478,7 +480,8 @@ class MockSubmissionRepository(MockModelRepository, SubmissionRepository):
             platform_id: int = None,
             time: float = None,
             date: datetime = None,
-            video: str = None
+            video: str = None,
+            comment: str = None
     ) -> None:
         super().update(
             id=id,
@@ -491,7 +494,8 @@ class MockSubmissionRepository(MockModelRepository, SubmissionRepository):
             platform_id=platform_id,
             time=time,
             date=date,
-            video=video
+            video=video,
+            comment=comment
         )
 
     def _get_model_class(self) -> type:

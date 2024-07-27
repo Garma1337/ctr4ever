@@ -14,11 +14,11 @@ const RegisterView = () => {
     const [ctr4ever, setCtr4Ever] = useState<Ctr4EverClient | null>(null);
     const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
     const [registerError, setRegisterError] = useState<string>('');
-    const [registeredUsername, setRegisteredUsername] = useState<string>('');
-    const [username, setUsername] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [countryId, setCountryId] = useState<string>('');
+    const [registeredUsername, setRegisteredUsername] = useState<string | null>(null);
+    const [username, setUsername] = useState<string | null>(null);
+    const [email, setEmail] = useState<string | null>(null);
+    const [password, setPassword] = useState<string | null>(null);
+    const [countryId, setCountryId] = useState<Number | null>(null);
 
     useEffect(() => {
         if (apiEndpoint) {
@@ -32,12 +32,12 @@ const RegisterView = () => {
         }
     }, [navigate, currentUser, AppRoutes]);
 
-    async function registerPlayer(username: string, email: string, password: string, country_id: number) {
+    async function registerPlayer(username: string, email: string, password: string, countryId: number) {
         if (!ctr4ever) {
             return;
         }
 
-        const response = await ctr4ever.registerPlayer(country_id, email, password, username);
+        const response = await ctr4ever.registerPlayer(countryId, email, password, username);
 
         if (response.success) {
             setRegisterSuccess(true);
@@ -46,7 +46,7 @@ const RegisterView = () => {
         } else {
             setRegisterSuccess(false);
             setRegisterError(response.error);
-            setRegisteredUsername('');
+            setRegisteredUsername(null);
         }
     }
 
@@ -59,17 +59,19 @@ const RegisterView = () => {
                 {registerError && <Alert severity="error">Error while registering your account: {registerError}</Alert>}
             </Box>
 
-            <Stack component="form" spacing={2} width={"25ch"}>
+            <Stack component="form" spacing={2} width={"30ch"}>
                 <TextField
                     label="Username"
                     variant="outlined"
                     name="username"
+                    value={username || ''}
                     onChange={(e) => setUsername(e.target.value)}
                 />
                 <TextField
                     label="E-Mail"
                     variant="outlined"
                     name="email"
+                    value={email || ''}
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <TextField
@@ -77,6 +79,7 @@ const RegisterView = () => {
                     variant="outlined"
                     name="password"
                     type="password"
+                    value={password || ''}
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <TextField
@@ -84,7 +87,8 @@ const RegisterView = () => {
                     label="Country"
                     variant="outlined"
                     name="country_id"
-                    onChange={(e) => setCountryId(e.target.value)}
+                    value={countryId || ''}
+                    onChange={(e) => setCountryId(Number(e.target.value))}
                 >
                     {countries.map((option) => (
                         <MenuItem key={option.id} value={option.id}>
@@ -95,7 +99,7 @@ const RegisterView = () => {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => registerPlayer(username, email, password, Number(countryId))}
+                    onClick={() => registerPlayer(String(username), String(email), String(password), Number(countryId))}
                 >
                     Register
                 </Button>

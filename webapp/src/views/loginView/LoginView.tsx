@@ -12,13 +12,13 @@ const LoginView = () => {
     const setJwt = useStore(state => state.setJwt);
     const currentUser = useStore(state => state.currentUser);
     const [loginError, setLoginError] = useState<string | null>(null);
-    const [ctr4everClient, setCtr4everClient] = useState<Ctr4EverClient | null>(null);
-    const [username, setUsername] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const [ctr4EverClient, setCtr4EverClient] = useState<Ctr4EverClient | null>(null);
+    const [username, setUsername] = useState<string | null>(null);
+    const [password, setPassword] = useState<string | null>(null);
 
     useEffect(() => {
-        setCtr4everClient(new Ctr4EverClient(apiEndpoint, jwt));
-    }, [setCtr4everClient, apiEndpoint, jwt]);
+        setCtr4EverClient(new Ctr4EverClient(apiEndpoint, jwt));
+    }, [setCtr4EverClient, apiEndpoint, jwt]);
 
     useEffect(() => {
         if (currentUser) {
@@ -27,11 +27,11 @@ const LoginView = () => {
     }, [navigate, currentUser, AppRoutes]);
 
     async function loginPlayer(username: string, password: string) {
-        if (!ctr4everClient) {
+        if (!ctr4EverClient) {
             return;
         }
 
-        const response = await ctr4everClient.loginPlayer(username, password);
+        const response = await ctr4EverClient.loginPlayer(username, password);
 
         if (response.success) {
             localStorage.setItem('jwt', response.access_token);
@@ -54,19 +54,21 @@ const LoginView = () => {
                 <TextField
                     label="Username"
                     variant="outlined"
+                    value={username || ''}
                     onChange={(e) => setUsername(e.target.value)}
                 />
                 <TextField
                     label="Password"
                     variant="outlined"
                     type="password"
+                    value={password || ''}
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <Button
                     variant="contained"
                     color="primary"
                     type="submit"
-                    onClick={() => loginPlayer(username, password)}
+                    onClick={() => loginPlayer(String(username), String(password))}
                 >
                     Login
                 </Button>

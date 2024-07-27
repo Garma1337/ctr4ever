@@ -65,7 +65,8 @@ def init_app(app: Flask) -> Container:
     container.register('api.endpoint.authenticate_player', lambda: AuthenticatePlayer(container.get('services.authenticator')))
     container.register('api.endpoint.create_submission', lambda: CreateSubmission(
         container.get('services.submission_manager'),
-        container.get('services.time_formatter')
+        container.get('services.time_formatter'),
+        app.config.get('SUBMISSION_COMMENT_MAX_LENGTH')
     ))
     container.register('api.endpoint.find_categories', lambda: FindCategories(container.get('repository.category')))
     container.register('api.endpoint.find_characters', lambda: FindCharacters(container.get('repository.character')))
@@ -75,7 +76,7 @@ def init_app(app: Flask) -> Container:
     container.register('api.endpoint.find_platforms', lambda: FindPlatforms(container.get('repository.platform')))
     container.register('api.endpoint.find_players', lambda: FindPlayers(container.get('repository.player')))
     container.register('api.endpoint.find_rulesets', lambda: FindRulesets(container.get('repository.ruleset')))
-    container.register('api.endpoint.find_submissions', lambda: FindSubmissions())
+    container.register('api.endpoint.find_submissions', lambda: FindSubmissions(container.get('repository.submission')))
     container.register('api.endpoint.find_tracks', lambda: FindTracks(container.get('repository.track')))
     container.register('api.endpoint.get_session', lambda: GetSession())
     container.register('api.endpoint.login_player', lambda: LoginPlayer(container.get('repository.player'), container.get('services.authenticator')))

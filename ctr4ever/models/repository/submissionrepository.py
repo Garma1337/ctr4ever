@@ -64,7 +64,8 @@ class SubmissionRepository(ModelRepository):
             platform_id: int,
             time: float,
             date: datetime,
-            video: str
+            video: str,
+            comment: Optional[str] = None
     ) -> Submission:
         return super().create(
             player_id=player_id,
@@ -76,7 +77,8 @@ class SubmissionRepository(ModelRepository):
             platform_id=platform_id,
             time=time,
             date=date,
-            video=video
+            video=video,
+            comment=comment
         )
 
     def update(
@@ -91,7 +93,8 @@ class SubmissionRepository(ModelRepository):
             platform_id: Optional[int] = None,
             time: Optional[float] = None,
             date: Optional[datetime] = None,
-            video: Optional[str] = None
+            video: Optional[str] = None,
+            comment: Optional[str] = None
     ) -> None:
         super().update(
             id=id,
@@ -104,7 +107,8 @@ class SubmissionRepository(ModelRepository):
             platform_id=platform_id,
             time=time,
             date=date,
-            video=video
+            video=video,
+            comment=comment
         )
 
     def _get_model_class(self) -> type:

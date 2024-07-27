@@ -4,4 +4,5 @@ export enum AppRoutes {
     RegisterPage = '/register',
     PlayerPage = '/player',
     PlayerListPage = '/players',
+    CreateSubmissionPage = '/createSubmission',
 }

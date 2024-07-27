@@ -76,13 +76,13 @@ export default class Ctr4EverClient {
     }
 
     public async findPlayers(
-        country_id: string | null = null,
+        countryId: Number | null = null,
         name: string | null = null,
         email: string | null = null,
         active: boolean | null = null,
     ): Promise<any> {
         try {
-            const response = await this.client.get('/players', {params: {country_id, name, email, active}});
+            const response = await this.client.get('/players', {params: {country_id: countryId, name, email, active}});
             return response.data['players'];
         } catch (e) {
             console.log(`Failed to fetch player list: ${e}`);
@@ -140,6 +140,43 @@ export default class Ctr4EverClient {
             return response.data;
         } catch (e) {
             console.log(`Failed to register player ${username}: ${e}`);
+
+            return {
+                success: false,
+                error: e
+            };
+        }
+    }
+
+    public async createSubmission(
+        playerId: Number,
+        trackId: Number,
+        categoryId: Number,
+        characterId: Number,
+        gameVersionId: Number,
+        rulesetId: Number,
+        platformId: Number,
+        time: string,
+        video: string,
+        comment: string
+    ): Promise<any> {
+        try {
+            const response = await this.client.post('/createSubmission', {
+                player_id: playerId,
+                track_id: trackId,
+                category_id: categoryId,
+                character_id: characterId,
+                game_version_id: gameVersionId,
+                ruleset_id: rulesetId,
+                platform_id: platformId,
+                time,
+                video,
+                comment
+            });
+
+            return response.data;
+        } catch (e) {
+            console.log(`Failed to create submission: ${e}`);
 
             return {
                 success: false,

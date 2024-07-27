@@ -3,16 +3,17 @@
 from flask import Request
 
 from ctr4ever.rest.endpoint.endpoint import Endpoint
-from ctr4ever.rest.response import ErrorResponse, Response
-from ctr4ever.services.submissionmanager import SubmissionManager
+from ctr4ever.rest.response import ErrorResponse, SuccessResponse
+from ctr4ever.services.submissionmanager import SubmissionManager, SubmissionError
 from ctr4ever.services.timeformatter import TimeFormatter
 
 
 class CreateSubmission(Endpoint):
 
-    def __init__(self, submission_manager: SubmissionManager, time_formatter: TimeFormatter):
+    def __init__(self, submission_manager: SubmissionManager, time_formatter: TimeFormatter, max_comment_length: int):
         self.submission_manager = submission_manager
         self.time_formatter = time_formatter
+        self.max_comment_length = max_comment_length
 
     def handle_request(self, request: Request):
         current_user = self._get_current_user()
@@ -25,6 +26,7 @@ class CreateSubmission(Endpoint):
         platform_id = request.json.get('platform_id')
         time = request.json.get('time')
         video = request.json.get('video')
+        comment = request.json.get('comment')
 
         if not track_id:
             return ErrorResponse('A track is required.')
@@ -55,19 +57,27 @@ class CreateSubmission(Endpoint):
         if not parsed_time:
             return ErrorResponse('Invalid time format.')
 
-        submission = self.submission_manager.submit_time(
-            int(current_user['id']),
-            int(track_id),
-            int(category_id),
-            int(character_id),
-            int(game_version_id),
-            int(ruleset_id),
-            int(platform_id),
-            parsed_time.in_seconds(),
-            video
-        )
+        if self.max_comment_length:
+            if comment and len(comment) > self.max_comment_length:
+                return ErrorResponse('The comment is too long.')
 
-        return Response({'submission': submission.to_dictionary()})
+        try:
+            submission = self.submission_manager.submit_time(
+                int(current_user['id']),
+                int(track_id),
+                int(category_id),
+                int(character_id),
+                int(game_version_id),
+                int(ruleset_id),
+                int(platform_id),
+                parsed_time.in_seconds(),
+                video,
+                comment
+            )
+        except SubmissionError as e:
+            return ErrorResponse(str(e))
+
+        return SuccessResponse({'submission': submission.to_dictionary()})
 
     def get_accepted_request_method(self):
         return 'POST'
