@@ -16,10 +16,10 @@ class PasswordManagerTest(TestCase):
         self.assertEqual('123456', self.password_manager.generate_salt())
 
     def test_can_encode_password(self):
-        self.assertEqual('98a16c09b0759e63ef7df53592724e8eeddb953a', self.password_manager.encode_password('password', '123456'))
+        self.assertEqual('password', self.password_manager.encode_password('password', '123456'))
 
     def test_can_check_password(self):
-        self.assertTrue(self.password_manager.check_password('password', '98a16c09b0759e63ef7df53592724e8eeddb953a', '123456'))
+        self.assertTrue(self.password_manager.check_password('password', 'password', '123456'))
 
     def test_can_not_check_password_if_wrong_salt_provided(self):
         self.assertFalse(self.password_manager.check_password('password', '98a16c09b0759e63ef7df53592724e8eeddb953a', '987654'))

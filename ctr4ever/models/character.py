@@ -16,6 +16,7 @@ class CharacterSchema(Schema):
     icon = fields.Str()
     engine_style = fields.Nested('EngineStyleSchema', exclude=('characters',))
     submissions = fields.Nested('SubmissionSchema', exclude=('character',), many=True)
+    submissions_history = fields.Nested('SubmissionHistorySchema', exclude=('character',), many=True)
 
 
 class Character(Model):
@@ -28,3 +29,4 @@ class Character(Model):
     icon: Mapped[str] = Column(String(100), nullable=False)
     engine_style: Mapped['EngineStyle'] = relationship('EngineStyle', back_populates='characters')
     submissions: Mapped[List['Submissions']] = relationship('Submission', back_populates='character')
+    submissions_history: Mapped[List['SubmissionHistory']] = relationship('SubmissionHistory', back_populates='character')

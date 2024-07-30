@@ -1,9 +1,8 @@
 # coding=utf-8
 
-from typing import Optional
-
 class ContainerError(Exception):
     pass
+
 
 class Container(object):
 

@@ -74,5 +74,6 @@ from ctr4ever.models import (
     enginestyle,
     standardset,
     ruleset,
-    platform
+    platform,
+    submissionhistory
 )

@@ -1,7 +1,5 @@
 # coding=utf-8
 
-import hashlib
-
 from ctr4ever.services.password_encoder_strategy.passwordencoderstrategy import PasswordEncoderStrategy
 
 
@@ -11,4 +9,4 @@ class MockPasswordEncoderStrategy(PasswordEncoderStrategy):
         return '123456'
 
     def encode_password(self, password: str, salt: str) -> str:
-        return hashlib.sha1(f'{password}{salt}'.encode()).hexdigest()
+        return password

@@ -14,6 +14,7 @@ class GameVersionSchema(Schema):
     name = fields.Str()
     icon = fields.Str()
     submissions = fields.Nested('SubmissionSchema', exclude=('game_version',), many=True)
+    submissions_history = fields.Nested('SubmissionHistorySchema', exclude=('game_version',), many=True)
 
 
 class GameVersion(Model):
@@ -24,3 +25,4 @@ class GameVersion(Model):
     name: Mapped[str] = Column(String(100), nullable=False)
     icon: Mapped[str] = Column(String(20), nullable=False)
     submissions: Mapped[List['Submission']] = relationship('Submission', back_populates='game_version')
+    submissions_history: Mapped[List['SubmissionHistory']] = relationship('SubmissionHistory', back_populates='game_version')

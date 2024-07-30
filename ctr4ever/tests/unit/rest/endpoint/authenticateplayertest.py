@@ -20,7 +20,7 @@ class AuthenticatePlayerTest(TestCase):
             1,
             'Garma',
             'email@domain.com',
-            '98a16c09b0759e63ef7df53592724e8eeddb953a',
+            'Password123!',
             '123456',
             True,
             datetime.now()
@@ -36,7 +36,7 @@ class AuthenticatePlayerTest(TestCase):
         response = self.authenticate_endpoint.handle_request(Request.from_values(
             json={
                 'username': 'Garma',
-                'password': 'password'
+                'password': 'Password123!'
             }
         ))
 

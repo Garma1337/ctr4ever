@@ -22,6 +22,7 @@ from ctr4ever.models.repository.rulesetrepository import RulesetRepository
 from ctr4ever.models.repository.standardrepository import StandardRepository
 from ctr4ever.models.repository.standardsetrepository import StandardSetRepository
 from ctr4ever.models.repository.standardtimerepository import StandardTimeRepository
+from ctr4ever.models.repository.submissionhistoryrepository import SubmissionHistoryRepository
 from ctr4ever.models.repository.submissionrepository import SubmissionRepository
 from ctr4ever.models.repository.trackrepository import TrackRepository
 from ctr4ever.models.ruleset import Ruleset
@@ -29,6 +30,7 @@ from ctr4ever.models.standard import Standard
 from ctr4ever.models.standardset import StandardSet
 from ctr4ever.models.standardtime import StandardTime
 from ctr4ever.models.submission import Submission
+from ctr4ever.models.submissionhistory import SubmissionHistory
 from ctr4ever.models.track import Track
 
 
@@ -500,6 +502,11 @@ class MockSubmissionRepository(MockModelRepository, SubmissionRepository):
 
     def _get_model_class(self) -> type:
         return Submission
+
+class MockSubmissionHistoryRepository(MockModelRepository, SubmissionHistoryRepository):
+
+    def _get_model_class(self) -> type:
+        return SubmissionHistory
 
 class MockTrackRepository(MockModelRepository, TrackRepository):
 

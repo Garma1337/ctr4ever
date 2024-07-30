@@ -22,7 +22,7 @@ class AuthenticatorTest(TestCase):
             self.germany.id,
             'Garma',
             'email@domain.com',
-            '98a16c09b0759e63ef7df53592724e8eeddb953a',
+            'Password123!',
             '123456',
             True,
             datetime.now()
@@ -31,7 +31,7 @@ class AuthenticatorTest(TestCase):
         self.authenticator = Authenticator(self.password_manager, self.country_repository, self.player_repository)
 
     def test_can_authenticate_player(self):
-        self.assertTrue(self.authenticator.authenticate_player('Garma', 'password'))
+        self.assertTrue(self.authenticator.authenticate_player('Garma', 'Password123!'))
 
     def test_can_not_authenticate_player_if_wrong_password(self):
         self.assertFalse(self.authenticator.authenticate_player('Garma', 'password1'))

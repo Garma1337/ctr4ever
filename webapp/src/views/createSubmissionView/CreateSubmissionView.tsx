@@ -50,8 +50,6 @@ const CreateSubmissionView = () => {
             return;
         }
 
-        console.log(playerId, trackId, categoryId, characterId, gameVersionId, rulesetId, platformId, time, video, comment);
-
         const response = await ctr4EverClient.createSubmission(
             playerId,
             trackId,

@@ -6,6 +6,7 @@ from ctr4ever.rest.endpoint.endpoint import Endpoint
 from ctr4ever.rest.response import ErrorResponse, SuccessResponse
 from ctr4ever.services.submissionmanager import SubmissionManager, SubmissionError
 from ctr4ever.services.timeformatter import TimeFormatter
+from ctr4ever.services.validator.validator import ValidationError
 
 
 class CreateSubmission(Endpoint):
@@ -28,39 +29,6 @@ class CreateSubmission(Endpoint):
         video = request.json.get('video')
         comment = request.json.get('comment')
 
-        if not track_id:
-            return ErrorResponse('A track is required.')
-
-        if not category_id:
-            return ErrorResponse('A category is required.')
-
-        if not character_id:
-            return ErrorResponse('A character is required.')
-
-        if not game_version_id:
-            return ErrorResponse('A game version is required.')
-
-        if not ruleset_id:
-            return ErrorResponse('A ruleset is required.')
-
-        if not platform_id:
-            return ErrorResponse('A platform is required.')
-
-        if not time:
-            return ErrorResponse('A time is required.')
-
-        if not video:
-            return ErrorResponse('A video is required.')
-
-        parsed_time = self.time_formatter.create_time_from_format(time)
-
-        if not parsed_time:
-            return ErrorResponse('Invalid time format.')
-
-        if self.max_comment_length:
-            if comment and len(comment) > self.max_comment_length:
-                return ErrorResponse('The comment is too long.')
-
         try:
             submission = self.submission_manager.submit_time(
                 int(current_user['id']),
@@ -70,11 +38,11 @@ class CreateSubmission(Endpoint):
                 int(game_version_id),
                 int(ruleset_id),
                 int(platform_id),
-                parsed_time.in_seconds(),
+                time,
                 video,
                 comment
             )
-        except SubmissionError as e:
+        except ValidationError as e:
             return ErrorResponse(str(e))
 
         return SuccessResponse({'submission': submission.to_dictionary()})

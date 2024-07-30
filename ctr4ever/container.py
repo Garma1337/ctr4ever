@@ -55,6 +55,16 @@ from ctr4ever.services.ranking_generator.uarrrankinggenerator import UARRRanking
 from ctr4ever.services.standardcalculator import StandardCalculator
 from ctr4ever.services.submissionmanager import SubmissionManager
 from ctr4ever.services.timeformatter import TimeFormatter
+from ctr4ever.services.validator.categoryvalidator import CategoryValidator
+from ctr4ever.services.validator.charactervalidator import CharacterValidator
+from ctr4ever.services.validator.countryvalidator import CountryValidator
+from ctr4ever.services.validator.enginestylevalidator import EngineStyleValidator
+from ctr4ever.services.validator.gameversionvalidator import GameVersionValidator
+from ctr4ever.services.validator.platformvalidator import PlatformValidator
+from ctr4ever.services.validator.playervalidator import PlayerValidator
+from ctr4ever.services.validator.rulesetvalidator import RulesetValidator
+from ctr4ever.services.validator.submissionvalidator import SubmissionValidator
+from ctr4ever.services.validator.trackvalidator import TrackValidator
 
 container = Container()
 
@@ -97,14 +107,11 @@ def init_app(app: Flask) -> Container:
         container.get('repository.standard_time')
     ))
     container.register('services.submission_manager', lambda: SubmissionManager(
-        container.get('repository.category'),
         container.get('repository.character'),
-        container.get('repository.game_version'),
-        container.get('repository.platform'),
-        container.get('repository.player'),
-        container.get('repository.ruleset'),
         container.get('repository.submission'),
-        container.get('repository.track')
+        container.get('repository.submission_history'),
+        container.get('services.validator.submission'),
+        container.get('services.time_formatter')
     ))
     container.register('services.time_formatter', lambda: TimeFormatter())
 
@@ -128,6 +135,36 @@ def init_app(app: Flask) -> Container:
     container.register('services.ranking.total_time_ranking_generator', lambda: TotalTimeRankingGenerator())
     container.register('services.ranking.uarr_ranking_generator', lambda: UARRRankingGenerator())
 
+    # validators
+    container.register('services.validator.category', lambda: CategoryValidator(container.get('repository.category')))
+    container.register('services.validator.character', lambda: CharacterValidator(container.get('repository.character'), container.get('repository.engine_style')))
+    container.register('services.validator.country', lambda: CountryValidator(container.get('repository.country')))
+    container.register('services.validator.engine_style', lambda: EngineStyleValidator(container.get('repository.engine_style')))
+    container.register('services.validator.game_version', lambda: GameVersionValidator(container.get('repository.game_version')))
+    container.register('services.validator.platform', lambda: PlatformValidator(container.get('repository.platform')))
+    container.register('services.validator.player', lambda: PlayerValidator(
+        container.get('repository.country'),
+        container.get('repository.player'),
+        container.get('services.password_manager')
+    ))
+    container.register('services.validator.ruleset', lambda: RulesetValidator(container.get('repository.ruleset')))
+    container.register('services.validator.submission', lambda: SubmissionValidator(
+        container.get('repository.category'),
+        container.get('repository.character'),
+        container.get('repository.game_version'),
+        container.get('repository.submission'),
+        container.get('services.validator.category'),
+        container.get('services.validator.character'),
+        container.get('services.validator.game_version'),
+        container.get('services.validator.platform'),
+        container.get('services.validator.player'),
+        container.get('services.validator.ruleset'),
+        container.get('services.validator.track'),
+        container.get('services.time_formatter'),
+        app.config.get('SUBMISSION_COMMENT_MAX_LENGTH')
+    ))
+    container.register('services.validator.track', lambda: TrackValidator(container.get('repository.track')))
+
     # repositories
     container.register('repository.category', lambda: CategoryRepository(db))
     container.register('repository.character', lambda: CharacterRepository(db))
@@ -141,6 +178,7 @@ def init_app(app: Flask) -> Container:
     container.register('repository.standard_set', lambda: StandardSetRepository(db))
     container.register('repository.standard_time', lambda: StandardTimeRepository(db))
     container.register('repository.submission', lambda: SubmissionRepository(db))
+    container.register('repository.submission_history', lambda: SubmissionRepository(db))
     container.register('repository.track', lambda: TrackRepository(db))
 
     # container itself

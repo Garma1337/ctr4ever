@@ -3,15 +3,29 @@
 from datetime import datetime
 from unittest import TestCase
 
-from ctr4ever.services.submissionmanager import SubmissionManager
+from ctr4ever.services.passwordmanager import PasswordManager
+from ctr4ever.services.submissionmanager import SubmissionManager, SubmissionError
+from ctr4ever.services.timeformatter import TimeFormatter
+from ctr4ever.services.validator.categoryvalidator import CategoryValidator
+from ctr4ever.services.validator.charactervalidator import CharacterValidator
+from ctr4ever.services.validator.gameversionvalidator import GameVersionValidator
+from ctr4ever.services.validator.platformvalidator import PlatformValidator
+from ctr4ever.services.validator.playervalidator import PlayerValidator
+from ctr4ever.services.validator.rulesetvalidator import RulesetValidator
+from ctr4ever.services.validator.submissionvalidator import SubmissionValidator
+from ctr4ever.services.validator.trackvalidator import TrackValidator
 from ctr4ever.tests.mockmodelrepository import MockCategoryRepository, MockCharacterRepository, \
     MockGameVersionRepository, MockEngineStyleRepository, MockPlatformRepository, MockRulesetRepository, \
-    MockPlayerRepository, MockTrackRepository, MockSubmissionRepository, MockCountryRepository
+    MockPlayerRepository, MockTrackRepository, MockSubmissionRepository, MockCountryRepository, \
+    MockSubmissionHistoryRepository
+from ctr4ever.tests.mockpasswordencoderstrategy import MockPasswordEncoderStrategy
 
 
 class SubmissionManagerTest(TestCase):
 
     def setUp(self):
+        self.password_manager = PasswordManager(MockPasswordEncoderStrategy())
+
         self.category_repository = MockCategoryRepository()
         self.character_repository = MockCharacterRepository()
         self.country_repository = MockCountryRepository()
@@ -20,298 +34,230 @@ class SubmissionManagerTest(TestCase):
         self.platform_repository = MockPlatformRepository()
         self.player_repository = MockPlayerRepository()
         self.ruleset_repository = MockRulesetRepository()
-        self.submission_repository = MockSubmissionRepository()
         self.track_repository = MockTrackRepository()
+        self.submission_repository = MockSubmissionRepository()
+        self.submission_history_repository = MockSubmissionHistoryRepository()
 
-        self.submission_manager = SubmissionManager(
+        self.category_validator = CategoryValidator(self.category_repository)
+        self.character_validator = CharacterValidator(self.character_repository, self.engine_style_repository)
+        self.game_version_validator = GameVersionValidator(self.game_version_repository)
+        self.platform_validator = PlatformValidator(self.platform_repository)
+        self.player_validator = PlayerValidator(self.country_repository, self.player_repository, self.password_manager)
+        self.ruleset_validator = RulesetValidator(self.ruleset_repository)
+        self.track_validator = TrackValidator(self.track_repository)
+
+        self.time_formatter = TimeFormatter()
+
+        self.submission_validator = SubmissionValidator(
             self.category_repository,
             self.character_repository,
             self.game_version_repository,
-            self.platform_repository,
-            self.player_repository,
-            self.ruleset_repository,
             self.submission_repository,
-            self.track_repository
+            self.category_validator,
+            self.character_validator,
+            self.game_version_validator,
+            self.platform_validator,
+            self.player_validator,
+            self.ruleset_validator,
+            self.track_validator,
+            self.time_formatter,
+            1000
         )
 
-        self.germany = self.country_repository.create('Germany', 'de.png')
-        self.garma = self.player_repository.create(
-            self.germany.id,
-            'Garma',
-            'test@test.com',
-            '123456',
-            '123456',
-            True,
-            datetime.now()
+        self.submission_manager = SubmissionManager(
+            self.character_repository,
+            self.submission_repository,
+            self.submission_history_repository,
+            self.submission_validator,
+            self.time_formatter
         )
 
         self.pal = self.game_version_repository.create('PAL', 'pal.png')
         self.ntscu = self.game_version_repository.create('NTSC-U', 'ntscu.png')
         self.ntscj = self.game_version_repository.create('NTSC-J', 'ntscj.png')
 
-        self.course_category = self.category_repository.create('Course')
-        self.relic_race_category = self.category_repository.create('Relic Race')
+        self.course = self.category_repository.create('Course')
+        self.relic_race = self.category_repository.create('Relic Race')
 
-        self.max_engine = self.engine_style_repository.create('Max')
-        self.speed_engine = self.engine_style_repository.create('Speed')
-        self.turn_engine = self.engine_style_repository.create('Turning')
+        self.max = self.engine_style_repository.create('Max')
+        self.speed = self.engine_style_repository.create('Speed')
+        self.turn = self.engine_style_repository.create('Turning')
 
-        self.dingodile = self.character_repository.create('Dingodile', self.speed_engine.id, 'dingo.png')
-        self.fake_crash = self.character_repository.create('Fake Crash', self.max_engine.id, 'fake.png')
-        self.fast_penta = self.character_repository.create('Fast Penta Penguin', self.max_engine.id, 'fast.png')
-        self.slow_penta = self.character_repository.create('Slow Penta Penguin', self.max_engine.id, 'slow.png')
+        self.dingodile = self.character_repository.create('Dingodile', self.speed.id, 'dingo.png')
+        self.fake_crash = self.character_repository.create('Fake Crash', self.max.id, 'fake.png')
+        self.fast_penta = self.character_repository.create('Fast Penta Penguin', self.max.id, 'fast.png')
+        self.slow_penta = self.character_repository.create('Slow Penta Penguin', self.max.id, 'slow.png')
 
         self.classic = self.ruleset_repository.create('Classic')
 
         self.console = self.platform_repository.create('Console')
         self.crash_cove = self.track_repository.create('Crash Cove')
 
-    def test_can_validate_submission(self):
-        category_id = self.course_category.id
-        character_id = self.dingodile.id
-        game_version_id = self.pal.id
-        time = 80.63
-
-        self.assertTrue(self.submission_manager.is_valid_submission(category_id, character_id, game_version_id, time))
-
-    def test_can_not_validate_submission_when_character_is_not_available_for_category(self):
-        category_id = self.relic_race_category.id
-        character_id = self.fake_crash.id
-        game_version_id = self.pal.id
-        time = 80.63
-
-        self.assertFalse(self.submission_manager.is_valid_submission(category_id, character_id, game_version_id, time))
-
-    def test_can_not_validate_submission_when_fast_penta_is_not_available_for_game_version(self):
-        category_id = self.course_category.id
-        character_id = self.fast_penta.id
-        game_version_id = self.ntscu.id
-        time = 80.63
-
-        self.assertFalse(self.submission_manager.is_valid_submission(category_id, character_id, game_version_id, time))
-
-    def test_can_not_validate_submission_when_slow_penta_is_not_available_for_game_version(self):
-        category_id = self.course_category.id
-        character_id = self.slow_penta.id
-        game_version_id = self.pal.id
-        time = 80.63
-
-        self.assertFalse(self.submission_manager.is_valid_submission(category_id, character_id, game_version_id, time))
-
-    def test_can_not_validate_submission_when_time_is_greater_than_maximum(self):
-        category_id = self.course_category.id
-        character_id = self.dingodile.id
-        game_version_id = self.pal.id
-        time = 600.00
-
-        self.assertFalse(self.submission_manager.is_valid_submission(category_id, character_id, game_version_id, time))
-
-    def test_can_not_validate_submission_when_dependencies_dont_exist(self):
-        category_id = 999
-        character_id = 999
-        game_version_id = 999
-
-        self.assertFalse(self.submission_manager.is_valid_submission(category_id, character_id, game_version_id, 100))
+        self.germany = self.country_repository.create('Germany', 'de.png')
+        self.garma = self.player_repository.create(
+            self.germany.id,
+            'Garma',
+            'test@test.com',
+            'Password123!',
+            '123456',
+            True,
+            datetime.now()
+        )
 
     def test_can_submit_time(self):
-        player_id = self.garma.id
-        track_id = self.crash_cove.id
-        category_id = self.course_category.id
-        character_id = self.dingodile.id
-        game_version_id = self.pal.id
-        ruleset_id = self.classic.id
-        platform_id = self.console.id
-        time = 80.63
-        video = 'https://www.youtube.com/watch?v=123456'
-
         submission = self.submission_manager.submit_time(
-            player_id,
-            track_id,
-            category_id,
-            character_id,
-            game_version_id,
-            ruleset_id,
-            platform_id,
-            time,
-            video
+            self.garma.id,
+            self.crash_cove.id,
+            self.course.id,
+            self.dingodile.id,
+            self.pal.id,
+            self.classic.id,
+            self.console.id,
+            '1:18.93',
+            'https://www.youtube.com/watch?v=123456',
+            'This is a test submission'
         )
 
         self.assertEqual(1, submission.id)
-        self.assertEqual(player_id, submission.player_id)
-        self.assertEqual(track_id, submission.track_id)
-        self.assertEqual(category_id, submission.category_id)
-        self.assertEqual(character_id, submission.character_id)
-        self.assertEqual(game_version_id, submission.game_version_id)
-        self.assertEqual(ruleset_id, submission.ruleset_id)
-        self.assertEqual(platform_id, submission.platform_id)
-        self.assertEqual(time, submission.time)
-        self.assertEqual(video, submission.video)
-        self.assertIsNotNone(submission.date)
+        self.assertEqual(self.garma.id, submission.player_id)
+        self.assertEqual(self.crash_cove.id, submission.track_id)
+        self.assertEqual(self.course.id, submission.category_id)
+        self.assertEqual(self.dingodile.id, submission.character_id)
+        self.assertEqual(self.pal.id, submission.game_version_id)
+        self.assertEqual(self.classic.id, submission.ruleset_id)
+        self.assertEqual(self.console.id, submission.platform_id)
+        self.assertEqual(78.93, submission.time)
+        self.assertEqual('https://www.youtube.com/watch?v=123456', submission.video)
+        self.assertEqual('This is a test submission', submission.comment)
 
-    def test_can_not_submit_time_when_player_does_not_exist(self):
-        player_id = 999
-        track_id = self.crash_cove.id
-        category_id = self.course_category.id
-        character_id = self.dingodile.id
-        game_version_id = self.pal.id
-        ruleset_id = self.classic.id
-        platform_id = self.console.id
-        time = 80.63
-        video = 'https://www.youtube.com/watch?v=123456'
+    def test_can_update_existing_submission(self):
+        submission = self.submission_manager.submit_time(
+            self.garma.id,
+            self.crash_cove.id,
+            self.course.id,
+            self.dingodile.id,
+            self.pal.id,
+            self.classic.id,
+            self.console.id,
+            '1:18.93',
+            'https://www.youtube.com/watch?v=123456',
+            'This is a test submission'
+        )
 
-        with self.assertRaises(Exception):
-            self.submission_manager.submit_time(
-                player_id,
-                track_id,
-                category_id,
-                character_id,
-                game_version_id,
-                ruleset_id,
-                platform_id,
-                time,
-                video
-            )
+        submission = self.submission_manager.submit_time(
+            self.garma.id,
+            self.crash_cove.id,
+            self.course.id,
+            self.dingodile.id,
+            self.pal.id,
+            self.classic.id,
+            self.console.id,
+            '1:18.49',
+            'https://www.youtube.com/watch?v=7891011',
+            'This is an updated test submission'
+        )
 
-    def test_can_not_submit_time_when_track_does_not_exist(self):
-        player_id = self.garma.id
-        track_id = 999
-        category_id = self.course_category.id
-        character_id = self.dingodile.id
-        game_version_id = self.pal.id
-        ruleset_id = self.classic.id
-        platform_id = self.console.id
-        time = 80.63
-        video = 'https://www.youtube.com/watch?v=123456'
+        self.assertEqual(1, submission.id)
+        self.assertEqual(78.49, submission.time)
+        self.assertEqual('https://www.youtube.com/watch?v=7891011', submission.video)
+        self.assertEqual('This is an updated test submission', submission.comment)
 
-        with self.assertRaises(Exception):
-            self.submission_manager.submit_time(
-                player_id,
-                track_id,
-                category_id,
-                character_id,
-                game_version_id,
-                ruleset_id,
-                platform_id,
-                time,
-                video
-            )
+    def test_can_not_update_existing_submission_when_different_engine(self):
+        submission = self.submission_manager.submit_time(
+            self.garma.id,
+            self.crash_cove.id,
+            self.course.id,
+            self.dingodile.id,
+            self.pal.id,
+            self.classic.id,
+            self.console.id,
+            '1:18.93',
+            'https://www.youtube.com/watch?v=123456',
+            'This is a test submission'
+        )
 
-    def test_can_not_submit_time_when_category_does_not_exist(self):
-        player_id = self.garma.id
-        track_id = self.crash_cove.id
-        category_id = 999
-        character_id = self.dingodile.id
-        game_version_id = self.pal.id
-        ruleset_id = self.classic.id
-        platform_id = self.console.id
-        time = 80.63
-        video = 'https://www.youtube.com/watch?v=123456'
+        submission = self.submission_manager.submit_time(
+            self.garma.id,
+            self.crash_cove.id,
+            self.course.id,
+            self.fake_crash.id,
+            self.pal.id,
+            self.classic.id,
+            self.console.id,
+            '1:18.49',
+            'https://www.youtube.com/watch?v=7891011',
+            'This is an updated test submission'
+        )
 
-        with self.assertRaises(Exception):
-            self.submission_manager.submit_time(
-                player_id,
-                track_id,
-                category_id,
-                character_id,
-                game_version_id,
-                ruleset_id,
-                platform_id,
-                time,
-                video
-            )
+        self.assertEqual(2, submission.id)
+        self.assertEqual(self.garma.id, submission.player_id)
+        self.assertEqual(self.crash_cove.id, submission.track_id)
+        self.assertEqual(self.course.id, submission.category_id)
+        self.assertEqual(self.fake_crash.id, submission.character_id)
+        self.assertEqual(self.pal.id, submission.game_version_id)
+        self.assertEqual(self.classic.id, submission.ruleset_id)
+        self.assertEqual(self.console.id, submission.platform_id)
+        self.assertEqual(78.49, submission.time)
+        self.assertEqual('https://www.youtube.com/watch?v=7891011', submission.video)
+        self.assertEqual('This is an updated test submission', submission.comment)
 
-    def test_can_not_submit_time_when_character_does_not_exist(self):
-        player_id = self.garma.id
-        track_id = self.crash_cove.id
-        category_id = self.course_category.id
-        character_id = 999
-        game_version_id = self.pal.id
-        ruleset_id = self.classic.id
-        platform_id = self.console.id
-        time = 80.63
-        video = 'https://www.youtube.com/watch?v=123456'
+    def test_can_create_submission(self):
+        submission = self.submission_manager._create_submission(
+            self.garma.id,
+            self.crash_cove.id,
+            self.course.id,
+            self.dingodile.id,
+            self.pal.id,
+            self.classic.id,
+            self.console.id,
+            78.93,
+            'https://www.youtube.com/watch?v=123456',
+            'This is a test submission'
+        )
 
-        with self.assertRaises(Exception):
-            self.submission_manager.submit_time(
-                player_id,
-                track_id,
-                category_id,
-                character_id,
-                game_version_id,
-                ruleset_id,
-                platform_id,
-                time,
-                video
-            )
+        self.assertEqual(1, submission.id)
+        self.assertEqual(self.garma.id, submission.player_id)
+        self.assertEqual(self.crash_cove.id, submission.track_id)
+        self.assertEqual(self.course.id, submission.category_id)
+        self.assertEqual(self.dingodile.id, submission.character_id)
+        self.assertEqual(self.pal.id, submission.game_version_id)
+        self.assertEqual(self.classic.id, submission.ruleset_id)
+        self.assertEqual(self.console.id, submission.platform_id)
+        self.assertEqual(78.93, submission.time)
+        self.assertEqual('https://www.youtube.com/watch?v=123456', submission.video)
+        self.assertEqual('This is a test submission', submission.comment)
 
-    def test_can_not_submit_time_when_game_version_does_not_exist(self):
-        player_id = self.garma.id
-        track_id = self.crash_cove.id
-        category_id = self.course_category.id
-        character_id = self.dingodile.id
-        game_version_id = 999
-        ruleset_id = self.classic.id
-        platform_id = self.console.id
-        time = 80.63
-        video = 'https://www.youtube.com/watch?v=123456'
+    def test_can_update_submission(self):
+        submission = self.submission_manager._create_submission(
+            self.garma.id,
+            self.crash_cove.id,
+            self.course.id,
+            self.dingodile.id,
+            self.pal.id,
+            self.classic.id,
+            self.console.id,
+            78.93,
+            'https://www.youtube.com/watch?v=123456',
+            'This is a test submission'
+        )
 
-        with self.assertRaises(Exception):
-            self.submission_manager.submit_time(
-                player_id,
-                track_id,
-                category_id,
-                character_id,
-                game_version_id,
-                ruleset_id,
-                platform_id,
-                time,
-                video
-            )
+        submission = self.submission_manager._update_submission(
+            submission.id,
+            78.49,
+            'https://www.youtube.com/watch?v=7891011',
+            'This is an updated test submission'
+        )
 
-    def test_can_not_submit_time_when_ruleset_does_not_exist(self):
-        player_id = self.garma.id
-        track_id = self.crash_cove.id
-        category_id = self.course_category.id
-        character_id = self.dingodile.id
-        game_version_id = self.pal.id
-        ruleset_id = 999
-        platform_id = self.console.id
-        time = 80.63
-        video = 'https://www.youtube.com/watch?v=123456'
+        self.assertEqual(1, submission.id)
+        self.assertEqual(78.49, submission.time)
+        self.assertEqual('https://www.youtube.com/watch?v=7891011', submission.video)
+        self.assertEqual('This is an updated test submission', submission.comment)
 
-        with self.assertRaises(Exception):
-            self.submission_manager.submit_time(
-                player_id,
-                track_id,
-                category_id,
-                character_id,
-                game_version_id,
-                ruleset_id,
-                platform_id,
-                time,
-                video
-            )
-
-    def test_can_not_submit_time_when_platform_does_not_exist(self):
-        player_id = self.garma.id
-        track_id = self.crash_cove.id
-        category_id = self.course_category.id
-        character_id = self.dingodile.id
-        game_version_id = self.pal.id
-        ruleset_id = self.classic.id
-        platform_id = 999
-        time = 80.63
-        video = 'https://www.youtube.com/watch?v=123456'
-
-        with self.assertRaises(Exception):
-            self.submission_manager.submit_time(
-                player_id,
-                track_id,
-                category_id,
-                character_id,
-                game_version_id,
-                ruleset_id,
-                platform_id,
-                time,
-                video
+    def test_can_not_update_submission_when_submission_does_not_exist(self):
+        with self.assertRaises(SubmissionError) as context:
+            self.submission_manager._update_submission(
+                1,
+                78.49,
+                'https://www.youtube.com/watch?v=7891011',
+                'This is an updated test submission'
             )

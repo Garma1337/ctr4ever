@@ -17,6 +17,7 @@ class PlayerSchema(Schema):
     created = fields.DateTime()
     country = fields.Nested('CountrySchema', exclude=('players',))
     submissions = fields.Nested('SubmissionSchema', exclude=('player',), many=True)
+    submissions_history = fields.Nested('SubmissionHistorySchema', exclude=('player',), many=True)
 
 
 class Player(Model):
@@ -33,3 +34,4 @@ class Player(Model):
     created: Mapped[str] = Column(DateTime(), nullable=False)
     country: Mapped['Country'] = relationship('Country', back_populates='players')
     submissions: Mapped[List['Submission']] = relationship('Submission', back_populates='player')
+    submissions_history: Mapped[List['SubmissionHistory']] = relationship('SubmissionHistory', back_populates='player')

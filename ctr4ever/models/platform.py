@@ -13,6 +13,7 @@ class PlatformSchema(Schema):
     id = fields.Int()
     name = fields.Str()
     submissions = fields.Nested('SubmissionSchema', exclude=('platform',), many=True)
+    submissions_history = fields.Nested('SubmissionHistorySchema', exclude=('platform',), many=True)
 
 
 class Platform(Model):
@@ -22,3 +23,4 @@ class Platform(Model):
     id: Mapped[int] = mapped_column(primary_key=True, nullable=False, autoincrement=True)
     name: Mapped[str] = Column(String(100), nullable=False)
     submissions: Mapped[List['Submission']] = relationship('Submission', back_populates='platform')
+    submissions_history: Mapped[List['SubmissionHistory']] = relationship('SubmissionHistory', back_populates='platform')
